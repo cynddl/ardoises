@@ -6,7 +6,7 @@
 <p>Un groupe est constitué d'un ensemble de produits. Par exemple, le groupe <em>soft</em> rassemble les Pampryl, les sodas… On peut consommer des groupes, mais pas des produits.</p>
 
 <ul class="nav nav-pills nav-stacked">
-@foreach($groupes as $groupe)
+@foreach(Groupe::get() as $groupe)
   <li class="active">
 		<a href="g/{{$groupe->id}}"><span class="badge badge-important">{{$groupe->nomreduit}}</span> {{$groupe->nom}}@if($groupe->commentaire)
 			<small>({{$groupe->commentaire}})</small>@endif</a>
@@ -73,7 +73,7 @@
 					<label class="control-label" for="groupe">Groupe</label>
 					<div class="controls">
 						<select name="groupe" multiple>
-						@foreach($groupes as $g)
+						@foreach(Groupe::get() as $g)
 							<option value="{{$g->id}}">{{$g->nom}}</option>
 						@endforeach
 						</select>

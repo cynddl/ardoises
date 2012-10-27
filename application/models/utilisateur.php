@@ -6,7 +6,7 @@ class Utilisateur extends CustomEloquent {
 	
 	public function ardoise()
 	{
-		return $this->belongs_to('Ardoise')->first();
+		return $this->belongs_to('Ardoise');
 	}
 	
 	public function departement()
@@ -14,10 +14,10 @@ class Utilisateur extends CustomEloquent {
 		return Departement::find($this->departement_id);
 	}
 	
-	public function consommations()
+	/*public function consommations()
 	{
-		return $this->ardoise()->consommations();
-	}
+		return $this->ardoise->consommations;
+	}*/
 
 	public function roles()
 	{

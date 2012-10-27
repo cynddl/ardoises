@@ -4,7 +4,7 @@
 
 
 <ul class="nav nav-tabs">
-	@foreach(Lieu::all() as $l)
+	@foreach($lieux as $l)
 	<li class="dropdown">
 		<a href="#tab-pane-{{$l->id}}" data-toggle="tab">{{$l->nom}}</a>
     <!--<ul class="dropdown-menu">
@@ -20,13 +20,13 @@
 		<p>Sélectionnez un lieu pour afficher les stocks en réserve et dans les frigos.</p>
 		<p>Les vols ont été notés :
 			<ul>
-				@foreach(Lieu::all() as $l)
-					<li><span class="label">{{$l->nom}}</span> il y a {{Vol::order_by('date', 'desc')->where_lieu_id($l->id)->first()->temps_ecoule()->format('%d jour(s)')}}</li>
+				@foreach($lieux as $l)
+					<li><span class="label">{{$l->nom}}</span> il y a {{$l->vols()->order_by('date', 'desc')->first()->temps_ecoule()->format('%d jour(s)')}}</li>
 				@endforeach
 			</ul>
 		</p>
 	</div>
-@foreach(Lieu::all() as $l)
+@foreach($lieux as $l)
 <div class="tab-pane fade" id="tab-pane-{{$l->id}}">
 <div class="accordion" id="accordion-{{$l->id}}">
   <div class="accordion-group">
@@ -44,9 +44,9 @@
 				    </tr>
 				  </thead>
 				  <tbody>
-				    @foreach(Stockproduit::where_lieu_id($l->id)->get() as $sp)
+				    @foreach(Stockproduit::with('produit')->where_lieu_id($l->id)->get() as $sp)
 				      <tr>
-								<td><a href="p/{{$sp->produit()->id}}">{{$sp->produit()->nom}}</a></td>
+								<td><a href="p/{{$sp->produit->id}}">{{$sp->produit->nom}}</a></td>
 								<td>{{$sp->qte_reserve}}</td>
 				      </tr>
 				    @endforeach
@@ -95,9 +95,9 @@
 				    </tr>
 				  </thead>
 				  <tbody>
-				    @foreach(Stockgroupe::where_lieu_id($l->id)->get() as $sg)
+				    @foreach(Stockgroupe::with('groupe')->where_lieu_id($l->id)->get() as $sg)
 				      <tr>
-								<td><a href="p/{{$sp->produit()->id}}">{{$sg->groupe()->nom}}</a></td>
+								<td><a href="p/{{$sp->produit->id}}">{{$sg->groupe->nom}}</a></td>
 								<td>{{$sg->qte_frigo}}</td>
 				      </tr>
 				    @endforeach

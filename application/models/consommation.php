@@ -14,7 +14,7 @@ class Consommation extends Eloquent {
 
 	public function ardoise()
 	{
-		return $this->belongs_to('Ardoise')->first();
+		return $this->belongs_to('Ardoise');
 	}
 
 }

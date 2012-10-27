@@ -92,9 +92,9 @@ class Rf_Base_Controller extends Base_Controller {
 	{
 		DB::transaction(function(){
 			$debiteur = Utilisateur::where_login(Input::get('debiteur'))->first();
-			$debiteur_a = $debiteur->ardoise();
+			$debiteur_a = $debiteur->ardoise;
 			$crediteur = Utilisateur::where_login(Input::get('crediteur'))->first();
-			$crediteur_a = $crediteur->ardoise();
+			$crediteur_a = $crediteur->ardoise;
 			$montant = Input::get('montant');
 			
 			$t = Transfert::create(array(

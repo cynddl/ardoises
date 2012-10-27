@@ -4,9 +4,9 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
-			<p class="brand">Bienvenue, {{ Auth::user()->prenom }}. <small>Votre Ardoise : <span class="badge @if(Auth::user()->ardoise()->montant <= 0)
+			<p class="brand">Bienvenue, {{ Auth::user()->prenom }}. <small>Votre Ardoise : <span class="badge @if(Auth::user()->ardoise->montant <= 0)
 					badge-success
-				@else badge-important @endif">{{Auth::user()->ardoise()->montant}}</span></small></p>
+				@else badge-important @endif">{{Auth::user()->ardoise->montant}}</span></small></p>
 			<div class="pull-right">
 			<ul class="nav">
 				<li@if(Request::route()->is('home'))

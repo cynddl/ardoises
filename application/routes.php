@@ -40,8 +40,7 @@ Route::get('/logout', array('as' => 'logout', function()
 */
 
 Route::controller(Controller::detect());
-Route::get('prefs', 'home@prefs');
-Route::post('prefs', 'home@prefs');
+Route::any('prefs', 'home@prefs');
 
 
 /*

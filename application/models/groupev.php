@@ -5,12 +5,12 @@ class GroupeV extends Eloquent {
 
 	public function lieu()
 	{
-		return $this->belongs_to('Lieu')->first();
+		return $this->belongs_to('Lieu');
 	}
 
 	public function groupe()
 	{
-		return $this->belongs_to('Groupe')->first();
+		return $this->belongs_to('Groupe');
 	}
 
 	public function consommations()

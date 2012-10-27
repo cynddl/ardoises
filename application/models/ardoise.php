@@ -8,12 +8,12 @@ class Ardoise extends CustomEloquent {
 	}
 	
 	public function consommations () {
-		return $this->has_many('Consommation')->get();
+		return $this->has_many('Consommation');
 	}
 	
 	public function utilisateur()
 	{
-		return $this->has_one('Utilisateur')->first();
+		return $this->has_one('Utilisateur');
 	}
 	
 	// hack

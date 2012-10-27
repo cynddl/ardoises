@@ -23,14 +23,8 @@ class Home_Controller extends Base_Controller {
 	public function get_prefs()
 	{
 		$dep_options = array();
-		foreach (Departement::get() as $key => $value)
-		{
-			$dep_options[$key] = $value->nom;
-		}
-		
-		return View::make('home.prefs', array(
-			'departements' => $dep_options
-		));
+
+		return View::make('home.prefs');
 	}
 	
 	public function post_prefs()

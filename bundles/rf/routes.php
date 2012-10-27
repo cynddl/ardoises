@@ -49,27 +49,22 @@ Route::get('(:bundle)/logs', function()
 
 Route::get('(:bundle)/ardoises', function()
 {
-    return View::make('rf::ardoises.home', array(
-    	'users' => Utilisateur::get()
-    ));
+    return View::make('rf::ardoises.home');
 });
 
 Route::get('(:bundle)/produits', array('as' => 'produits', function()
 {
-    return View::make('rf::produits', array(
-    	'groupes' => Groupe::get()
-    ));
+    return View::make('rf::produits');
 }));
 
 Route::get('(:bundle)/forfaits', array('as' => 'forfaits', function()
 {
-    return View::make('rf::forfaits', array(
-    	'forfaits' => Forfait::get()
-    ));
+    return View::make('rf::forfaits');
 }));
 
 Route::get('(:bundle)/frigos', array('as' => 'frigos', function()
 {
     return View::make('rf::frigos', array(
-    ));
+			'lieux' => Lieu::get()
+			));
 }));

@@ -14,7 +14,7 @@
   <tbody>
     @foreach(LogDB::get() as $item)
       <tr>
-        <td>{{$item->utilisateur()->login}}</td>
+        <td>{{$item->utilisateur->login}}</td>
         <td>{{$item->date}}</td>
         <td>{{$item->description}}</td>
       </tr>

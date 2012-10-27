@@ -14,7 +14,7 @@
   <div class="tab-pane active" id="crediter">
 		{{Former::open(URL::to_action('rf@ardoises/credit.'.$user->login))}}
 		<legend>Cr&eacute;diter l'ardoise</legend>
-		{{Former::xlarge_uneditable('montant')->value($user->ardoise()->montant)}}
+		{{Former::xlarge_uneditable('montant')->value($user->ardoise->montant)}}
 		{{Former::xlarge_number('credit', 'Montant &agrave; ajouter')->value(0)}}
 		{{Former::select('moyenpaiement', 'Moyen de paiement')->fromQuery(MoyenPaiement::all(), 'nom', 'id')}}
 		{{Former::actions(Form::submit('Cr&eacute;diter', array('class'=>'btn btn-primary'))) }}
@@ -32,9 +32,9 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach(Auth::user()->consommations() as $c)
+				@foreach(Auth::user()->ardoise->consommations()->get() as $c)
 				<tr>
-					<td>{{$c->groupe()->nom}}</td>
+					<td>{{$c->groupe->nom}}</td>
 					<td>{{$c->uniteachetee}}</td>
 					<td>{{$c->date}}</td>
 				</tr>

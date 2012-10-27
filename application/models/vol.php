@@ -4,12 +4,12 @@ class Vol extends CustomEloquent {
 
 	public function lieu()
 	{
-		return $this->belongs_to('Lieu')->first();
+		return $this->belongs_to('Lieu');
 	}
 
 	public function produit()
 	{
-		return $this->belongs_to('Produit')->first();
+		return $this->belongs_to('Produit');
 	}
 	
 	public function temps_ecoule()

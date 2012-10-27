@@ -52,7 +52,7 @@ class Rf_Soirees_Controller extends Base_Controller {
 			{
 				if ($u = Utilisateur::where_login($key)->first())
 				{
-					$soiree->ardoises()->attach($u->ardoise(), array('prix'=>$value));
+					$soiree->ardoises()->attach($u->ardoise, array('prix'=>$value));
 				}
 			}
 			Session::flash('message_status', 'success');
