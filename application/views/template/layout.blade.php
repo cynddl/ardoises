@@ -15,8 +15,6 @@
 <!--	<link href='http://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>-->
 
-	{{Asset::container('bootstrapper')->styles()}}
-	{{Asset::container('bootstrapper')->scripts()}}
 	{{ Asset::styles()  }}
   {{ Asset::scripts() }}
 		

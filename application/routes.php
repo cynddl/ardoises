@@ -67,12 +67,13 @@ Event::listen('500', function()
 
 Route::filter('before', function()
 {
-	Asset::add('style', 'assets/css/style.css');
-	Asset::add('patternizer', 'assets/js/patternizer.min.js');
-	Asset::add('script', 'assets/js/script.js');
+	Asset::add('style', 'assets/css/main.min.css');
+	//Asset::add('patternizer', 'assets/js/patternizer.min.js');
+	//Asset::add('script', 'assets/js/script.js');
+	Asset::add('script', 'assets/js/main.min.js');
 	
-	Asset::add('js-dt', 'assets/js/jquery.dataTables.min.js');
-	Asset::add('dt-boostrap', 'assets/js/DT_bootstrap.js');
+	//Asset::add('js-dt', 'assets/js/jquery.dataTables.min.js');
+	//Asset::add('dt-boostrap', 'assets/js/DT_bootstrap.js');
 	
 	View::share('layout', Auth::guest() ? 'template.layout' : 'template.logged');
 });
