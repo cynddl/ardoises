@@ -7,7 +7,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title></title>
+	<title>Ardoises</title>
 	<meta name="description" content="">
 	<meta name="keywords" content="" />
 	<meta name="author" content="">
@@ -15,9 +15,9 @@
 <!--	<link href='http://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>-->
 
-	{{ Asset::styles()  }}
-  {{ Asset::scripts() }}
-		
+	<link href='{{URL::to('')}}assets/css/main.min.css' rel='stylesheet' type='text/css'>
+	<script src="{{URL::to('')}}assets/js/main.min.js"></script>
+	
 	<!-- !Modernizr - All other JS at bottom -->
 	<!--<script src="js/modernizr-1.5.min.js"></script>-->
 </head>
