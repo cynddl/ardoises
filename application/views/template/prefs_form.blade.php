@@ -21,7 +21,7 @@
 		{{Former::select('departement_id', 'Département')->fromQuery(Departement::all(), 'nom', 'id')}}
 		@else
 		{{Former::small_uneditable('promo','Promo')}}
-		{{Former::select('departement_id', 'Département')->fromQuery(Departement::all(), 'nom', 'id')}}
+		{{Former::xlarge_uneditable('', 'Département')->value($user->departement()->nom)}}
 		@endif
 	</fieldset>
 	{{Former::actions(Form::submit('Enregistrer les modifications', array('class'=>'btn btn-primary'))) }}
