@@ -24,6 +24,19 @@ class Utilisateur extends CustomEloquent {
 		return $this->has_many_and_belongs_to('Role', 'utilisateur_role')->with('id')->get();
 	}
 	
+	public function permissions()
+	{
+		$perms = array();
+		foreach($this->roles() as $r)
+		{
+			foreach($r->permissions() as $p)
+			{
+				$perms[$p->nom] = true;
+			}
+		}
+		return $perms;
+	}
+	
 	public function role()
 	{
 		return $this->belongs_to('Role');
