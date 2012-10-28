@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 		
 		cssmin: {
 			dist: {
-				src: ['css/bootstrap-responsive.css', 'css/bootstrap.css', 'css/nav-fix.css', 'css/style.css'],
+				src: ['css/bootstrap.css', 'css/bootstrap-responsive.css', 'css/nav-fix.css', 'css/style.css'],
 				dest: 'css/main.min.css'
 			}
 		},
