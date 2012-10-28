@@ -17,7 +17,27 @@ class Home_Controller extends Base_Controller {
 	
 	public function post_index()
 	{
-		print_r(Input::get());die();
+		$inputs = Input::get();
+		$ardoise = Auth::user()->ardoise;
+		
+		for ($i=1; $i < count($inputs) / 2 + 1; $i++) {
+			if(!isset($inputs['conso'.$i]) || !isset($inputs['count'.$i]))
+				continue;
+			
+			DB::transaction(function() use($i, $inputs, $ardoise) {
+				$groupe = Groupe::find($inputs['conso'.$i]);
+				$qte = $inputs['count'.$i];
+				$conso = Consommation::create(array(
+					'groupeV_id' => $groupe->groupev->id,
+					'uniteachetee' => $qte,
+					'ardoise_id' => Auth::user()->ardoise->id
+				));
+				$conso->save();
+				$ardoise->montant = $ardoise->montant + $groupe->groupev->prix_adh * $qte;
+				$ardoise->save();
+			});
+		}
+		return View::make('home.index');
 	}
 	
 	public function get_prefs()

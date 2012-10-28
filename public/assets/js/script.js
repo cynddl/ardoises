@@ -62,13 +62,14 @@ $(document).ready(function(){
 
 
 	$(':input[type="number"]:last').live('keydown', function(e) { 
-    var keyCode = e.keyCode || e.which; 
+    var keyCode = e.keyCode || e.which;
 
     if (keyCode == 9 && !e.shiftKey) { 
       e.preventDefault(); 
       var row = $(this).parent();
       var actual_select = row.find('select');
       var new_row = row.clone();
+			
       
       var new_select = new_row.find('select');
       new_select.change(next_input);
@@ -80,6 +81,13 @@ $(document).ready(function(){
       }
       
       new_row.find('input[type="number"]').val("0");
+			
+			// Incrémentation des noms
+			var regex = new RegExp(/^(.+)(\d+)$/);
+			$(new_row).find(':input').each(function() {
+			    var match = $(this).attr('name').match(regex);
+			    $(this).attr('name', match[1] + (++match[2]));
+			});
 
       row.after(new_row);
       new_select.focus();

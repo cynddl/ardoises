@@ -149,6 +149,13 @@ div.login-box .help-inline {
 }
 
 
+/* Inline forms */
+
+.form-search label, .form-inline label, .form-search .btn-group, .form-inline .btn-group {
+	margin-right: 5px;
+}
+
+
 /* Adapt Datatables to Twitter Bootstrap */
 
 div.dataTables_length label {

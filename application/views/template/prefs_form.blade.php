@@ -5,7 +5,7 @@
 		@if(isset($all))
 			{{Former::medium_text('login','Login')}}
 		@else
-			{{Former::medium_uneditable('login','Login')}}
+			{{Former::medium_uneditable('login','Login')}}	
 		@endif
 		@if(isset($mdp))
 			{{Former::medium_password('mdp', 'Mot de passe')}}
