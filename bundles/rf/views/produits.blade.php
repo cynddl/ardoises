@@ -28,57 +28,27 @@
 
 <div class="tab-content">
   <div class="tab-pane active" id="ajouter-groupe">
-		<form class="form-horizontal" method="POST" action="add/g/">
+		<div class="alert">
+		  <button type="button" class="close" data-dismiss="alert">×</button>
+		  <strong>Attention aux doublons !</strong> Ne rajoutez pas un produit ou un groupe déjà présent dans la base. Pour passer une commande ou ajouter des produits aux frigos, allez plutôt sur la page {{HTML::link_to_route('frigos','Frigos')}}.
+		</div>
+		{{Former::open('rf/produits/add/g/')}}
 		  <fieldset>
-		 		<div class="control-group">
-					<label class="control-label" for="nom">Nom</label>
-					<div class="controls">
-						<input type="text" class="input-xlarge" name="nom">
-					</div>
-				</div>
-				<div class="control-group">
-		      <label class="control-label" for="nomreduit">Nom réduit</label>
-		      <div class="controls">
-		        <input type="text" class="input-small" id="mail" name="nomreduit">
-		      </div>
-		    </div>
-		 		<div class="control-group">
-					<label class="control-label" for="commentaire">Commentaire</label>
-					<div class="controls">
-						<input type="text" class="input-xlarge" name="commentaire">
-					</div>
-				</div>
+				{{Former::xlarge_text('nom', 'Nom')}}
+		 		{{Former::small_text('nomredit', 'Nom réduit')}}
+				{{Former::xlarge_text('commentaire', 'Commentaire')}}
 		  </fieldset>
 			<div class="form-actions">
 		    <button type="submit" class="btn btn-primary">Ajouter le groupe</button>
 		  </div>
-		</form>
+		{{Former::close()}}
   </div>
   <div class="tab-pane" id="ajouter-produit">
-		<form class="form-horizontal" method="POST" action="add/p/">
+		{{Former::open('rf/produits/add/p/')}}
 		  <fieldset>
-		 		<div class="control-group">
-					<label class="control-label" for="nom">Nom</label>
-					<div class="controls">
-						<input type="text" class="input-xlarge" name="nom">
-					</div>
-				</div>
-		 		<div class="control-group">
-					<label class="control-label" for="commentaire">Commentaire</label>
-					<div class="controls">
-						<input type="text" class="input-xlarge" name="commentaire">
-					</div>
-				</div>
-		 		<div class="control-group">
-					<label class="control-label" for="groupe">Groupe</label>
-					<div class="controls">
-						<select name="groupe" multiple>
-						@foreach(Groupe::get() as $g)
-							<option value="{{$g->id}}">{{$g->nom}}</option>
-						@endforeach
-						</select>
-					</div>
-				</div>
+		 		{{Former::xlarge_text('nom', 'Nom')}}
+		 		{{Former::small_text('nomredit', 'Nom réduit')}}
+				{{Former::select('groupe', 'Groupe')->fromQuery(Groupe::all(), 'nom', 'id')}}
 		  </fieldset>
 			<div class="form-actions">
 		    <button type="submit" class="btn btn-primary">Ajouter le produit</button>
