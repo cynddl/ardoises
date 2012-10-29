@@ -34,7 +34,7 @@ class Rf_Base_Controller extends Base_Controller {
 	public function post_credit($login)
 	{
 		$user = Utilisateur::where('login', '=', $login)->first();
-		$ardoise = $user->ardoise();
+		$ardoise = $user->ardoise;
 		DB::transaction(function () use ($ardoise) {
 			$credit = Credit::create(array(
 				'ardoise_id' => $ardoise->id,

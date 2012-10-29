@@ -10,7 +10,7 @@
     	</thead>
     	<tbody>
 				@foreach($soiree->ardoises()->pivot()->get() as $item)
-        <tr><td>{{Ardoise::find($item->ardoise_id)->utilisateur()->login}}</td><td>{{$item->prix}} €</td></tr>
+        <tr><td>{{Ardoise::find($item->ardoise_id)->utilisateur->login}}</td><td>{{$item->prix}} €</td></tr>
 				@endforeach
    	</tbody>
   </table>
