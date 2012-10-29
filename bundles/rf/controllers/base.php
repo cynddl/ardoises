@@ -140,4 +140,27 @@ class Rf_Base_Controller extends Base_Controller {
 		});
 		return Response::json(array('saved'=>true));
 	}
+	
+	
+	public function get_roles()
+	{
+		return View::make('rf::roles', array(
+			'roles' => Role::all(),
+			'permissions' => Permission::all()
+		));
+	}
+	
+	public function post_roles()
+	{
+		DB::transaction(function(){
+			if(Input::get('nom')){
+				$role = new Role;
+				$role->nom = Input::get('nom');
+				$role->save();
+				$role->permissions()->sync(Input::get('permissions'));
+				$role->save();
+			}
+		});
+		return $this->get_roles();
+	}
 }

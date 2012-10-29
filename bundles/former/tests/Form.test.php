@@ -5,16 +5,24 @@ class FormTest extends FormerTests
 {
   // Helpers ------------------------------------------------------- /
 
-  public function createMatcher($type = 'horizontal', $forFiles = false, $action = '#')
+  public function createMatcher($class = 'horizontal', $forFiles = false, $action = '#')
   {
     $forFiles = $forFiles ? 'enctype="multipart/form-data" ' : null;
+    if(in_array($class, array('horizontal', 'inline', 'vertical', 'search'))) $class = 'form-'.$class;
 
-    return '<form ' .$forFiles. 'class="form-' .$type. '" method="POST" action="' .$action. '" accept-charset="UTF-8">';
+    return '<form ' .$forFiles. 'class="' .$class. '" method="POST" action="' .$action. '" accept-charset="UTF-8">';
   }
 
   // Tests --------------------------------------------------------- /
 
   // Basic tests
+
+  public function testLabel()
+  {
+    $label = Former::label('foo');
+
+    $this->assertEquals('<label for="">Foo</label>', $label);
+  }
 
   public function testClose()
   {
@@ -25,7 +33,7 @@ class FormTest extends FormerTests
 
   public function testOpen()
   {
-    $open = Former::open('#');
+    $open = Former::open('#')->__toString();
     $matcher = $this->createMatcher();
 
     $this->assertEquals($matcher, $open);
@@ -33,7 +41,7 @@ class FormTest extends FormerTests
 
   public function testOpenCustom()
   {
-    $open = Former::open('#', 'GET', $this->testAttributes);
+    $open = Former::open('#', 'GET', $this->testAttributes)->__toString();
     $matcher = '<form class="foo form-horizontal" data-foo="bar" method="GET" action="#" accept-charset="UTF-8">';
 
     $this->assertEquals($matcher, $open);
@@ -43,7 +51,7 @@ class FormTest extends FormerTests
 
   public function testHorizontalOpen()
   {
-    $open = Former::horizontal_open('#');
+    $open = Former::horizontal_open('#')->__toString();
     $matcher = $this->createMatcher();
 
     $this->assertEquals($matcher, $open);
@@ -51,7 +59,7 @@ class FormTest extends FormerTests
 
   public function testVerticalOpen()
   {
-    $open = Former::vertical_open('#');
+    $open = Former::vertical_open('#')->__toString();
     $matcher = $this->createMatcher('vertical');
 
     $this->assertEquals($matcher, $open);
@@ -59,7 +67,7 @@ class FormTest extends FormerTests
 
   public function testSearchOpen()
   {
-    $open = Former::search_open('#');
+    $open = Former::search_open('#')->__toString();
     $matcher = $this->createMatcher('search');
 
     $this->assertEquals($matcher, $open);
@@ -67,7 +75,7 @@ class FormTest extends FormerTests
 
   public function testInlineOpen()
   {
-    $open = Former::inline_open('#');
+    $open = Former::inline_open('#')->__toString();
     $matcher = $this->createMatcher('inline');
 
     $this->assertEquals($matcher, $open);
@@ -75,7 +83,7 @@ class FormTest extends FormerTests
 
   public function testFilesOpen()
   {
-    $open = Former::open_for_files('#');
+    $open = Former::open_for_files('#')->__toString();
     $matcher = $this->createMatcher('horizontal', true);
 
     $this->assertEquals($matcher, $open);
@@ -85,7 +93,7 @@ class FormTest extends FormerTests
 
   public function testInlineFilesOpen()
   {
-    $open = Former::inline_open_for_files('#');
+    $open = Former::inline_open_for_files('#')->__toString();
     $matcher = $this->createMatcher('inline', true);
 
     $this->assertEquals($matcher, $open);
@@ -93,8 +101,28 @@ class FormTest extends FormerTests
 
   public function testSecureInlineFilesOpen()
   {
-    $open = Former::inline_secure_open_for_files('#');
+    $open = Former::inline_secure_open_for_files('#')->__toString();
     $matcher = $this->createMatcher('inline', true);
+
+    $this->assertEquals($matcher, $open);
+  }
+
+  public function testChainedMethods()
+  {
+    $open1 = Former::open('#')->addClass('foo')->__toString();
+    $open2 = Former::horizontal_open('#')->class('form-vertical bar')->__toString();
+    $matcher1 = $this->createMatcher('form-horizontal foo');
+    $matcher2 = $this->createMatcher('form-vertical bar');
+
+
+    $this->assertEquals($matcher1, $open1);
+    $this->assertEquals($matcher2, $open2);
+  }
+
+  public function testChainedFormParameters()
+  {
+    $open = Former::open()->method('GET')->id('form')->action('#')->addClass('foo')->__toString();
+    $matcher = '<form class="form-horizontal foo" id="form" method="GET" action="#" accept-charset="UTF-8">';
 
     $this->assertEquals($matcher, $open);
   }

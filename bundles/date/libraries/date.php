@@ -126,7 +126,7 @@ class Date
 		if (!$time) return false;
 		
 		// build period and length arrays
-		$periods = array('second', 'minute', 'hour', 'day', 'week', 'month', 'year', 'decade');
+		$periods = array('seconde', 'minute', 'heure', 'jour', 'semaine', 'mois', 'année', 'décade');
 		$lengths = array(60, 60, 24, 7, 4.35, 12, 10);
 		
 		// get difference
@@ -155,7 +155,7 @@ class Date
 		}
 		
 		// return
-		return number_format($difference).' '.$periods[$j].' '.(isset($negative) ? '' : 'ago');
+		return (isset($negative) ? '' : 'il y a ').number_format($difference).' '.$periods[$j].' ';
 	}
 	
 	public function until()

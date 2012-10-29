@@ -1,16 +1,10 @@
 @layout("rf::home")
 
 @section("rf_content")
-
-
 <ul class="nav nav-tabs">
 	@foreach($lieux as $l)
 	<li class="dropdown">
 		<a href="#tab-pane-{{$l->id}}" data-toggle="tab">{{$l->nom}}</a>
-    <!--<ul class="dropdown-menu">
-      <li><a href="#{{$l->id}}-stocks" data-toggle="tab">Gestion des stocks</a></li>
-      <li><a href="#{{$l->id}}-frigos" data-toggle="tab">Frigos</a></li>
-    </ul>-->
 	</li>
 	@endforeach
 </ul>
@@ -21,7 +15,7 @@
 		<p>Les vols ont été notés :
 			<ul>
 				@foreach($lieux as $l)
-					<li><span class="label">{{$l->nom}}</span> il y a {{$l->vols()->order_by('date', 'desc')->first()->temps_ecoule()->format('%d jour(s)')}}
+					<li><span class="label">{{$l->nom}}</span> {{$temps_ecoule[$l->id]}}
 						<p>{{Bootstrapper\Progress::warning_normal(100 * $vols_30d[$l->id] / ($vols_30d[$l->id]+$consos_30d[$l->id]+1))}}</p>
 					</li>
 				@endforeach

@@ -6,7 +6,7 @@
  */
 namespace Former;
 
-class Form
+class Form extends Traits\FormerObject
 {
   /**
    * The Form type
@@ -19,6 +19,30 @@ class Form
    * @var array
    */
   private $availableTypes = array('horizontal', 'vertical', 'inline', 'search');
+
+  /**
+   * The destination of the current form
+   * @var string
+   */
+  private $action;
+
+  /**
+   * The form method
+   * @var string
+   */
+  private $method;
+
+  /**
+   * Whether the form should be secured or not
+   * @var boolean
+   */
+  private $secure;
+
+  /**
+   * Whether the current form is opened or not
+   * @var boolean
+   */
+  private $opened = false;
 
   /**
    * Opens up magically a form
@@ -66,7 +90,12 @@ class Form
     }
 
     // Open the form
-    return \Form::open($action, $method, $attributes, $secure);
+    $this->action     = $action;
+    $this->method     = $method;
+    $this->attributes = $attributes;
+    $this->secure     = $secure;
+
+    return $this;
   }
 
   /**
@@ -77,5 +106,57 @@ class Form
   public function close()
   {
     return '</form>';
+  }
+
+
+  ////////////////////////////////////////////////////////////////////
+  /////////////////////////////// HELPERS ////////////////////////////
+  ////////////////////////////////////////////////////////////////////
+
+  public function isOpened()
+  {
+    return $this->opened;
+  }
+
+  ////////////////////////////////////////////////////////////////////
+  ////////////////////////// CHAINED METHODS /////////////////////////
+  ////////////////////////////////////////////////////////////////////
+
+  /**
+   * Change the form's action
+   *
+   * @param  string $action The new action
+   */
+  public function action($action)
+  {
+    $this->action = $action;
+  }
+
+  /**
+   * Change the form's method
+   *
+   * @param  string $method The method to use
+   */
+  public function method($method)
+  {
+    $this->method = $method;
+  }
+
+  /**
+   * Whether the form should be secure
+   *
+   * @param  boolean $secure Secure or not
+   */
+  public function secure(boolean $secure)
+  {
+    $this->secure = $secure;
+  }
+
+  public function __toString()
+  {
+    // Mark the form as opened
+    $this->opened = true;
+
+    return \Form::open($this->action, $this->method, $this->attributes, $this->secure);
   }
 }

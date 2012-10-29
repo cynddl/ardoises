@@ -23,6 +23,12 @@ Route::controller('rf::soirees');
 
 
 
+Route::any('(:bundle)/(roles|logs)', function ($action)
+{
+	return Controller::call("RF::base@{$action}");
+});
+
+
 Route::get('(:bundle)/login', function()
 {
     return View::make('rf::login');
@@ -40,11 +46,6 @@ Route::post('(:bundle)/login', function()
 	}
 	
 	return Redirect::to('rf/login');
-});
-
-Route::get('(:bundle)/logs', function()
-{
-    return View::make('rf::logs');
 });
 
 Route::get('(:bundle)/ardoises', function()
@@ -74,11 +75,13 @@ Route::get('(:bundle)/frigos', array('as' => 'frigos', function()
 		$vols_30d[$l->id] = Vol::where_lieu_id($l->id)
 			->where('date', '>', $date)
 			->sum('qte_volee');
+		$temps_ecoule[$l->id] = Date::forge($l->vols()->order_by('date', 'desc')->first()->date)->ago();
 	}
 	
 	return View::make('rf::frigos', array(
 		'lieux' => $lieux,
 		'vols_30d' => $vols_30d,
-		'consos_30d' => $consos_30d
+		'consos_30d' => $consos_30d,
+		'temps_ecoule' => $temps_ecoule
 	));
 }));

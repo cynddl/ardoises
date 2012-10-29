@@ -18,6 +18,7 @@ Enter Former, a powerful form builder with helpers for localization, validation,
     * [Form population](#form-populating)
     * [Datalists](#datalists)
     * [Live validation](#live-validation)
+    * [Files handling](#files-handling)
     * [Checkboxes and radios](#checkboxes-and-radios)
     * [Localization helpers](#localization-helpers)
     * [Notes on setting field values](#notes-on-setting-field-values)
@@ -33,11 +34,14 @@ Former aims to re-laravelize form creation by transforming each field into its o
 
 ```php
 Former::horizontal_open()
+  ->id('MyForm')
+  ->secure()
+  ->method('GET')
 
   Former::xlarge_text('name')
     ->class('myclass')
     ->value('Joseph')
-    ->require();
+    ->required();
 
   Former::textarea('comments')
     ->rows(10)->columns(20)
@@ -49,7 +53,7 @@ Former::close()
 While also being able to do – just like in the days of old :
 
 ```php
-Former::xlarge_text('name', null, 'Joseph', array('require' => true, 'class' => 'myclass'))
+Former::xlarge_text('name', null, 'Joseph', array('required' => true, 'class' => 'myclass'))
 
 Former::textarea('comments', null, null, array('rows' => 10, 'columns' => 20, 'autofocus' => true))
 ```
@@ -218,18 +222,18 @@ class Client extends Eloquent
 Former::select('clients')->fromQuery(Client::all());
 ```
 
-Is the same as doing this but you know, in less painful and DRYer. This will use each Task's default key, and output the Task's name as the option's label.
+Is the same as doing this but you know, in less painful and DRYer. This will use each Client's default key, and output the Client's name as the option's label.
 
 ```html
 <div class="control-group">
   <label for="foo" class="control-label">Foo</label>
   <div class="controls">
     <select id="foo" name="foo">
-      @foreach(Client::all() as $task)
-        @if(Input::get('foo', Input::old('foo')) == $task->code)
-          <option selected="selected" value="{{ $task->code }}">{{ $task->name }}</option>
+      @foreach(Client::all() as $client)
+        @if(Input::get('foo', Input::old('foo')) == $client->code)
+          <option selected="selected" value="{{ $client->code }}">{{ $client->name }}</option>
         @else
-          <option value="{{ $task->code }}">{{ $task->name }}</option>
+          <option value="{{ $client->code }}">{{ $client->name }}</option>
         @endif
       @endforeach
     </select>
@@ -328,6 +332,33 @@ You can also, mid-course, manually set the state of a control group — that's a
 ```php
 Former::text('name')->state('error')
 ```
+<a name='files-handling'></a>
+## Files handling
+
+In Former like in Laravel you can create a simple file field with `Former::file`. What's new, is you can also create a multiple files field by calling `Former::files` which which will generate `<input type="file" name="foo[]" multiple />`.
+
+One of the special method is the `->accept()` with which you can do the following :
+
+```php
+// Use a shortcut (image, video or audio)
+Former::files('avatar')->accept('image')
+
+// Use an extension which will be converted to MIME by Laravel
+Former::files('avatar')->accept('gif', 'jpg')
+
+// Or directly use a MIME
+Former::files('avatar')->accept('image/jpeg', 'image/png')
+```
+
+You can also set a maximum size easily by using either bits or bytes
+
+```php
+Former::file('foo')->max(2, 'MB')
+Former::file('foo')->max(400, 'Ko')
+Former::file('foo')->max(1, 'TB')
+```
+
+This will create an hidden `MAX_FILE_SIZE` field with the correct value in bytes.
 
 <a name='checkboxes-and-radios'></a>
 ## Checkboxes and Radios
@@ -360,6 +391,11 @@ Former::radios('radio')
 Former::inline_checkboxes('foo')->checkboxes('foo', 'bar')
 Former::stacked_radios('foo')->radios('foo', 'bar')
 
+// Set which checkables are checked or not in one move
+Former::checkboxes('level')
+  ->checkboxes(0, 1, 2)
+  ->check(array('level_0' => true, 'level_1' => false, 'level_2' => true))
+
 // Fine tune checkable elements
 Former::radios('radio')
   ->radios(array(
@@ -367,6 +403,9 @@ Former::radios('radio')
     'label' => array('name' => 'foo', 'value' => 'bar', 'data-foo' => 'bar'),
   ))
 ```
+
+**Important point :** Former gives you an option to force the pushing of checkboxes. What is that you mean ? That's when your checkboxes still pop up in your POST data even when they're unchecked. That sounds pretty normal but is actually the opposite of the weird-ass default behavior of forms. "IT'S UNCHECKED ? I HAVE NO RECOLLECTION WHATSOEVER OF THAT FIELD HAVING EVER EXISTED".
+You can change what value an unchecked checkbox possesses in the POST array via the `unchecked_value` option.
 
 When creating checkables via the checkboxes/radios() method, by default for each checkable name attribute it will use the original name you specified and append it a number (here in our exemple it would be `<input type="checkbox" name="checkme_2">`).
 It also repopulates it, meaning a checked input will stay checked on submit.
@@ -378,12 +417,14 @@ For those of you that work on multilingual projects, Former is also here to help
 
 ```php
 // This
+Former::label(__('validation.attributes.name'))
 Former::text('name', __('validation.attributes.name'))
 Former::text('name')->inlineHelp(__('help.name'))
 Former::checkbox('rules')->text(__('my.translation'))
 <legend>{{ __('validation.attributes.mylegend') }}</legend>
 
 // Is the same as this
+Former::label('name')
 Former::text('name')
 Former::text('name')->inlineHelp('help.name')
 Former::checkbox('rules')->text('my.translation')

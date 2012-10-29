@@ -1,35 +1,64 @@
-@layout("rf.home.twig")
+@layout("rf::home")
 
 @section("rf_content")
 <h2>Gestion des rôles</h2>
-<table class="table table-striped table-bordered dt-table">
+<blockquote>Chaque utilisateur avancé (RF, RK, membre BDE avec droits pour ajouter des soirées…) dispose d'un rôle, qui lui donne des permissions pour accéder à différents services. Les permissions sont fixées mais les rôles peuvent être édités, pour ajouter des utilisateurs spécifiques par exemple.</blockquote>
+<p><table class="table table-striped table-bordered"><!--- dt-table">-->
   <thead>
-    <tr>
-      <th rowspan=2>Utilisateur</th>
-      <th colspan=9>Droits</th>
-    </tr>
-    <tr>
-      <th>Créditer ardoise</th>
-      <th>Créer ardoise</th>
-      <th>Noter conso</th><th>Enlever conso</th>
-      <th>Noter soirée</th><th>Valider soirée</th>
-      <th>Recevoir commande</th>
-      <th>Editer rôle</th><th>Attribuer rôle</th>
-    </tr>
+		<tr>
+			<th rowspan="2">Permissions</th>
+			<th colspan="{{Role::count()}}">Roles</th>
+		</tr>
+		<tr>
+			@foreach($roles as $r)
+			@if($r->lieu)
+			<th>{{$r->nom}} <span class="label label-info">{{$r->lieu->nom}}</span></th>
+			@else
+			<th>{{$r->nom}}</th>
+			@endif
+			@endforeach
+		</tr>
   </thead>
   <tbody>
-    @for(item in roles)
-      <tr>
-        <td>{{item.utilisateur.login}}</td>
-        @for(role in item.roles_array)
-        	{@if(role == 1)
-        	<td>✔</td>
-        	@else
-        	<td>✘</td>
-        	@endif
-        @endfor
-      </tr>
-    @endfor
+		@foreach($permissions as $p)
+		<tr>
+			<th>{{$p->nom}}</th>
+			@foreach($roles as $r)
+			@if(DB::table('permission_role')->where_role_id($r->id)->where_permission_id($p->id)->count() > 0)
+			<td>&#x2713;</td>
+			@else
+			<td>&#x2717;</td>
+			@endif
+			@endforeach
+		</tr>
+		@endforeach
   </tbody>
 </table>
+</p>
+
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#ajouter-role" data-toggle="tab">Ajouter un rôle</a></li>
+  <li><a href="#attribuer-role" data-toggle="tab">Attribuer un rôle</a></li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active" id="ajouter-role">
+		{{Former::open()}}
+		{{Former::medium_text('nom')}}
+		<div class="control-group">
+			{{Form::label('permissions', 'Permissions', array('class'=>'control-label'))}}
+		@foreach($permissions as $p)
+		<div class="controls">
+		    <label class="checkbox">
+					{{Form::checkbox('permissions[]', $p->id) . $p->nom}}
+				</label>
+		</div>
+		@endforeach
+		</div>
+		{{Former::actions( Bootstrapper\Buttons::submit('Envoyer') )}}
+		{{Former::close()}}
+	</div>
+	<div class="tab-pane active" id="attribuer-role">
+	</div>
+</div>
+
 @endsection

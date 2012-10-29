@@ -56,7 +56,14 @@ class Former
     if (str_contains($method, 'open')) {
       static::$form = new Form;
 
-      return static::form()->open($method, $parameters);
+      static::form()->open($method, $parameters);
+
+      return new static;
+    }
+
+    // Avoid conflict with chained label method
+    if($method == 'label') {
+      return call_user_func_array('static::_label', $parameters);
     }
 
     // Checking for any supplementary classes
@@ -67,7 +74,8 @@ class Former
     static::$field = null;
 
     // Picking the right class
-    if (class_exists('\Former\Fields\\'.ucfirst($method))) {
+    $fieldspace = '\\' .__NAMESPACE__. '\\Fields\\';
+    if (class_exists($fieldspace.ucfirst($method))) {
       $callClass = ucfirst($method);
     } else {
       switch ($method) {
@@ -80,14 +88,22 @@ class Former
         case 'radios':
           $callClass = 'Radio';
           break;
+        case 'files':
+          $callClass = 'File';
+          break;
         default:
           $callClass = 'Input';
           break;
       }
     }
 
+    // Check for potential errors
+    if(!class_exists($fieldspace.$callClass)) {
+      throw new \Exception('The class "' .$fieldspace.$callClass. '" called by field "' .$method. '" doesn\'t exist');
+    }
+
     // Listing parameters
-    $class = '\Former\Fields\\'.$callClass;
+    $class = $fieldspace.$callClass;
     static::$field = new $class(
       $method,
       array_get($parameters, 0),
@@ -108,7 +124,7 @@ class Former
     $size = Framework::getFieldSizes($classes);
     if($size) static::$field->addClass($size);
 
-    return new Former;
+    return new static;
   }
 
   /**
@@ -120,9 +136,13 @@ class Former
    */
   public function __call($method, $parameters)
   {
-    $object = method_exists($this->control(), $method)
-      ? $this->control()
-      : static::$field;
+    if(!static::form()->isOpened() and static::$form) {
+      $object = static::$form;
+    } else {
+      $object = method_exists($this->control(), $method)
+        ? $this->control()
+        : static::$field;
+    }
 
     // Call the function on the corresponding class
     call_user_func_array(array($object, $method), $parameters);
@@ -148,6 +168,10 @@ class Former
    */
   public function __toString()
   {
+    if(static::$form and !static::$form->isOpened()) {
+      return static::form()->__toString();
+    }
+
     // Dry syntax (hidden fields, plain fields)
     if (static::$field->type == 'hidden' or
         static::form()->type == 'search' or
@@ -214,7 +238,7 @@ class Former
 
       // Transform the name into an array
       $value = static::$values;
-      $name = str_contains($name, '.') ? explode('.', $name) : (array) $name;
+      $name  = str_contains($name, '.') ? explode('.', $name) : (array) $name;
 
       // Dive into the model
       foreach($name as $k => $r) {
@@ -228,7 +252,7 @@ class Former
         }
 
         // Single model relation
-        if(isset($value->$r)) $value = $value->$r;
+        if(isset($value->$r) or method_exists($value, 'get_'.$r)) $value = $value->$r;
         else {
           $value = $fallback;
           break;
@@ -357,6 +381,21 @@ class Former
   }
 
   /**
+   * Creates a label tag
+   *
+   * @param  string $label      The label content
+   * @param  string $name       The field the label's for
+   * @param  array  $attributes The label's attributes
+   * @return string             A <label> tag
+   */
+  public static function _label($label, $name = null, $attributes = array())
+  {
+    $label = Helpers::translate($label);
+
+    return \Form::label($name, $label, $attributes);
+  }
+
+  /**
    * Creates a form legend
    *
    * @param  string $legend     The text
@@ -398,7 +437,9 @@ class Former
    */
   public static function getErrors($name = null)
   {
+    // Get name and translate array notation
     if(!$name) $name = static::$field->name;
+    $name = preg_replace('/\[([a-z]+)\]/', '.$1', $name);
 
     if (static::$errors) {
       return static::$errors->first($name);

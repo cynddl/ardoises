@@ -11,7 +11,12 @@ class Role extends CustomEloquent {
 
 	public function permissions()
 	{
-		return $this->has_many_and_belongs_to('Permission', 'permission_role')->get();
+		return $this->has_many_and_belongs_to('Permission', 'permission_role');
+	}
+	
+	public function lieu()
+	{
+		return $this->belongs_to('Lieu');
 	}
 
 }

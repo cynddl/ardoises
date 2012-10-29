@@ -9,5 +9,10 @@ class Permission extends CustomEloquent
 	{
 		return $this->has_many_and_belongs_to('Verify\Models\Role', 'permission_role')->get();
 	}
+	
+	public function __toString()
+	{
+		return $this->nom;
+	}
 
 }

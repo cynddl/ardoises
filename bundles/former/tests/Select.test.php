@@ -5,6 +5,11 @@ class SelectTest extends FormerTests
 {
   private $options = array('foo' => 'bar', 'kal' => 'ter');
 
+  public static function setUpBeforeClass()
+  {
+    Config::set('application.language', 'en');
+  }
+
   public function testSelect()
   {
     $select = Former::select('foo')->__toString();
@@ -27,6 +32,13 @@ class SelectTest extends FormerTests
     $matcher = $this->cg('<select id="foo" name="foo"><option value="foo">bar</option><option value="kal">ter</option></select>');
 
     $this->assertEquals($matcher, $select);
+  }
+
+  public function testGetSelectOptions()
+  {
+    $select = Former::select('foo')->options($this->options);
+
+    $this->assertEquals($select::field()->getOptions(), $this->options);
   }
 
   public function testSelectPlaceholder()
@@ -55,6 +67,18 @@ class SelectTest extends FormerTests
     $this->assertEquals($matcher, $select);
   }
 
+  public function testSelectLang()
+  {
+    $select = Former::select('foo')->options(Lang::line('pagination'), 'previous')->__toString();
+    $matcher = $this->cg(
+    '<select id="foo" name="foo">'.
+      '<option value="previous" selected="selected">&laquo; Previous</option>'.
+      '<option value="next">Next &raquo;</option>'.
+    '</select>');
+
+    $this->assertEquals($matcher, $select);
+  }
+
   public function testSelectEloquent()
   {
     for($i = 0; $i < 2; $i++) $eloquent[] = (object) array('id' => $i, 'foo' => 'bar');
@@ -78,6 +102,22 @@ class SelectTest extends FormerTests
     for($i = 0; $i < 2; $i++) $eloquent[] = (object) array('age' => $i, 'foo' => 'bar');
     $select = Former::select('foo')->fromQuery($eloquent, 'foo', 'id')->__toString();
     $matcher = $this->cg('<select id="foo" name="foo"><option value="bar">bar</option></select>');
+
+    $this->assertEquals($matcher, $select);
+  }
+
+  public function testSelectWithAString()
+  {
+    $select = Former::select('foo')->fromQuery('This is not an array', 'foo', 'id')->__toString();
+    $matcher = $this->cg('<select id="foo" name="foo"><option value="0">This is not an array</option></select>');
+
+    $this->assertEquals($matcher, $select);
+  }
+
+  public function testSelectWithAnInteger()
+  {
+    $select = Former::select('foo')->fromQuery(456, 'foo', 'id')->__toString();
+    $matcher = $this->cg('<select id="foo" name="foo"><option value="0">456</option></select>');
 
     $this->assertEquals($matcher, $select);
   }

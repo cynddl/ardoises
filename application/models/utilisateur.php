@@ -29,7 +29,7 @@ class Utilisateur extends CustomEloquent {
 		$perms = array();
 		foreach($this->roles() as $r)
 		{
-			foreach($r->permissions() as $p)
+			foreach($r->permissions as $p)
 			{
 				$perms[$p->nom] = true;
 			}

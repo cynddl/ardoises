@@ -74,14 +74,24 @@ abstract class Checkable extends Field
   /**
    * Check a specific item
    *
-   * @param  string $name The checkable to check
+   * @param  string $checked The checkable to check, or an array of checked items
    */
-  public function check($name = null)
+  public function check($checked = true)
   {
-    if(!$name) $name = $this->name;
+    // If we're setting all the checked items at once
+    if (is_array($checked)) {
+        return $this->checked = $checked;
+    }
 
-    if($this->isCheckbox()) $this->checked[] = $name;
-    else $this->checked = array($name);
+    // Checking an item in particular
+    if(is_string($checked) or is_int($checked)) {
+      return $this->checked[$checked] = true;
+    }
+
+    // Only setting a single item
+    $this->checked[$this->name] = (bool) $checked;
+
+    return (bool) $checked;
   }
 
   ////////////////////////////////////////////////////////////////////
@@ -105,18 +115,18 @@ abstract class Checkable extends Field
     foreach ($_items as $label => $name) {
 
       // Define a fallback name in case none is found
-      $fallbackName = $this->isCheckbox() ? $this->name.'_'.$count : $this->name;
+      $fallback = $this->isCheckbox() ? $this->name.'_'.$count : $this->name;
 
       // If we haven't any name defined for the checkable, try to compute some
       if (!is_string($label) and !is_array($name)) {
         $label = $name;
-        $name  = $fallbackName;
+        $name  = $fallback;
       }
 
       // If we gave custom information on the item, add them
       if (is_array($name)) {
         $attributes = $name;
-        $name = array_get($attributes, 'name', $fallbackName);
+        $name = array_get($attributes, 'name', $fallback);
         unset($attributes['name']);
       }
 
@@ -147,7 +157,7 @@ abstract class Checkable extends Field
     // Set default values
     if(!isset($attributes)) $attributes = array();
     if(isset($attributes['value'])) $value = $attributes['value'];
-    if(!isset($value)) $value = $fallbackValue;
+    if(!isset($value) or $value === Config::get('unchecked_value')) $value = $fallbackValue;
 
     // If inline items, add class
     $isInline = $this->inline ? ' inline' : null;
@@ -160,6 +170,11 @@ abstract class Checkable extends Field
 
     // Create field
     $field = call_user_func('\Form::'.$this->checkable, $name, $value, $this->isChecked($name, $value), $attributes);
+
+    // Add hidden checkbox if requested
+    if(Config::get('push_checkboxes')) {
+      $field = \Form::hidden($name, Config::get('unchecked_value')) . $field;
+    }
 
     // If no label to wrap, return plain checkable
     if(!$label) return $field;
@@ -177,8 +192,8 @@ abstract class Checkable extends Field
     // Multiple items
     if ($this->items) {
       foreach ($this->items as $key => $item) {
-        $fallbackValue = $this->isCheckbox() ? 1 : $key;
-        $html .= $this->createCheckable($item, $fallbackValue);
+        $value = $this->isCheckbox() ? 1 : $key;
+        $html .= $this->createCheckable($item, $value);
       }
 
       return $html;
@@ -209,18 +224,18 @@ abstract class Checkable extends Field
     // Or if it's a single radio, simply see if we called check
     if($this->isCheckbox() or
       !$this->isCheckbox() and !$this->items)
-        $checked = in_array($name, $this->checked);
+        $checked = array_get($this->checked, $name, false);
 
     // If there are multiple, search for the value
     // as the name are the same between radios
-    else $checked = in_array($value, $this->checked);
+    else $checked = array_get($this->checked, $value, false);
 
     // Check the values and POST array
     $post   = Former::getPost($name);
     $static = Former::getValue($name);
     $manual = $checked;
 
-    if(!is_null($post)) $isChecked = ($post == $value);
+    if(!is_null($post) and $post !== Config::get('unchecked_value')) $isChecked = ($post == $value);
     elseif(!is_null($static)) $isChecked = ($static == $value);
     else $isChecked = $checked;
 
