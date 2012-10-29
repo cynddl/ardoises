@@ -21,7 +21,9 @@
 		<p>Les vols ont été notés :
 			<ul>
 				@foreach($lieux as $l)
-					<li><span class="label">{{$l->nom}}</span> il y a {{$l->vols()->order_by('date', 'desc')->first()->temps_ecoule()->format('%d jour(s)')}}</li>
+					<li><span class="label">{{$l->nom}}</span> il y a {{$l->vols()->order_by('date', 'desc')->first()->temps_ecoule()->format('%d jour(s)')}}
+						<p>{{Bootstrapper\Progress::warning_normal(100 * $vols_30d[$l->id] / ($vols_30d[$l->id]+$consos_30d[$l->id]+1))}}</p>
+					</li>
 				@endforeach
 			</ul>
 		</p>

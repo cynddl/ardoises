@@ -18,6 +18,8 @@ return array(
 		'handles' => 'docs',
 	),
 	
+	'date' => array('auto' => true),
+	
 	'bob',
 	'authentic' => array('auto' => true),
 	

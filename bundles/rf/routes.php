@@ -64,7 +64,21 @@ Route::get('(:bundle)/forfaits', array('as' => 'forfaits', function()
 
 Route::get('(:bundle)/frigos', array('as' => 'frigos', function()
 {
-    return View::make('rf::frigos', array(
-			'lieux' => Lieu::get()
-			));
+	$date = Date::forge('now - 30 days')->format('datetime');
+	$lieux = Lieu::get();
+	
+	foreach ($lieux as $l) {
+		$consos_30d[$l->id] = Consommation::join('groupeV', 'consommation.groupeV_id', '=', 'groupeV.id')
+			->where('groupeV.lieu_id','=', $l->id)
+			->sum('uniteachetee');
+		$vols_30d[$l->id] = Vol::where_lieu_id($l->id)
+			->where('date', '>', $date)
+			->sum('qte_volee');
+	}
+	
+	return View::make('rf::frigos', array(
+		'lieux' => $lieux,
+		'vols_30d' => $vols_30d,
+		'consos_30d' => $consos_30d
+	));
 }));
