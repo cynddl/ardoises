@@ -45,7 +45,17 @@
 		{{Former::open()}}
 		{{Former::medium_text('nom')}}
 		<div class="control-group">
-			{{Form::label('permissions', 'Permissions', array('class'=>'control-label'))}}
+		{{Form::label('lieu_id', 'Lieu', array('class'=>'control-label'))}}
+		@foreach(Lieu::all() as $l)
+		<div class="controls">
+		    <label class="radio">
+					{{Form::radio('lieu_id', $l->id) . $l->nom}}
+				</label>
+		</div>
+		@endforeach
+		</div>
+		<div class="control-group">
+		{{Form::label('permissions', 'Permissions', array('class'=>'control-label'))}}
 		@foreach($permissions as $p)
 		<div class="controls">
 		    <label class="checkbox">

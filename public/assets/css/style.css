@@ -160,6 +160,10 @@ div.login-box .help-inline {
 
 /* Adapt Datatables to Twitter Bootstrap */
 
+.table thead th {
+	vertical-align: middle;
+}
+
 div.dataTables_length label {
 	float: left;
 	text-align: left;

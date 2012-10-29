@@ -156,8 +156,11 @@ class Rf_Base_Controller extends Base_Controller {
 			if(Input::get('nom')){
 				$role = new Role;
 				$role->nom = Input::get('nom');
+				if(Input::get('lieu_id'))
+					$role->set_attribute('lieu_id', Input::get('lieu_id'));
 				$role->save();
-				$role->permissions()->sync(Input::get('permissions'));
+				if(Input::get('permissions'))
+					$role->permissions()->sync(Input::get('permissions'));
 				$role->save();
 			}
 		});
