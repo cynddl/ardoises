@@ -7,7 +7,7 @@
   <thead>
 		<tr>
 			<th rowspan="2">Permissions</th>
-			<th colspan="{{Role::count()}}">Roles</th>
+			<th colspan="{{Role::count()}}">Rôles</th>
 		</tr>
 		<tr>
 			@foreach($roles as $r)
@@ -27,7 +27,7 @@
 			@if(DB::table('permission_role')->where_role_id($r->id)->where_permission_id($p->id)->count() > 0)
 			<td>&#x2713;</td>
 			@else
-			<td>&#x2717;</td>
+			<td></td>
 			@endif
 			@endforeach
 		</tr>
