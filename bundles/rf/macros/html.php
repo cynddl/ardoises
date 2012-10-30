@@ -57,5 +57,5 @@ HTML::macro('menu', function()
 			$html .= '<li class="nav-header"><i class="icon-' . $m['icon'] . '"></i> '.$m['label'].'</li>';
 		}
 	}
-	return '<ul class="nav nav-list">' . $html . '</ul>';
+	return '<ul class="nav nav-list well">' . $html . '</ul>';
 });

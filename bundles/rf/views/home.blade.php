@@ -1,8 +1,8 @@
 @layout($layout)
 
 @section("content")
-<div class="row first">
-	<div class="span2 offset1 well">
+<div class="row row-fluid first">
+	<div class="span3 offset1">
 		{{HTML::menu()}}
 	</div>
 	<div class="span8">

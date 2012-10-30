@@ -5,7 +5,6 @@ Route::filter('pattern: rf/*', 'auth');
 Route::controller(Controller::detect());
 Route::get ('(:bundle)', 'Rf::base@index');
 Route::any ('(:bundle)/ardoises/edit/(:any)', 'Rf::base@edit');
-//Route::post('(:bundle)/ardoises/edit/(:any)', 'Rf::base@edit');
 Route::post('(:bundle)/ardoises/credit/(:any)', 'Rf::base@credit');
 
 Route::any('(:bundle)/ardoises/(add|transfert)', function ($action)
