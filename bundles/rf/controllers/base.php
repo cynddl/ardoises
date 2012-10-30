@@ -146,14 +146,17 @@ class Rf_Base_Controller extends Base_Controller {
 	{
 		return View::make('rf::roles', array(
 			'roles' => Role::all(),
-			'permissions' => Permission::all()
+			'lieux' => Lieu::all(),
+			'permissions' => Permission::get(array('id', 'nom')),
+			'utilisateurs' => Utilisateur::with('role')->get(array('id', 'login'))
 		));
 	}
 	
 	public function post_roles()
 	{
 		DB::transaction(function(){
-			if(Input::get('nom')){
+			if(Input::get('nom')) // On ajoute un rôle
+			{
 				$role = new Role;
 				$role->nom = Input::get('nom');
 				if(Input::get('lieu_id'))
@@ -162,6 +165,12 @@ class Rf_Base_Controller extends Base_Controller {
 				if(Input::get('permissions'))
 					$role->permissions()->sync(Input::get('permissions'));
 				$role->save();
+			}
+			else if (Input::get('utilisateur')) // On attribue un rôle
+			{
+				$utilisateur = Utilisateur::where_login(Input::get('utilisateur'))->first();
+				$role = Role::find(Input::get('role'));
+				$utilisateur->roles()->attach($role, array('echeance' => Input::get('echeance')));
 			}
 		});
 		return $this->get_roles();

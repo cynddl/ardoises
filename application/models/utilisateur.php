@@ -21,13 +21,13 @@ class Utilisateur extends CustomEloquent {
 
 	public function roles()
 	{
-		return $this->has_many_and_belongs_to('Role', 'utilisateur_role')->with('id')->get();
+		return $this->has_many_and_belongs_to('Role', 'utilisateur_role')->with('id');
 	}
 	
 	public function permissions()
 	{
 		$perms = array();
-		foreach($this->roles() as $r)
+		foreach($this->roles()->get() as $r)
 		{
 			foreach($r->permissions as $p)
 			{
