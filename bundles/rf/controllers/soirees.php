@@ -51,12 +51,14 @@ class Rf_Soirees_Controller extends Base_Controller {
 			foreach($args as $key => $value)
 			{
 				if ($u = Utilisateur::where_login($key)->first())
-				{
 					$soiree->ardoises()->attach($u->ardoise, array('prix'=>$value));
-				}
 			}
-			Session::flash('message_status', 'success');
-			Session::flash('message', 'Soirée ajoutée !');			
+			
+			LogDB::add_flash('success', array(
+				'description' => "La soirée « $soiree->nom » a été ajouté.",
+				'nomtable' => 'soiree',
+				'idtable' => $soiree->id
+			));
 		});
 		return Redirect::to('rf/soirees/validate');
 	}
@@ -84,8 +86,11 @@ class Rf_Soirees_Controller extends Base_Controller {
 			}
 			$soiree->valide = true;
 			$soiree->save();
-			Session::flash('message_status', 'success');
-			Session::flash('message', 'Soirée validé.');
+			LogDB::add_flash('success', array(
+				'description' => "La soirée « $soiree->nom » a été validée.",
+				'nomtable' => 'soiree',
+				'idtable' => $soiree->id
+			));
 		});
 		return Redirect::to('rf/soirees/validate');
 	}
@@ -96,9 +101,13 @@ class Rf_Soirees_Controller extends Base_Controller {
 	{
 		try {
 			$soiree = Soiree::find($id);
+			$soiree_nom = $soiree->nom; $soiree_id = $soiree->id;
 			$soiree->delete();
-			Session::flash('message_status', 'success');
-			Session::flash('message', 'Soirée supprimée !');
+			LogDB::add_flash('success', array(
+				'description' => "La soirée « $soiree->nom » a été supprimée.",
+				'nomtable' => 'soiree',
+				'idtable' => $soiree_id
+			));	
 			return Redirect::to('rf/soirees/validate');
 		} catch (\Exception $e) {
 			Session::flash('message_status', 'warning');

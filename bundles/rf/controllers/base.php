@@ -25,6 +25,13 @@ class Rf_Base_Controller extends Base_Controller {
 		$user->fill($inputs);
 		$user->save();
 		
+		$login = $user->login;
+		LogDB::add_flash('success', array(
+			'description' => "Les préférences de l'utilisateur « $login » ont été modifiées.",
+			'nomtable' => 'utilisateur',
+			'idtable' => $user->id
+		));
+		
 		return View::make('rf::ardoises.one', array(
 			'user' => Utilisateur::where('login', '=', $login)->first(),
 		));
@@ -35,6 +42,7 @@ class Rf_Base_Controller extends Base_Controller {
 	{
 		$user = Utilisateur::where('login', '=', $login)->first();
 		$ardoise = $user->ardoise;
+		
 		DB::transaction(function () use ($ardoise) {
 			$credit = Credit::create(array(
 				'ardoise_id' => $ardoise->id,
@@ -45,43 +53,68 @@ class Rf_Base_Controller extends Base_Controller {
 			$ardoise->montant = $ardoise->montant - $credit->credit;
 			$ardoise->save();
 		});
+		
+		$qte = Input::get('credit');
+		LogDB::add_flash('success', array(
+			'description' => "L'ardoise de « $login » a été créditée de $qte €.",
+			'nomtable' => 'ardoise',
+			'idtable' => $ardoise->id
+		));
+		
 		return Redirect::to_action('rf::ardoises@edit.'.$login);
 	}
 	
-	/* Formulaire d'ajout d'une ardoise */
+	
+	//
+	// Création d'utilisateur et d'ardoise
+	//
+	
 	public function get_add()
 	{
 		return View::make('rf::ardoises.add');
 	}
 	
-	/* Ajout d'une ardoise */
 	public function post_add()
 	{
 		$rules = array(
 			'mail' => 'required|email',
 			'prenom' => 'required',
 			'nom' => 'required',
+			'mdp' => 'required',
 			'login' => 'required|unique:utilisateur,login',
 			'promo' => 'required',
 			'departement_id' => 'required'
 		);
 		$validation = Validator::make(Input::all(), $rules);
-		
 		if ($validation->fails())
-		{			
-			Former::withErrors($validation, $populate = true);
-			return View::make('rf::ardoises.add');
-		}
-		$ardoise = Ardoise::create(array('montant'=>'0'));
-		$ardoise->save();
-		$user_vars = Input::all();
-		$user_vars['ardoise_id'] = $ardoise->id;
-		$user = Utilisateur::create($user_vars);
+			return Redirect::to('rf/ardoises/add/')->with_errors($validation)->with_input();
+		
+		DB::transaction(function(){
+			$ardoise = Ardoise::create(array('montant'=>'0'));
+			$ardoise->save();
+			$user_vars = Input::all();
+			$user_vars['ardoise_id'] = $ardoise->id;
+			$user = Utilisateur::create($user_vars);
+			$user->mdp = md5(Input::get('mdp'));
+			$user->save();
+		
+			$login = Input::get('login');
+			LogDB::add_flash('success', array(
+				'description' => "Le compte « $login » a été créé.",
+				'nomtable' => 'utilisateur',
+				'idtable' => $user->id
+			));
+				
+			return Redirect::to('rf/ardoises/credit/' . $user->id);
+		});
+		
 		return Redirect::to('rf/ardoises');
 	}
 	
 	
-	/**** Transfert entre ardoises ****/
+	//
+	// Transfert entre ardoises
+	//
 	
 	public function get_transfert ()
 	{
@@ -108,9 +141,12 @@ class Rf_Base_Controller extends Base_Controller {
 			$debiteur_a->save();
 			$crediteur_a->montant = $crediteur_a->montant - $montant; // il gagne l'argent
 			$crediteur_a->save();
-			Session::flash('message_status', 'success');
-			Session::flash('message',
-				'Transfert effectuée : '.$debiteur->login.' ('.$debiteur_a->montant.') > '.$crediteur->login.' ('.$crediteur_a->montant.').' );
+			
+			LogDB::add_flash('success', array(
+				'description' => "Transfert de $montant € effectué de « " . $debiteur->login . " » vers « " . $crediteur->login . " ».",
+				'nomtable' => 'transfert',
+				'idtable' => $t->id
+			));
 		});
 		return View::make('rf::ardoises.transfert');
 	}
@@ -165,12 +201,23 @@ class Rf_Base_Controller extends Base_Controller {
 				if(Input::get('permissions'))
 					$role->permissions()->sync(Input::get('permissions'));
 				$role->save();
+				
+				LogDB::add_flash('success', array(
+					'description' => "Le rôle « $role->nom » a été ajouté.",
+					'nomtable' => 'role',
+					'idtable' => $role->id
+				));
 			}
 			else if (Input::get('utilisateur')) // On attribue un rôle
 			{
 				$utilisateur = Utilisateur::where_login(Input::get('utilisateur'))->first();
 				$role = Role::find(Input::get('role'));
 				$utilisateur->roles()->attach($role, array('echeance' => Input::get('echeance')));
+				LogDB::add_flash('success', array(
+					'description' => "Le rôle « $role->nom » a été attribué à « $utilisateur->login ».",
+					'nomtable' => 'role',
+					'idtable' => $role->id
+				));
 			}
 		});
 		return $this->get_roles();
@@ -191,8 +238,11 @@ class Rf_Base_Controller extends Base_Controller {
 			$groupe = Groupe::create(Input::all());
 			$groupe->save();
 			$groupe_nom = $groupe->nom;
-			Session::flash('message_status', 'success');
-			Session::flash('message', "Le groupe « $groupe_nom » a été ajouté.");
+			LogDB::add_flash('success', array(
+				'description' => "Le groupe « $groupe_nom » a été ajouté.",
+				'nomtable' => 'groupe',
+				'idtable' => $groupe->id
+			));
 		});
 	
 		return Redirect::back();
@@ -212,14 +262,22 @@ class Rf_Base_Controller extends Base_Controller {
 		DB::transaction(function(){
 			$produit = Produit::create(Input::all());
 			$produit->save();
-			
+	
 			$produit->groupe()->attach(Input::get('groupe_id'));
 			
 			$produit_nom = $produit->nom;
-			Session::flash('message_status', 'success');
-			Session::flash('message', "Le produit « $produit_nom » a été ajouté.");
+			LogDB::add_flash('success', array(
+				'description' => "Le produit « $produit_nom » a été ajouté.",
+				'nomtable' => 'produit',
+				'idtable' => $produit->id
+			));
 		});
 	
 		return Redirect::back();
+	}
+	
+	public function get_logs()
+	{
+		return View::make('rf::logs');
 	}
 }

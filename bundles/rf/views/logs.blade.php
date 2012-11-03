@@ -12,7 +12,7 @@
     </tr>
   </thead>
   <tbody>
-    @foreach(LogDB::get() as $item)
+    @foreach(LogDB::order_by('date', 'DESC')->get() as $item)
       <tr>
         <td>{{$item->utilisateur->login}}</td>
         <td>{{$item->date}}</td>
