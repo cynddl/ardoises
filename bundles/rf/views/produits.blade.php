@@ -35,7 +35,7 @@
 		{{Former::open('rf/produits/add/g/')}}
 		  <fieldset>
 				{{Former::xlarge_text('nom', 'Nom')}}
-		 		{{Former::small_text('nomredit', 'Nom réduit')}}
+		 		{{Former::small_text('nomreduit', 'Nom réduit')}}
 				{{Former::xlarge_text('commentaire', 'Commentaire')}}
 		  </fieldset>
 			<div class="form-actions">
@@ -47,8 +47,8 @@
 		{{Former::open('rf/produits/add/p/')}}
 		  <fieldset>
 		 		{{Former::xlarge_text('nom', 'Nom')}}
-		 		{{Former::small_text('nomredit', 'Nom réduit')}}
-				{{Former::select('groupe', 'Groupe')->fromQuery(Groupe::all(), 'nom', 'id')}}
+				{{Former::xlarge_text('commentaire', 'Commentaire')}}
+				{{Former::select('groupe_id', 'Groupe')->fromQuery(Groupe::all(), 'nom', 'id')}}
 		  </fieldset>
 			<div class="form-actions">
 		    <button type="submit" class="btn btn-primary">Ajouter le produit</button>

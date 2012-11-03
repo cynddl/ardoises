@@ -2,6 +2,8 @@
 
 class Groupe extends CustomEloquent {
 
+	public static $accessible = array('nom', 'nomreduit', 'commentaire');
+
 	public function produits()
 	{
 		return $this->has_many_and_belongs_to('Produit', 'produit_groupe');

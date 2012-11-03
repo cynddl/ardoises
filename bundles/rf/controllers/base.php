@@ -175,4 +175,51 @@ class Rf_Base_Controller extends Base_Controller {
 		});
 		return $this->get_roles();
 	}
+	
+	public function post_add_groupe()
+	{
+		$rules = array(
+			'nom' => 'required|unique:groupe,nom',
+			'nomreduit' => 'required|unique:groupe,nomreduit'
+		);
+
+		$validation = Validator::make(Input::all(), $rules);
+		if ($validation->fails())
+		    return Redirect::to('rf/produits/')->with_errors($validation)->with_input();
+		
+		DB::transaction(function(){
+			$groupe = Groupe::create(Input::all());
+			$groupe->save();
+			$groupe_nom = $groupe->nom;
+			Session::flash('message_status', 'success');
+			Session::flash('message', "Le groupe « $groupe_nom » a été ajouté.");
+		});
+	
+		return Redirect::back();
+	}
+	
+	public function post_add_produit()
+	{
+		$rules = array(
+			'nom' => 'required|unique:produit,nom',
+			'groupe_id' => 'required'
+		);
+
+		$validation = Validator::make(Input::all(), $rules);
+		if ($validation->fails())
+		    return Redirect::to('rf/produits/#ajouter-produit')->with_errors($validation)->with_input();
+		
+		DB::transaction(function(){
+			$produit = Produit::create(Input::all());
+			$produit->save();
+			
+			$produit->groupe()->attach(Input::get('groupe_id'));
+			
+			$produit_nom = $produit->nom;
+			Session::flash('message_status', 'success');
+			Session::flash('message', "Le produit « $produit_nom » a été ajouté.");
+		});
+	
+		return Redirect::back();
+	}
 }

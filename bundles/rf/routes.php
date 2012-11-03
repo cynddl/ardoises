@@ -52,10 +52,17 @@ Route::get('(:bundle)/ardoises', function()
     return View::make('rf::ardoises.home');
 });
 
+//
+// Gestion des produits
+//
+
 Route::get('(:bundle)/produits', array('as' => 'produits', function()
 {
     return View::make('rf::produits');
 }));
+
+Route::post('(:bundle)/produits/add/g', 'Rf::base@add_groupe');
+Route::post('(:bundle)/produits/add/p', 'Rf::base@add_produit');
 
 Route::get('(:bundle)/forfaits', array('as' => 'forfaits', function()
 {

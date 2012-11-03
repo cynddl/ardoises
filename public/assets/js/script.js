@@ -116,5 +116,10 @@ $(document).ready(function(){
 			}
 		});
 		return false;
-	})
+	});
+	
+	$(function () {
+	   var activeTab = $('[href=' + location.hash + ']');
+	   activeTab && activeTab.tab('show');
+	});
 });
