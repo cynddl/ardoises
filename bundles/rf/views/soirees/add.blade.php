@@ -13,7 +13,7 @@
     <div class="form-actions">
         <input type="text" id="user_name" placeholder="Ardoise à débiter" class="typeahead">
         <div class="input-append">
-          <input class="span2" id="montant" type="number" step="any" value="1.00"><span class="add-on">€</span>
+          <input class="input-small" id="montant" type="number" step="any" value="1.00"><span class="add-on">€</span>
         </div>
         <button class="btn" id="add_row" type="button">Ajouter</button>
     </div>
