@@ -11,7 +11,7 @@ module.exports = function(grunt) {
 		
 		min: {
 			dist: {
-				src: ['js/jquery-1.8.1.js', 'js/jquery.dataTables.min.js', 'js/bootstrap.js', 'js/DT_bootstrap.js', 'js/patternizer.min.js', 'js/script.js'],
+				src: ['js/jquery-1.8.1.js', 'js/jquery.dataTables.min.js', 'js/bootstrap.js', 'js/DT_bootstrap.js', 'js/patternizer.min.js', 'js/uiji.js', 'js/script.js'],
 				dest: 'js/main.min.js'
 			}
 		},
