@@ -81,7 +81,9 @@ Route::get('(:bundle)/frigos', array('as' => 'frigos', function()
 		$vols_30d[$l->id] = Vol::where_lieu_id($l->id)
 			->where('date', '>', $date)
 			->sum('qte_volee');
-		$temps_ecoule[$l->id] = Date::forge($l->vols()->order_by('date', 'desc')->first()->date)->ago();
+		
+		if($l->vols()->count() > 0)
+			$temps_ecoule[$l->id] = Date::forge($l->vols()->order_by('date', 'desc')->first()->date)->ago();
 	}
 	
 	return View::make('rf::frigos', array(

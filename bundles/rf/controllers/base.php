@@ -154,27 +154,28 @@ class Rf_Base_Controller extends Base_Controller {
 	
 
 	public function post_add_vol()
-	{
-		$produit_nom = Input::get('produit_nom');
-		$qte_volee = Input::get('qte_volee');
+	{		
+		$vols_groupe = array();
 		$lieu_id = Input::get('lieu_id');
 		
-		DB::transaction(function() use ($produit_nom, $qte_volee, $lieu_id) {
-			$produit = Produit::where_nom($produit_nom)->first();
-			$groupe = $produit->groupe();
-
-			$vol = Vol::create(array(
-				'produit_id' => $produit->id,
-				'qte_volee' => $qte_volee,
-				'lieu_id' => $lieu_id
-			));
-			$vol->save();
-		
-			$sg = Stockgroupe::where_lieu_id($lieu_id)->where_groupe_id($groupe->id)->first();
-			$sg->qte_frigo = $sg->qte_frigo - $qte_volee;
-			$sg->save();
-		});
-		return Response::json(array('saved'=>true));
+		foreach(Input::get('vols') as $nom => $qte)
+		{
+			$produit = Produit::where_nom($nom)->first();
+			$groupe_id = $produit->groupe()->first()->id;
+			$vols_groupe[$groupe_id] = isset($vols_groupe[$groupe_id]) ? ($vols_groupe[$groupe_id] + (int) $qte) : $qte;
+		}
+		foreach($vols_groupe as $groupe_id => $qte)
+		{
+			$stock = Stockgroupe::where_lieu_id($lieu_id)->where_groupe_id($groupe_id)->first();
+			if($qte != $stock->qte_frigo)
+			{
+				$vol = Vol::create(array('groupe_id'=>$groupe_id, 'qte_volee'=>$qte-$stock->qte_frigo, 'lieu_id'=>$lieu_id));
+				$vol->save();
+				$stock->qte_frigo = $qte;
+				$stock->save();
+			}
+		}
+		return Redirect::to('rf/frigos');
 	}
 	
 	

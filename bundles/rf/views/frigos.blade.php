@@ -15,9 +15,11 @@
 		<p>Les vols ont été notés :
 			<ul>
 				@foreach($lieux as $l)
-					<li><span class="label">{{$l->nom}}</span> {{$temps_ecoule[$l->id]}}
+				@if(isset($temps_ecoule[$l->id]))
+					<li><span class="label">{{$l->nom}}</span> il y a {{$temps_ecoule[$l->id]}}
 						<p>{{Bootstrapper\Progress::warning_normal(100 * $vols_30d[$l->id] / ($vols_30d[$l->id]+$consos_30d[$l->id]+1))}}</p>
 					</li>
+				@endif
 				@endforeach
 			</ul>
 		</p>
@@ -58,7 +60,9 @@
     <div id="{{$l->id}}-frigos" class="accordion-body collapse">
       <div class="accordion-inner">
 				<p><a href="#modal-vols-{{$l->id}}" role="button" class="btn btn-warning" data-toggle="modal">Noter les vols</a>
-					{{Vol::order_by('date', 'desc')->where_lieu_id($l->id)->first()->temps_ecoule()->format(' (%d jours écoulés)')}}
+					@if(isset($temps_ecoule[$l->id]))
+						il y a {{$temps_ecoule[$l->id]}}
+					@endif
 				</p>
 				<div class="modal modal-vols" id="modal-vols-{{$l->id}}" tabindex="-1" role="dialog" style="display:none;" aria-labelledby="modalLabel{{$l->id}}" aria-hidden="true">
 				  <div class="modal-header">
@@ -66,21 +70,19 @@
 				    <h3 id="modalLabel{{$l->id}}">Gestion des vols ({{$l->nom}})</h3>
 				  </div>
 				  <div class="modal-body">
-					{{Former::inline_open()}}
+						{{Former::inline_open()}}
 							{{Former::select('produit_nom')->fromQuery(Produit::all(), 'nom', 'nom')}}
-					    <!--<input name="produit_nom" type="text" class="span3" placeholder="Produit" style="margin: 0 auto;" data-provide="typeahead" data-items="4" data-source='["Alabama","Alaska"]'>-->
 						  <input name="qte_volee" type="number" class="input-small" placeholder="Quantité">
 							<input type="hidden" name="lieu_id" value="{{$l->id}}">
 						  <button class="btn btn-primary">Ajouter</button>
 						{{Former::close()}}
-						<table id="responseTable">
-							<tbody>
-							</tbody>
-						</table>
-				  </div>
-				  <div class="modal-footer">
-				    <button class="btn" data-dismiss="modal" aria-hidden="true">Fermer</button>
-				    <button class="btn btn-primary">Noter les vols</button>
+						{{Former::open('rf/vols/add')}}
+						<input type="hidden" name="lieu_id" value="{{$l->id}}">
+					  <div class="modal-footer">
+					    <button class="btn" data-dismiss="modal" aria-hidden="true">Fermer</button>
+					    <button class="btn btn-primary">Noter les vols</button>
+					  </div>
+						{{Former::close()}}
 				  </div>
 				</div>
 				<table class="table table-striped table-bordered">
