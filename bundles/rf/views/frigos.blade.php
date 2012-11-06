@@ -17,7 +17,11 @@
 				@foreach($lieux as $l)
 				@if(isset($temps_ecoule[$l->id]))
 					<li><span class="label">{{$l->nom}}</span> il y a {{$temps_ecoule[$l->id]}}
-						<p>{{Bootstrapper\Progress::warning_normal(100 * $vols_30d[$l->id] / ($vols_30d[$l->id]+$consos_30d[$l->id]+1))}}</p>
+						@if($vols_30d[$l->id] <= 0 )
+						<p>{{Bootstrapper\Progress::warning_normal(0)}}</p>
+						@else
+						<p>{{Bootstrapper\Progress::warning_normal(100 * $vols_30d[$l->id] / ($vols_30d[$l->id]+$consos_30d[$l->id]))}}</p>
+						@endif
 					</li>
 				@endif
 				@endforeach
