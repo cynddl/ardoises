@@ -73,7 +73,7 @@
 				<div class="modal modal-ajout" id="modal-ajout-{{$l->id}}" tabindex="-1" role="dialog" style="display:none;" aria-labelledby="modalAjoutLabel{{$l->id}}" aria-hidden="true">
 				  <div class="modal-header">
 				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				    <h3 id="modalAjoutLabel{{$l->id}}">Remplir les  ({{$l->nom}})</h3>
+				    <h3 id="modalAjoutLabel{{$l->id}}">Remplir les frigos ({{$l->nom}})</h3>
 				  </div>
 				  <div class="modal-body">
 						{{Former::inline_open()}}

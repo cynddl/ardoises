@@ -210,6 +210,13 @@ class Rf_Base_Controller extends Base_Controller {
 				$stock->qte_frigo = $stock->qte_frigo + $qte;
 				$stock->save();
 			}
+			
+			$lieu_nom = Lieu::find($lieu_id)->nom;
+			
+			LogDB::add_flash('success', array(
+				'description' => "Frigos remplis ($lieu_nom)",
+				'nomtable' => 'stockproduit',
+			));
 		});
 		return Redirect::to('rf/frigos');
 	}
