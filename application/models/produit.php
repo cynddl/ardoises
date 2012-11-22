@@ -8,5 +8,10 @@ class Produit extends CustomEloquent {
 	{
 		return $this->has_many_and_belongs_to('Groupe', 'produit_groupe');
 	}
+	
+	public function stockproduit()
+	{
+		return $this->has_one('stockproduit');
+	}
 
 }

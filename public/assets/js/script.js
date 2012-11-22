@@ -103,18 +103,15 @@ $(document).ready(function(){
 		qte_volee = $(this).find('input[name=qte_volee]')[0].value;
 		$(form).next().prepend('<div class="control-group"><label for="vols['+produit_nom+']" class="control-label">'+produit_nom+'</label><div class="controls"><input class="input-medium" value="'+parseInt(qte_volee)+'" type="number" name="vols['+produit_nom+']"></div></div>');
 	  e.preventDefault();
-		/*$.ajax({
-			type: "post",
-			url: "../rf/vols/add/" ,
-			datatype: "json",
-			data: $(this).serialize(),
-			error: function(request,error){
-				console.log(error);
-			},
-			success: function(request) {
-				$($form).next('#responseTable').find('tbody:last').append('<tr><td><span class="label label-success">&#x2714;</span></td><td>'+ qte_volee + ' '+ produit_nom +'</td></tr>');
-			}
-		});*/
+		return false;
+	});
+	
+	$('.modal-ajout form').submit(function(e) {
+		form = $(this);
+		produit_nom = $(this).find('select')[0].value;
+		qte_volee = $(this).find('input[name=qte_volee]')[0].value;
+		$(form).next().prepend('<div class="control-group"><label for="ajout['+produit_nom+']" class="control-label">'+produit_nom+'</label><div class="controls"><input class="input-medium" value="'+parseInt(qte_volee)+'" type="number" name="ajout['+produit_nom+']"></div></div>');
+	  e.preventDefault();
 		return false;
 	});
 	

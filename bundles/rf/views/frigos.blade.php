@@ -63,11 +63,34 @@
     </div>
     <div id="{{$l->id}}-frigos" class="accordion-body collapse">
       <div class="accordion-inner">
-				<p><a href="#modal-vols-{{$l->id}}" role="button" class="btn btn-warning" data-toggle="modal">Noter les vols</a>
+				<p>
+					<a href="#modal-ajout-{{$l->id}}" role="button" class="btn btn-primary" data-toggle="modal">Ajouter aux frigos</a>
+					<a href="#modal-vols-{{$l->id}}" role="button" class="btn btn-warning" data-toggle="modal">Noter les vols</a>
 					@if(isset($temps_ecoule[$l->id]))
 						il y a {{$temps_ecoule[$l->id]}}
 					@endif
 				</p>
+				<div class="modal modal-ajout" id="modal-ajout-{{$l->id}}" tabindex="-1" role="dialog" style="display:none;" aria-labelledby="modalAjoutLabel{{$l->id}}" aria-hidden="true">
+				  <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				    <h3 id="modalAjoutLabel{{$l->id}}">Remplir les  ({{$l->nom}})</h3>
+				  </div>
+				  <div class="modal-body">
+						{{Former::inline_open()}}
+							{{Former::select('produit_nom')->fromQuery(Produit::all(), 'nom', 'nom')}}
+						  <input name="qte_volee" type="number" class="input-small" placeholder="Quantité">
+							<input type="hidden" name="lieu_id" value="{{$l->id}}">
+						  <button class="btn btn-primary">Ajouter</button>
+						{{Former::close()}}
+						{{Former::open('rf/frigos/add')}}
+						<input type="hidden" name="lieu_id" value="{{$l->id}}">
+					  <div class="modal-footer">
+					    <button class="btn" data-dismiss="modal" aria-hidden="true">Fermer</button>
+					    <button class="btn btn-primary">Remplir les frigos</button>
+					  </div>
+						{{Former::close()}}
+				  </div>
+				</div>
 				<div class="modal modal-vols" id="modal-vols-{{$l->id}}" tabindex="-1" role="dialog" style="display:none;" aria-labelledby="modalLabel{{$l->id}}" aria-hidden="true">
 				  <div class="modal-header">
 				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
