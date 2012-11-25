@@ -23,6 +23,17 @@ Route::get('(:bundle)/soirees/delete/(:num)', 'Rf::soirees@delete');
 Route::controller('rf::soirees');
 
 
+//
+// PDF routes
+//
+
+Route::any('(:bundle)/pdf/(:any)', function ($action)
+{
+	return Controller::call("RF::pdf@{$action}");
+});
+
+
+
 
 Route::any('(:bundle)/(roles|logs)', function ($action)
 {

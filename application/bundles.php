@@ -13,12 +13,9 @@ return array(
 		'handles' => 'rf'
 	),
 	
-	'docs' => array(
-		'auto' => true,
-		'handles' => 'docs',
-	),
-	
 	'date' => array('auto' => true),
+	
+	'dompdf' => array('auto' => true),
 	
 	'bob',
 	'authentic' => array('auto' => true),
