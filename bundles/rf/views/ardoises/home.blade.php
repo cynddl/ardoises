@@ -4,24 +4,14 @@
 <h2>Liste des utilisateurs poss&eacute;dant une ardoise</h2>
 <div class="well">
 	<div class="btn-group">
-	  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+	  <a class="btn" href="pdf/ardoises">
 	    Télécharger la liste des ardoises
-	    <span class="caret"></span>
 	  </a>
-	  <ul class="dropdown-menu">
-		<li><a href="#">Format TeX</a></li>
-		<li><a href="#">Format PDF</a></li>
-	  </ul>
 	</div>
 	<div class="btn-group">
-	  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+	  <a class="btn btn-primary" href="pdf/ardoises_negatives">
 	    Télécharger la liste des ardoises négatives
-	    <span class="caret"></span>
-	  </a>
-	  <ul class="dropdown-menu">
-		<li><a href="#">Format TeX</a></li>
-		<li><a href="#">Format PDF</a></li>
-	  </ul>
+		</a>
 	</div>
 </div>
 <p>
