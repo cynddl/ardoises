@@ -15,6 +15,9 @@ Route::any('(:bundle)/ardoises/(add|transfert)', function ($action)
 Route::any('(:bundle)/vols/add', 'Rf::base@add_vol');
 Route::any('(:bundle)/frigos/add', 'Rf::base@add_frigos');
 
+// Gestion des commandes
+Route::any('(:bundle)/commande', 'Rf::base@commande');
+
 
 // Gestion des soiréees
 Route::get('(:bundle)/soirees/(:num)', 'Rf::soirees@one');

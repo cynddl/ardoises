@@ -324,4 +324,9 @@ class Rf_Base_Controller extends Base_Controller {
 	{
 		return View::make('rf::logs');
 	}
+	
+	public function get_commande()
+	{
+		return View::make('rf::commande');
+	}
 }
