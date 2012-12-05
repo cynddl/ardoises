@@ -1,17 +1,14 @@
 <?php
 
+Route::filter('pattern: rf', 'auth');
 Route::filter('pattern: rf/*', 'auth');
 
-Route::controller(Controller::detect());
-Route::get ('(:bundle)', 'Rf::base@index');
-Route::any ('(:bundle)/ardoises/edit/(:any)', 'Rf::base@edit');
-Route::post('(:bundle)/ardoises/credit/(:any)', 'Rf::base@credit');
+//Route::filter('pattern: rf/*', 'rf-auth');
 
-Route::any('(:bundle)/ardoises/(add|transfert)', function ($action)
-{
-	return Controller::call("RF::base@{$action}");
-});
 
+Route::controller(Controller::detect('rf'));
+
+Route::any('(:bundle)', 'Rf::base@index');
 Route::any('(:bundle)/vols/add', 'Rf::base@add_vol');
 Route::any('(:bundle)/frigos/add', 'Rf::base@add_frigos');
 
@@ -26,24 +23,14 @@ Route::get('(:bundle)/soirees/delete/(:num)', 'Rf::soirees@delete');
 Route::controller('rf::soirees');
 
 
-//
-// PDF routes
-//
-
-Route::any('(:bundle)/pdf/(:any)', function ($action)
-{
-	return Controller::call("RF::pdf@{$action}");
-});
-
-
-
-
+// Gestion des rôles et des logs
 Route::any('(:bundle)/(roles|logs)', function ($action)
 {
 	return Controller::call("RF::base@{$action}");
 });
 
 
+// Identification pour l'espace RF
 Route::get('(:bundle)/login', function()
 {
     return View::make('rf::login');
@@ -63,10 +50,7 @@ Route::post('(:bundle)/login', function()
 	return Redirect::to('rf/login');
 });
 
-Route::get('(:bundle)/ardoises', function()
-{
-    return View::make('rf::ardoises.home');
-});
+
 
 //
 // Gestion des produits
