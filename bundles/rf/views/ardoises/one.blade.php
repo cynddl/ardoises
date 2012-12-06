@@ -36,7 +36,7 @@
 				<tr>
 					<td>{{$c->groupe->nom}}</td>
 					<td>{{$c->uniteachetee}}</td>
-					<td>{{$c->date}}</td>
+					<td>{{Date::forge($c->date)->format('datetime')}}</td>
 				</tr>
 				@endforeach
 			</tbody>

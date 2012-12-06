@@ -15,7 +15,7 @@
     @foreach(LogDB::order_by('date', 'DESC')->get() as $item)
       <tr>
         <td>{{$item->utilisateur->login}}</td>
-        <td>{{$item->date}}</td>
+        <td>{{Date::forge($item->date)->format('datetime')}}</td>
         <td>{{$item->description}}</td>
       </tr>
     @endforeach
