@@ -22,6 +22,11 @@ HTML::macro('menu', function()
 		array('label'=>'Forfaits', 'route'=>'forfaits'),
 		array('label'=>'Frigos', 'route'=>'frigos'),
 		
+		array('label'=>'Commandes', 'icon'=>'list-alt'),
+		array('label'=>'Passer une commande', 'url'=>'rf/commandes/add'),
+		array('label'=>'Réceptionner les commandes', 'url'=>'rf/commandes/validate'),
+		array('label'=>'Archives', 'url'=>'rf/commandes'),
+		
 		array('label'=>'Soirées', 'icon'=>'user'),
 		array('label'=>'Ajouter une soirée', 'url'=>'rf/soirees/add', 'permission'=>'peutnotersoiree'),
 		array('label'=>'Valider les soirées', 'url'=>'rf/soirees/validate', 'permission'=>'peutvalidersoiree'),

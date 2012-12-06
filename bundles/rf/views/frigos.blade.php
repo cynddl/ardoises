@@ -37,7 +37,7 @@
     </div>
     <div id="{{$l->id}}-stocks" class="accordion-body collapse in">
       <div class="accordion-inner">
-				<p><a href="commande" class="btn btn-primary">Passer une commande</a></p>
+				<p><a href="commandes" class="btn btn-primary">Passer une commande</a></p>
 				<table class="table table-striped table-bordered">
 				  <thead>
 				    <tr>

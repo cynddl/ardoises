@@ -6,14 +6,15 @@ Route::filter('pattern: rf/*', 'auth');
 //Route::filter('pattern: rf/*', 'rf-auth');
 
 
+
+Route::any('(:bundle)/commandes/validate/(:num)', 'Rf::commandes@validate_one');
+Route::any('(:bundle)/commandes/(:num)', 'Rf::commandes@one');
 Route::controller(Controller::detect('rf'));
+
 
 Route::any('(:bundle)', 'Rf::base@index');
 Route::any('(:bundle)/vols/add', 'Rf::base@add_vol');
 Route::any('(:bundle)/frigos/add', 'Rf::base@add_frigos');
-
-// Gestion des commandes
-Route::any('(:bundle)/commande', 'Rf::base@commande');
 
 
 // Gestion des soiréees

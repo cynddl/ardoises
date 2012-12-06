@@ -1,7 +1,7 @@
 @layout("rf::home")
 
 @section("rf_content")
-<h2>Soirées à valider</h2>
+<h2>Commandes à réceptionner</h2>
 <p>
 <table class="table table-bordered">
 	<thead>
