@@ -44,27 +44,14 @@ class Rf_Base_Controller extends Base_Controller {
 			foreach(Input::get('ajout') as $nom => $qte)
 			{
 				$produit = Produit::where_nom($nom)->first();
-				if($produit->stockproduit()->where_lieu_id($lieu_id)->count() > 0 )
-				{
-					$stockproduit = $produit->stockproduit->where_lieu_id($lieu_id)->first();
-					$stockproduit->qte_reserve = $stockproduit->qte_reserve - $qte;
-					$stockproduit->save();
-				} else {
-					$stockproduit = StockProduit::create(array(
-						'produit_id' => $produit->id,
-						'lieu_id' => $lieu_id,
-						'qte_reserve' => - $qte
-					));
-					$stockproduit->save();
-				}
+				Stockproduit::modifier($produit->id, $lieu_id, -$qte);
+				
 				$groupe_id = $produit->groupe()->first()->id;
 				$ajout_groupe[$groupe_id] = isset($ajout_groupe[$groupe_id]) ? ($ajout_groupe[$groupe_id] + (int) $qte) : $qte;
 			}
 			foreach($ajout_groupe as $groupe_id => $qte)
 			{
-				$stock = Stockgroupe::where_lieu_id($lieu_id)->where_groupe_id($groupe_id)->first();
-				$stock->qte_frigo = $stock->qte_frigo + $qte;
-				$stock->save();
+				Stockgroupe::modifier($groupe_id, $lieu_id, $qte);
 			}
 			
 			$lieu_nom = Lieu::find($lieu_id)->nom;
