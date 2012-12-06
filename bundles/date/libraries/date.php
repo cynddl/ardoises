@@ -14,8 +14,8 @@ class Date
 	protected $time;
 	
 	protected $formats = array(
-		'datetime' => '%Y-%m-%d %H:%M:%S',
-		'date' => '%Y-%m-%d',
+		'datetime' => '%d/%m/%Y %H:%M:%S',
+		'date' => '%d/%m/%Y',
 		'time' => '%H:%M:%S',
 	);
 	
@@ -155,7 +155,7 @@ class Date
 		}
 		
 		// return
-		return (isset($negative) ? '' : 'il y a ').number_format($difference).' '.$periods[$j].' ';
+		return number_format($difference).' '.$periods[$j];
 	}
 	
 	public function until()
