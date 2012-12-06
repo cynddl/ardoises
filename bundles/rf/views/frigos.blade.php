@@ -117,13 +117,21 @@
 				    <tr>
 				      <th>Groupe</th>
 				      <th>Quantité dans les frigos</th>
+							<th><a href="#" rel="tooltip" data-original-title="Disponible à la vente (y compris par les RF/RK…)">Disponible</a></th>
+							<th><a href="#" rel="tooltip" data-original-title="Peut être acheté par tout le monde">Actif</a></th>
 				    </tr>
 				  </thead>
 				  <tbody>
 				    @foreach(Stockgroupe::with('groupe')->where_lieu_id($l->id)->get() as $sg)
 				      <tr>
-								<td><a href="p/{{$sp->produit->id}}">{{$sg->groupe->nom}}</a></td>
+								<td><a href="g/{{$sg->groupe->id}}">{{$sg->groupe->nom}}</a></td>
 								<td>{{$sg->qte_frigo}}</td>
+								@if($sg->groupe->groupev)
+								<td><a href="#" class="editable-input" data-name="{{$sg->groupe->groupev->id}}" data-type="select" data-pk="disponible">@if($sg->groupe->groupev->disponible)Oui@elseNon@endif</a></td>
+								<td><a href="#" class="editable-input" data-name="{{$sg->groupe->groupev->id}}" data-type="select" data-pk="actif">@if($sg->groupe->groupev->actif)Oui@elseNon@endif</a></td>
+								@else
+								<td colspan="2"><span class="label label-important">Pas de groupe versionné</span></td>
+								@endif
 				      </tr>
 				    @endforeach
 				  </tbody>
@@ -135,4 +143,19 @@
 </div>
 @endforeach
 </div>
+@endsection
+
+
+@section('js')
+<script type="text/javascript" charset="utf-8">
+	$("[rel=tooltip]").tooltip();
+
+  $('a.editable-input').editable({
+    type: 'select',
+    url: '{{URL::to("rf/stocks/groupe/edit")}}',
+		source: [	{value: 1, text: 'Oui'}, {value: 0, text: 'Non'},],
+		inputclass: '',
+    title: 'Enter username'
+});
+</script>
 @endsection

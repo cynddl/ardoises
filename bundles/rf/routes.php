@@ -6,6 +6,7 @@ Route::filter('pattern: rf/*', 'auth');
 //Route::filter('pattern: rf/*', 'rf-auth');
 
 
+Route::any('(:bundle)/stocks/groupe/edit', 'Rf::stocks@groupe_edit');
 
 Route::any('(:bundle)/commandes/validate/(:num)', 'Rf::commandes@validate_one');
 Route::any('(:bundle)/commandes/(:num)', 'Rf::commandes@one');
