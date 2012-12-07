@@ -124,7 +124,7 @@
 				  <tbody>
 				    @foreach(Stockgroupe::with('groupe')->where_lieu_id($l->id)->get() as $sg)
 				      <tr>
-								<td><a href="g/{{$sg->groupe->id}}">{{$sg->groupe->nom}}</a></td>
+								<td><a href="stocks/groupe/{{$sg->groupe->id}}">{{$sg->groupe->nom}}</a></td>
 								<td>{{$sg->qte_frigo}}</td>
 								@if($sg->groupe->groupev)
 								<td><a href="#" class="editable-input" data-name="{{$sg->groupe->groupev->id}}" data-type="select" data-pk="disponible">@if($sg->groupe->groupev->disponible)Oui@elseNon@endif</a></td>
@@ -152,7 +152,7 @@
 
   $('a.editable-input').editable({
     type: 'select',
-    url: '{{URL::to("rf/stocks/groupe/edit")}}',
+    url: '{{URL::to("rf/stocks/groupev/edit")}}',
 		source: [	{value: 1, text: 'Oui'}, {value: 0, text: 'Non'},],
 		inputclass: '',
     title: 'Enter username'

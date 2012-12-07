@@ -8,7 +8,7 @@
 <ul class="nav nav-pills nav-stacked">
 @foreach(Groupe::get() as $groupe)
   <li class="active">
-		<a href="g/{{$groupe->id}}"><span class="badge badge-important">{{$groupe->nomreduit}}</span> {{$groupe->nom}}@if($groupe->commentaire)
+		<a href="stocks/groupe/{{$groupe->id}}"><span class="badge badge-important">{{$groupe->nomreduit}}</span> {{$groupe->nom}}@if($groupe->commentaire)
 			<small>({{$groupe->commentaire}})</small>@endif</a>
 			<ul class="nav nav-list">
 				@foreach($groupe->produits()->get() as $produit)

@@ -34,7 +34,7 @@
 			<tbody>
 				@foreach(Auth::user()->ardoise->consommations()->get() as $c)
 				<tr>
-					<td>{{$c->groupe->nom}}</td>
+					<td><a href="../../stocks/groupe/{{$c->groupe->id}}">{{$c->groupe->nom}}</a></td>
 					<td>{{$c->uniteachetee}}</td>
 					<td>{{Date::forge($c->date)->format('datetime')}}</td>
 				</tr>
