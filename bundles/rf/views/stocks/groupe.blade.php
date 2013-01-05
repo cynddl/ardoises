@@ -19,8 +19,14 @@
 @foreach($lieux as $l)
 <div class="tab-pane fade" id="tab-pane-{{$l->id}}">
   <div class="well">
-		<p>Quantité dans les frigos : {{$groupe->stockgroupe->where_lieu_id($l->id)->first()->qte_frigo}}.</p>
+		@if(Stockgroupe::where_groupe_id($groupe->id)->where_lieu_id($l->id)->count() > 0)
+		<p>Quantité dans les frigos : {{Stockgroupe::where_groupe_id($groupe->id)->where_lieu_id($l->id)->first()->qte_frigo}}.</p>
+		@if(Vol::where_lieu_id($l->id)->where_groupe_id($groupe->id)->count() > 0)
 		<p>Vols depuis 30 jours : {{Vol::where_lieu_id($l->id)->where('date', '>', Date::forge('now - 30 day')->format('datetime'))->where_groupe_id($groupe->id)->sum('qte_volee')}}.</p>
+		@else
+		<p>Aucun vol depuis 30 jours.</p>
+		@endif
+		@endif
 	</div>
 	<p><a href="#modal-groupev-{{$l->id}}" role="button" class="btn btn-primary" data-toggle="modal">Modifier les prix</a></p>
 	
@@ -38,7 +44,7 @@
 			{{Former::small_number('prix_non_adh', 'Prix non adhérent')->min(0)->append('€')}}
 			{{Former::small_number('udv', 'Unité de vente')->min(0)}}
 			{{Former::small_select('actif', 'Actif')->options(array(0=>'Non', 1=>'Oui'), 1)}}
-			{{Former::small_select('disponible', 'Disponible (pour tous)')->options(array(0=>'Non', 1=>'Oui'), 1)}}
+			{{Former::small_select('disponible', 'Disponible (pour tous)')->options(array(0=>'Non', 1=>'Oui'), 1)->blockHelp("Si le produit n'est pas disponible, il ne s'affichera pas sur les interfaces des consommateurs mais pourra être débité par un RF.")}}
 		  <input type="hidden" name="lieu_id" value="{{$l->id}}">
 		  <div class="modal-footer">
 		    <button class="btn" data-dismiss="modal" aria-hidden="true">Fermer</button>
