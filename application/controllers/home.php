@@ -12,7 +12,11 @@ class Home_Controller extends Base_Controller {
 
 	public function get_index()
 	{
-		return View::make('home.index');
+		$lieu = Lieu::first();
+		return View::make('home.index', array(
+			'lieu' => $lieu,
+			'groupe' => array_map(function($s) {return array('id'=>$s->id,'nom'=>$s->groupe->nom); }, Stockgroupe::with('groupe')->where_lieu_id($lieu->id)->get())
+		));
 	}
 	
 	public function post_index()

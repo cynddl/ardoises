@@ -3,10 +3,10 @@
 @section("content")
 <div class="row first">
 	<section class="mainbox span6 offset3">
-		<h2>Débiter des consommations</h2>
+		<h2>Débiter des consommations <small>#{{$lieu->nom}}</small></h2>
 		<form class="form-inline" name="form_debit" action="{{URL::to('/')}}" method="POST">
 			<fieldset class="well">
-				{{Former::select('conso1', 'Conso')->fromQuery(Groupe::all(), 'nom', 'id')}}
+				{{Former::select('conso1', 'Conso')->fromQuery($groupe, 'nom', 'id')}}
 				{{Former::small_number('count1', 'Quantité')->value(1)->min(0)->max(5)}}
 			</fieldset>
 			<button type="submit" class="btn btn-primary">Débiter</button>
