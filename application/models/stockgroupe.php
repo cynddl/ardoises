@@ -12,6 +12,11 @@ class Stockgroupe extends CustomEloquent {
 		return $this->belongs_to('Lieu');
 	}
 	
+	public function groupev()
+	{
+		return $this->groupe->groupev->where_lieu_lieu($this->lieu->id);
+	}
+	
 	public static function modifier($groupe_id, $lieu_id, $qte)
 	{
 		if(Stockgroupe::where_groupe_id($groupe_id)->where_lieu_id($lieu_id)->count() > 0)

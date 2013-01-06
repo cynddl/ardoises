@@ -14,8 +14,13 @@ class Groupe extends CustomEloquent {
 		return $this->has_one('stockgroupe');
 	}
 	
-	public function groupev()
+	public function groupev($lieu_id)
 	{
-		return $this->has_one('groupev')->order_by('id', 'ASC');
+		return $this->has_one('groupev')->where_lieu_id($lieu_id)->order_by('id', 'ASC');
+	}
+	
+	public function prix($lieu_id)
+	{
+		return $this->groupev($lieu_id)->first()->prix_adh;
 	}
 }

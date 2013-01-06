@@ -8,6 +8,7 @@
 			<fieldset class="well">
 				{{Former::select('conso1', 'Conso')->fromQuery($groupe, 'nom', 'id')}}
 				{{Former::small_number('count1', 'Quantité')->value(1)->min(0)->max(5)}}
+				{{Form::hidden('lieu_id', $lieu->id)}}
 			</fieldset>
 			<button type="submit" class="btn btn-primary">Débiter</button>
 		</form>

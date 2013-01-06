@@ -15,33 +15,40 @@ class Home_Controller extends Base_Controller {
 		$lieu = Lieu::first();
 		return View::make('home.index', array(
 			'lieu' => $lieu,
-			'groupe' => array_map(function($s) {return array('id'=>$s->id,'nom'=>$s->groupe->nom); }, Stockgroupe::with('groupe')->where_lieu_id($lieu->id)->get())
+			'groupe' => array_map(function($s) use($lieu) { return array(
+				'id'=>$s->groupe->id,
+				'nom'=>$s->groupe->nom . ' ('. $s->groupe->prix($lieu->id) .')'
+			); }, Stockgroupe::with('groupe')->where_lieu_id($lieu->id)->get())
 		));
 	}
 	
 	public function post_index()
 	{
 		$inputs = Input::get();
+		$l_id = Input::get('lieu_id');
 		$ardoise = Auth::user()->ardoise;
 		
 		for ($i=1; $i < count($inputs) / 2 + 1; $i++) {
 			if(!isset($inputs['conso'.$i]) || !isset($inputs['count'.$i]))
-				continue;
+				continue;			
 			
-			DB::transaction(function() use($i, $inputs, $ardoise) {
+			DB::transaction(function() use($i, $inputs, $ardoise, $l_id) {
 				$groupe = Groupe::find($inputs['conso'.$i]);
 				$qte = $inputs['count'.$i];
 				$conso = Consommation::create(array(
-					'groupeV_id' => $groupe->groupev->id,
+					'groupeV_id' => $groupe->groupev($l_id)->first()->id,
 					'uniteachetee' => $qte,
 					'ardoise_id' => Auth::user()->ardoise->id
 				));
 				$conso->save();
-				$ardoise->montant = $ardoise->montant + $groupe->groupev->prix_adh * $qte;
+				
+				Stockgroupe::modifier($groupe->id, $l_id, -$qte);
+				
+				$ardoise->montant = $ardoise->montant + $groupe->prix($l_id) * $qte;
 				$ardoise->save();
 			});
 		}
-		return View::make('home.index');
+		return $this->get_index();
 	}
 	
 	public function get_prefs()
