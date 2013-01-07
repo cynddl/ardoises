@@ -14,7 +14,7 @@ class Stockgroupe extends CustomEloquent {
 	
 	public function groupev()
 	{
-		return $this->groupe->groupev->where_lieu_lieu($this->lieu->id);
+		return $this->groupe->groupev($this->lieu->id);
 	}
 	
 	public static function modifier($groupe_id, $lieu_id, $qte)

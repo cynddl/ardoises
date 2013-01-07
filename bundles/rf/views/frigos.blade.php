@@ -126,9 +126,9 @@
 				      <tr>
 								<td><a href="stocks/groupe/{{$sg->groupe->id}}">{{$sg->groupe->nom}}</a></td>
 								<td>{{$sg->qte_frigo}}</td>
-								@if($sg->groupe->groupev)
-								<td><a href="#" class="editable-input" data-name="{{$sg->groupe->groupev->id}}" data-type="select" data-pk="disponible">@if($sg->groupe->groupev->disponible)Oui@elseNon@endif</a></td>
-								<td><a href="#" class="editable-input" data-name="{{$sg->groupe->groupev->id}}" data-type="select" data-pk="actif">@if($sg->groupe->groupev->actif)Oui@elseNon@endif</a></td>
+								@if($sg->groupe->groupev($l->id))
+								<td><a href="#" class="editable-input" data-name="{{$sg->groupe->groupev($l->id)->first()->id}}" data-type="select" data-pk="disponible">@if($sg->groupe->groupev($l->id)->first()->disponible)Oui@elseNon@endif</a></td>
+								<td><a href="#" class="editable-input" data-name="{{$sg->groupe->groupev($l->id)->first()->id}}" data-type="select" data-pk="actif">@if($sg->groupe->groupev($l->id)->first()->actif)Oui@elseNon@endif</a></td>
 								@else
 								<td colspan="2"><span class="label label-important">Pas de groupe versionné</span></td>
 								@endif
