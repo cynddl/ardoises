@@ -1,6 +1,9 @@
 @layout("rf::home")
 
 @section("rf_content")
+
+{{\Bootstrapper\Breadcrumbs::create(array('RF' => URL::to('rf'), 'Soirées' => URL::to('rf/soirees'), 'Ajouter une soirée'))}}
+
 <h2>Ajouter une soirée</h2>
 <p>
 	{{Former::open()}}

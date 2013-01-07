@@ -1,6 +1,9 @@
 @layout("rf::home")
 
 @section("rf_content")
+
+{{\Bootstrapper\Breadcrumbs::create(array('RF' => URL::to('rf'), 'Soirées' => URL::to('rf/soirees'), "Valider la soirée $soiree->nom"))}}
+
 <h2>Valider la soirée {{$soiree->nom}} <small>({{$soiree->description}})</small>
 </h2>
 <p>

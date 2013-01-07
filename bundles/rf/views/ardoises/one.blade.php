@@ -1,6 +1,9 @@
 @layout("rf::home")
 
 @section("rf_content")
+{{\Bootstrapper\Breadcrumbs::create(array('RF' => URL::to('rf'), 'Ardoises' => URL::to('rf/ardoises'), "Gestion de l'utilisateur $user->login"))}}
+
+
 <h2>Gestion de l'utilisateur {{$user->login}}</h2>
 
 

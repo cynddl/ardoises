@@ -1,6 +1,9 @@
 @layout("rf::home")
 
 @section("rf_content")
+
+{{\Bootstrapper\Breadcrumbs::create(array('RF' => URL::to('rf'), 'Logs'))}}
+
 <h2>Liste des événements enregistrés</h2>
 <p>
 <table class="table table-striped table-bordered dt-table">

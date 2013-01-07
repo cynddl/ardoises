@@ -1,6 +1,9 @@
 @layout("rf::home")
 
 @section("rf_content")
+
+{{\Bootstrapper\Breadcrumbs::create(array('RF' => URL::to('rf'), 'Frigos'))}}
+
 <ul class="nav nav-tabs">
 	@foreach($lieux as $l)
 	<li class="dropdown">

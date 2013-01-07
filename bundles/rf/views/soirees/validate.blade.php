@@ -1,7 +1,10 @@
 @layout("rf::home")
 
 @section("rf_content")
-<h2>Commandes à réceptionner</h2>
+
+{{\Bootstrapper\Breadcrumbs::create(array('RF' => URL::to('rf'), 'Soirées' => URL::to('rf/soirees'), 'Valider les soirées'))}}
+
+<h2>Soirées à valider</h2>
 <p>
 <table class="table table-bordered">
 	<thead>

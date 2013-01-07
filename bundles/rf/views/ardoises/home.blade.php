@@ -1,6 +1,9 @@
 @layout("rf::home")
 
 @section("rf_content")
+
+{{\Bootstrapper\Breadcrumbs::create(array('RF' => URL::to('rf'), 'Ardoises'))}}
+
 <h2>Liste des utilisateurs poss&eacute;dant une ardoise</h2>
 <div class="well">
 	<div class="btn-group">

@@ -1,6 +1,9 @@
 @layout("rf::home")
 
 @section("rf_content")
+
+{{\Bootstrapper\Breadcrumbs::create(array('RF' => URL::to('rf'), 'Produits' => URL::to('rf/produits'), $groupe->nom))}}
+
 <h2>{{$groupe->nom}} <small><a class="editable-input text-input" data-name="nomreduit" data-pk="{{$groupe->id}}">{{$groupe->nomreduit}}</a></small></h2>
 <p class="lead">Description : <a class="editable-input text-input" data-name="commentaire" data-pk="{{$groupe->id}}">{{$groupe->commentaire}}</a></p>
 
@@ -14,7 +17,7 @@
 
 <div class="tab-content">
 	<div class="tab-pane fade in active">
-		
+		Sélectionnez un lieu pour modifier les prix et afficher l'historique.
 	</div>
 @foreach($lieux as $l)
 <div class="tab-pane fade" id="tab-pane-{{$l->id}}">
@@ -29,8 +32,8 @@
 		@endif
 	</div>
 	<p><a href="#modal-groupev-{{$l->id}}" role="button" class="btn btn-primary" data-toggle="modal">Modifier les prix</a></p>
-	
-	
+
+
 	<div class="modal" id="modal-groupev-{{$l->id}}" tabindex="-1" role="dialog" style="display:none;" aria-labelledby="modalGroupeVLabel{{$l->id}}" aria-hidden="true">
 	  <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>

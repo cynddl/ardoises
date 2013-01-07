@@ -1,6 +1,10 @@
 @layout("rf::home")
 
 @section("rf_content")
+
+{{\Bootstrapper\Breadcrumbs::create(array('RF' => URL::to('rf'), 'Archives des commandes'))}}
+
+
 <h2>Liste des dernières commandes</h2>
 <p>
 <table class="table table-bordered dt-table">

@@ -1,6 +1,10 @@
 @layout("rf::home")
 
 @section("rf_content")
+
+{{\Bootstrapper\Breadcrumbs::create(array('RF' => URL::to('rf'), 'Commandes' => URL::to('rf/commandes'), 'Passer une commande'))}}
+
+
 <h2>Passer une commande</h2>
 <p>
 	{{Former::open()}}

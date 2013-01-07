@@ -1,6 +1,10 @@
 @layout("rf::home")
 
 @section("rf_content")
+
+{{\Bootstrapper\Breadcrumbs::create(array('RF' => URL::to('rf'), 'Commandes' => URL::to('rf/commandes'), "Valider la commande n°$commande->id"))}}
+
+
 <h2>Réceptionner la commande n°{{$commande->id}} <small>({{$commande->description}})</small>
 </h2>
 <p>

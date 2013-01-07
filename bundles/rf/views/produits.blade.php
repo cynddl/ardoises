@@ -1,6 +1,9 @@
 @layout("rf::home")
 
 @section("rf_content")
+
+{{\Bootstrapper\Breadcrumbs::create(array('RF' => URL::to('rf'), 'Produits'))}}
+
 <h2>Groupes et produits</h2>
 
 <p>Un groupe est constitué d'un ensemble de produits. Par exemple, le groupe <em>soft</em> rassemble les Pampryl, les sodas… On peut consommer des groupes, mais pas des produits.</p>

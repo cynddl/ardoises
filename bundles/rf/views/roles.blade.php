@@ -1,6 +1,9 @@
 @layout("rf::home")
 
 @section("rf_content")
+
+{{\Bootstrapper\Breadcrumbs::create(array('RF' => URL::to('rf'), 'Gestion des rôles'))}}
+
 <h2>Gestion des rôles</h2>
 <blockquote>Chaque utilisateur avancé (RF, RK, membre BDE avec droits pour ajouter des soirées…) dispose d'un rôle, qui lui donne des permissions pour accéder à différents services. Les permissions sont fixées mais les rôles peuvent être édités, pour ajouter des utilisateurs spécifiques par exemple.</blockquote>
 

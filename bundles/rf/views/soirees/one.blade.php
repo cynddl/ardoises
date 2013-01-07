@@ -1,6 +1,10 @@
 @layout("rf::home")
 
 @section("rf_content")
+
+{{\Bootstrapper\Breadcrumbs::create(array('RF' => URL::to('rf'), 'Soirées' => URL::to('rf/soirees'), "Soirée $soiree->nom"))}}
+
+
 <h2>Soirée {{$soiree->nom}} <small>({{$soiree->description}})</small> <span class="badge badge-info">{{$soiree->montant()}} €</span>
 </h2>
 <div>
