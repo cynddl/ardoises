@@ -12,6 +12,8 @@ Route::any('(:bundle)/stocks/groupev/edit', 'Rf::stocks@groupev_edit');
 
 Route::any('(:bundle)/commandes/validate/(:num)', 'Rf::commandes@validate_one');
 Route::any('(:bundle)/commandes/(:num)', 'Rf::commandes@one');
+Route::any('(:bundle)/soirees/validate/(:num)', 'Rf::soirees@validate_one');
+Route::any('(:bundle)/soirees/(:num)', 'Rf::soirees@one');
 Route::controller(Controller::detect('rf'));
 
 
