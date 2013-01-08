@@ -1,6 +1,5 @@
 module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-css');
-	//grunt.loadNpmTasks('grunt-jam');
 
 	// Project configuration.
 	grunt.initConfig({
@@ -13,7 +12,6 @@ module.exports = function(grunt) {
 				'js/bootstrap-editable-inline.js',
 				'js/DT_bootstrap.js',
 				'js/patternizer.min.js',
-				'js/uiji.js',
 				'js/script.js'],
 				dest: 'js/main.min.js'
 			}
