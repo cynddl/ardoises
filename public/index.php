@@ -8,6 +8,31 @@
  * @link     http://laravel.com
  */
 
+
+ // Gestion des erreurs
+ function shutdown() {
+ 	$isError = false;
+	
+ 	if ($error = error_get_last()){
+ 	switch($error['type']){
+ 	    case E_ERROR:
+ 	    case E_CORE_ERROR:
+ 	    case E_COMPILE_ERROR:
+ 	    case E_USER_ERROR:
+ 			 case E_PARSE:
+ 	        $isError = true;
+ 	        break;
+ 	    }
+ 	}
+	
+ 	if ($isError){
+ 	    echo("<hr /> Une erreur est survenue. Merci de transmettre le message ci-dessous à un responsable compétent au sein du BdE.");
+ 			 exit(1);
+ 	}
+ }
+ register_shutdown_function('shutdown');
+
+
 // --------------------------------------------------------------
 // Tick... Tock... Tick... Tock...
 // --------------------------------------------------------------
