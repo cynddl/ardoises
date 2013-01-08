@@ -21,16 +21,16 @@
 	</div>
 @foreach($lieux as $l)
 <div class="tab-pane fade" id="tab-pane-{{$l->id}}">
+	@if(Stockgroupe::where_groupe_id($groupe->id)->where_lieu_id($l->id)->count() > 0)
   <div class="well">
-		@if(Stockgroupe::where_groupe_id($groupe->id)->where_lieu_id($l->id)->count() > 0)
 		<p>Quantité dans les frigos : {{Stockgroupe::where_groupe_id($groupe->id)->where_lieu_id($l->id)->first()->qte_frigo}}.</p>
 		@if(Vol::where_lieu_id($l->id)->where_groupe_id($groupe->id)->count() > 0)
 		<p>Vols depuis 30 jours : {{Vol::where_lieu_id($l->id)->where('date', '>', Date::forge('now - 30 day')->format('datetime'))->where_groupe_id($groupe->id)->sum('qte_volee')}}.</p>
 		@else
 		<p>Aucun vol depuis 30 jours.</p>
 		@endif
-		@endif
 	</div>
+	@endif
 	<p><a href="#modal-groupev-{{$l->id}}" role="button" class="btn btn-primary" data-toggle="modal">Modifier les prix</a></p>
 
 
