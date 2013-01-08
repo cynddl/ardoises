@@ -51,10 +51,35 @@ class Home_Controller extends Base_Controller {
 		return $this->get_index();
 	}
 	
+	
+	public function get_login()
+	{
+		return View::make('auth.login');
+	}
+	
+	public function post_login()
+	{
+		$rules = array(
+		'username' => 'required',
+		'password' => 'required'
+		);
+		
+		$validation = Validator::make(Input::all(), $rules);
+		if ($validation->fails())
+		return Redirect::to('/login')->with_errors($validation)->with_input();
+		
+		return Auth::attempt(Input::all()) ? Redirect::to('/') : Redirect::to('/login')->with_input();
+	}
+	
+	public function get_logout()
+	{
+		Auth::logout();
+		return Redirect::to('/login');
+	}
+	
+	
 	public function get_prefs()
 	{
-		$dep_options = array();
-
 		return View::make('home.prefs');
 	}
 	

@@ -2,46 +2,12 @@
 
 /*
 |--------------------------------------------------------------------------
-| Auth Filters
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/login', function()
-{
-	return View::make('auth.login');
-});
-
-Route::post('/login', function()
-{
-	$rules = array(
-		'username' => 'required',
-		'password' => 'required'
-	);
-	
-	$validation = Validator::make(Input::all(), $rules);
-	if ($validation->fails())
-	    return Redirect::to('/login')->with_errors($validation)->with_input();
-	
-	return Auth::attempt(Input::all()) ? Redirect::to('/') : Redirect::to('/login')->with_input();
-});
-
-Route::get('/logout', array('as' => 'logout', function()
-{
-	Auth::logout();
-	return Redirect::to('/login');
-}));
-
-
-
-/*
-|--------------------------------------------------------------------------
 | Application Routes
 |--------------------------------------------------------------------------
 */
 
-Route::controller(Controller::detect());
-Route::any('prefs', 'home@prefs');
-
+Route::any('(:any)', 'home@(:1)');
+Route::controller('home');
 
 /*
 |--------------------------------------------------------------------------

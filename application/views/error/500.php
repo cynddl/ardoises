@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>Error 500 - Internal Server Error</title>
+	<title>Erreur 500 - Internal Server Error</title>
 	<meta name="viewport" content="width=device-width">
 	<style type="text/css">
 		@import url(http://fonts.googleapis.com/css?family=Droid+Sans);
@@ -100,7 +100,7 @@
 	<div class="wrapper">
 		<div class="error-spacer"></div>
 		<div role="main" class="main">
-			<?php $messages = array('Ouch.', 'Oh no!', 'Whoops!'); ?>
+			<?php $messages = array('Ouch.', 'Oh non!', 'Whoops!'); ?>
 
 			<h1><?php echo $messages[mt_rand(0, 2)]; ?></h1>
 
@@ -108,16 +108,15 @@
 
 			<hr>
 
-			<h3>What does this mean?</h3>
+			<h3>Qu'est-ce que cela signifie ?</h3>
 
 			<p>
-				Something went wrong on our servers while we were processing your request.
-				We're really sorry about this, and will work hard to get this resolved as
-				soon as possible.
+				Une sombre panne est à l'œuvre sur nos serveurs. Nous sommes désolé pour cette erreur et nous tâchons de la
+				résoudre le plus rapidement possible.
 			</p>
 
 			<p>
-				Perhaps you would like to go to our <?php echo HTML::link('/', 'home page'); ?>?
+				Pourquoi ne pas retourner sur la <?php echo HTML::link('/', 'page principale'); ?> ?
 			</p>
 		</div>
 	</div>

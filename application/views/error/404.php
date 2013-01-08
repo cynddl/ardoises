@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>Error 404 - Not Found</title>
+	<title>Erreur 404 - page disparue</title>
 	<meta name="viewport" content="width=device-width">
 	<style type="text/css">
 		@import url(http://fonts.googleapis.com/css?family=Droid+Sans);
@@ -100,25 +100,27 @@
 	<div class="wrapper">
 		<div class="error-spacer"></div>
 		<div role="main" class="main">
-			<?php $messages = array('We need a map.', 'I think we\'re lost.', 'We took a wrong turn.'); ?>
 
-			<h1><?php echo $messages[mt_rand(0, 2)]; ?></h1>
+			<h1>Nous sommes perdus !</h1>
 
 			<h2>Server Error: 404 (Not Found)</h2>
 
 			<hr>
 
-			<h3>What does this mean?</h3>
+			<h3>Pas de panique !</h3>
 
 			<p>
-				We couldn't find the page you requested on our servers. We're really sorry
-				about that. It's our fault, not yours. We'll work hard to get this page
-				back online as soon as possible.
+				La page demandée n'a pas été trouvée sur le serveur. Nous sommes désolé, mais là c'est de votre faute.
+				Nous travaillons à corriger cette erreur.
 			</p>
 
 			<p>
-				Perhaps you would like to go to our <?php echo HTML::link('/', 'home page'); ?>?
+				Vous pouvez retourner sur la <a href="" onClick="javascript:window.history.back();">page précedente</a> ou sur la <?php echo HTML::link('/', 'page d\'accueil'); ?>. Bonne chance !
 			</p>
+			
+			<hr />
+			
+			<p>En cas de problème grave et/ou d'origine extra-terrestre, n'hésitez pas à secouer vigoureusement un RF pour qu'il corrige tout ça.</p>
 		</div>
 	</div>
 </body>
