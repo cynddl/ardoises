@@ -15,9 +15,10 @@
 			<small>({{$groupe->commentaire}})</small>@endif</a>
 			<ul class="nav nav-list">
 				@foreach($groupe->produits()->get() as $produit)
-				<li><a href="p/{{$produit->id}}">{{$produit->nom}} @if($produit->commentaire)
+				<li>
+					<span><a class="editable-input text-input" data-name="nom" data-pk="{{$produit->id}}">{{$produit->nom}}</a></span>@if($produit->commentaire)
 					<small>({{$produit->commentaire}})</small>
-				@endif<span class="label">{{$produit->dernierprix}}</span></a></li>
+					@endif</li>
 				@endforeach
 			</ul>
   </li>
@@ -59,4 +60,14 @@
 		</form>
   </div>
 </div>
+@endsection
+
+@section('js')
+<script type="text/javascript" charset="utf-8">
+  $('a.editable-input.text-input').editable({
+    type: 'text',
+    url: '{{URL::to("rf/stocks/produit/edit")}}',
+		inputclass: ''
+});
+</script>
 @endsection

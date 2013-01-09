@@ -6,6 +6,7 @@ Route::filter('pattern: rf/*', 'auth');
 //Route::filter('pattern: rf/(?!login)*', 'rf-auth');
 
 // Gestion des stocks
+Route::any('(:bundle)/stocks/produit/edit', 'Rf::stocks@produit_edit');
 Route::any('(:bundle)/stocks/groupe/edit', 'Rf::stocks@groupe_edit');
 Route::any('(:bundle)/stocks/groupev/edit', 'Rf::stocks@groupev_edit');
 Route::any('(:bundle)/vols/add', 'Rf::base@add_vol');

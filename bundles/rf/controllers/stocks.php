@@ -32,6 +32,20 @@ class Rf_Stocks_Controller extends Base_Controller {
 		return "Impossible de modifier.";
 	}
 	
+	public function post_produit_edit()
+	{	
+		$produit = Produit::find(Input::get('pk'));
+		$key = Input::get('name');
+		
+		if ($key == 'commentaire' or $key == 'nom')
+		{
+			$produit->fill(array($key => Input::get('value')));
+			$produit->save();
+			return true;
+		}
+		return "Impossible de modifier.";
+	}
+	
 	public function get_groupe($id)
 	{
 		return View::make('rf::stocks.groupe', array(
