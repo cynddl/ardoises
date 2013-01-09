@@ -74,7 +74,7 @@ class Utilisateur extends CustomEloquent {
 	 * @return boolean
 	 */
 	public function can($permissions)
-	{
+	{		
 		$permissions = !is_array($permissions)
 			? array($permissions)
 			: $permissions;
@@ -88,10 +88,11 @@ class Utilisateur extends CustomEloquent {
 		
 		$valid = FALSE;
 		
-		foreach ($to_check->roles() as $role)
+		
+		foreach ($to_check->roles as $role)
 		{
-			foreach($role->permissions() as $permission)
-			{
+			foreach($role->permissions as $permission)
+			{				
 				if (in_array($permission->nom, $permissions))
 				{
 					$valid = TRUE;

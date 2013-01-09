@@ -23,7 +23,7 @@ HTML::macro('menu', function()
 		array('label'=>'Frigos', 'route'=>'frigos'),
 		
 		array('label'=>'Commandes', 'icon'=>'list-alt'),
-		array('label'=>'Passer une commande', 'url'=>'rf/commandes/add'),
+		array('label'=>'Passer une commande', 'url'=>'rf/commandes/add', 'permission'=>'peuteditercommande'),
 		array('label'=>'Réceptionner les commandes', 'url'=>'rf/commandes/validate'),
 		array('label'=>'Archives', 'url'=>'rf/commandes'),
 		
@@ -33,7 +33,7 @@ HTML::macro('menu', function()
 		array('label'=>'Archives', 'url'=>'rf/soirees'),
 		
 		array('label'=>'Gestion avancée', 'icon'=>'fire'),
-		array('label'=>'Rôles', 'url'=>'rf/roles', 'permission'=>'peutattribuerrole'),
+		array('label'=>'Rôles', 'url'=>'rf/roles'),
 		array('label'=>'Logs', 'url'=>'rf/logs')
 	);
 	
@@ -43,7 +43,7 @@ HTML::macro('menu', function()
 	
 	foreach ($menu as $m)
 	{
-		if(isset($m['permission']) && !$permissions[$m['permission']])
+		if(isset($m['permission']) && !Auth::can($m['permission']))
 		{
 			$html .= '<li>' . $m['label'] . '</li>';
 			continue;

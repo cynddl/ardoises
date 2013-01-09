@@ -18,11 +18,13 @@ class Rf_Commandes_Controller extends Base_Controller {
 	
 	public function get_add()
 	{
+		if(!Auth::can('peuteditercommande')) return Redirect::to('rf/permission');
 		return View::make('rf::commandes.add');
 	}
 	
 	public function post_add()
 	{
+		if(!Auth::can('peuteditercommande')) return Redirect::to('rf/permission');
 		$rules = array(
 			'description' => 'required',
 			'fournisseur_id' => 'required',
@@ -41,8 +43,6 @@ class Rf_Commandes_Controller extends Base_Controller {
 				'fournisseur_id' => $args['fournisseur_id']
 			));
 			$commande->save();
-			
-			
 
 			foreach($args['produit'] as $produit_id => $qte)
 			{
@@ -69,7 +69,7 @@ class Rf_Commandes_Controller extends Base_Controller {
 	}
 	
 	public function get_validate_one($id)
-	{
+	{		
 		return View::make('rf::commandes.validate_one', array(
 			'commande' => Commande::find($id)
 		));
@@ -77,6 +77,8 @@ class Rf_Commandes_Controller extends Base_Controller {
 	
 	public function post_validate_one($id)
 	{
+		if(!Auth::can('peutrecevoircommande')) return Redirect::to('rf/permission');
+		
 		DB::transaction(function() use ($id) {
 			$commande = Commande::find($id);
 			foreach ($commande->produit()->pivot()->get() as $row) {
@@ -97,6 +99,7 @@ class Rf_Commandes_Controller extends Base_Controller {
 	
 	public function get_delete($id)
 	{
+		if(!Auth::can('peuteditercommande')) return Redirect::to('rf/permission');
 		try {
 			$commande = Commande::find($id);
 			$commande_description = $commande->description; $commande_id = $commande->id;
@@ -115,6 +118,7 @@ class Rf_Commandes_Controller extends Base_Controller {
 	
 	public function post_edit()
 	{
+		if(!Auth::can('peuteditercommande')) return Redirect::to('rf/permission');
 	  if (Request::ajax())
 	  {
 			$args = Input::all();

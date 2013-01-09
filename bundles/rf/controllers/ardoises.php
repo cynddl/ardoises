@@ -21,6 +21,8 @@ class Rf_Ardoises_Controller extends Base_Controller {
 	//
 	public function post_edit($login)
 	{
+		if(!Auth::can('peutediterardoise')) return Redirect::to('rf/permission');
+			
 		$user = Utilisateur::where('login', '=', $login)->first();
 		$inputs = Input::all();
 		
@@ -44,6 +46,8 @@ class Rf_Ardoises_Controller extends Base_Controller {
 	//
 	public function post_credit($login)
 	{
+		if(!Auth::can('peutcrediter')) return Redirect::to('rf/permission');
+		
 		$user = Utilisateur::where('login', '=', $login)->first();
 		$ardoise = $user->ardoise;
 		
@@ -74,11 +78,13 @@ class Rf_Ardoises_Controller extends Base_Controller {
 	//
 	public function get_add()
 	{
+		if(!Auth::can('peutcreerardoise')) return Redirect::to('rf/permission');
 		return View::make('rf::ardoises.add');	
 	}
 	
 	public function post_add()
 	{
+		if(!Auth::can('peutcreerardoise')) return Redirect::to('rf/permission');
 		$rules = array(
 			'mail' => 'required|email',
 			'prenom' => 'required',
@@ -120,11 +126,13 @@ class Rf_Ardoises_Controller extends Base_Controller {
 	//
 	public function get_transfert ()
 	{
+		if(!Auth::can('peutcrediter')) return Redirect::to('rf/permission');
 		return View::make('rf::ardoises.transfert');
 	}
 	
 	public function post_transfert ()
 	{
+		if(!Auth::can('peutcrediter')) return Redirect::to('rf/permission');
 		DB::transaction(function(){
 			$debiteur = Utilisateur::where_login(Input::get('debiteur'))->first();
 			$debiteur_a = $debiteur->ardoise;

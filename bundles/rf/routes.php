@@ -3,58 +3,27 @@
 Route::filter('pattern: rf', 'auth');
 Route::filter('pattern: rf/*', 'auth');
 
-//Route::filter('pattern: rf/*', 'rf-auth');
+//Route::filter('pattern: rf/(?!login)*', 'rf-auth');
 
-
+// Gestion des stocks
 Route::any('(:bundle)/stocks/groupe/edit', 'Rf::stocks@groupe_edit');
 Route::any('(:bundle)/stocks/groupev/edit', 'Rf::stocks@groupev_edit');
-
-
-Route::any('(:bundle)/commandes/validate/(:num)', 'Rf::commandes@validate_one');
-Route::any('(:bundle)/commandes/(:num)', 'Rf::commandes@one');
-Route::any('(:bundle)/soirees/validate/(:num)', 'Rf::soirees@validate_one');
-Route::any('(:bundle)/soirees/(:num)', 'Rf::soirees@one');
-Route::controller(Controller::detect('rf'));
-
-
-Route::any('(:bundle)', 'Rf::base@index');
 Route::any('(:bundle)/vols/add', 'Rf::base@add_vol');
 Route::any('(:bundle)/frigos/add', 'Rf::base@add_frigos');
 
+//Gestion des commandes
+Route::any('(:bundle)/commandes/validate/(:num)', 'Rf::commandes@validate_one');
+Route::any('(:bundle)/commandes/(:num)', 'Rf::commandes@one');
 
 // Gestion des soiréees
-Route::get('(:bundle)/soirees/(:num)', 'Rf::soirees@one');
 Route::any('(:bundle)/soirees/validate/(:num)', 'Rf::soirees@validate_one');
-Route::get('(:bundle)/soirees/delete/(:num)', 'Rf::soirees@delete');
-Route::controller('rf::soirees');
+Route::any('(:bundle)/soirees/(:num)', 'Rf::soirees@one');
 
 
-// Gestion des rôles et des logs
-Route::any('(:bundle)/(roles|logs)', function ($action)
-{
-	return Controller::call("RF::base@{$action}");
-});
+Route::controller(Controller::detect('rf'));
+Route::any('(:bundle)/(:any)', 'Rf::base@(:1)');
+Route::any('(:bundle)', 'Rf::base@index');
 
-
-// Identification pour l'espace RF
-Route::get('(:bundle)/login', function()
-{
-    return View::make('rf::login');
-});
-
-Route::post('(:bundle)/login', function()
-{
-	$mdp_super = md5(Input::get('rf_pass'));
-	$user = Auth::user();
-	
-	if($user->roles() && $user->mdp_super == $mdp_super)
-	{
-		Session::put('rf_session', 1);
-		return Redirect::to('rf/');
-	}
-	
-	return Redirect::to('rf/login');
-});
 
 
 
@@ -99,3 +68,4 @@ Route::get('(:bundle)/frigos', array('as' => 'frigos', function()
 		'temps_ecoule' => $temps_ecoule
 	));
 }));
+

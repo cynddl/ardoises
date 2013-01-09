@@ -4,7 +4,7 @@ class Rf_Soirees_Controller extends Base_Controller {
 
 	public $restful = true;
 
-	public function get_index()
+	public function get_index($id = null)
 	{
 		return View::make('rf::soirees.index');
 	}

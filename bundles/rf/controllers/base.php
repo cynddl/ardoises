@@ -8,9 +8,33 @@ class Rf_Base_Controller extends Base_Controller {
 	{
 		return View::make('rf::home');
 	}
+	
+	//
+	// Connection
+	//
+	
+	public function get_login()
+	{
+		return View::make('rf::login');
+	}
+	
+	public function post_login()
+	{
+		$mdp_super = md5(Input::get('rf_pass'));
+		$user = Auth::user();
+	
+		if($user->roles() && $user->mdp_super == $mdp_super)
+		{
+			Session::put('rf_session', 1);
+			return Redirect::to('rf/');
+		}
+	
+		return Redirect::to('rf/login');
+	}
 
+	// Ajout des vols à la base
 	public function post_add_vol()
-	{		
+	{
 		$vols_groupe = array();
 		$lieu_id = Input::get('lieu_id');
 		
@@ -77,9 +101,11 @@ class Rf_Base_Controller extends Base_Controller {
 	
 	public function post_roles()
 	{
-		DB::transaction(function(){
-			if(Input::get('nom')) // On ajoute un rôle
-			{
+		if(Input::get('nom')) // On ajoute un rôle
+		{
+			if(!Auth::can('peutajouterole')) return Redirect::to('rf/permission');
+			
+			DB::transaction(function(){
 				$role = new Role;
 				$role->nom = Input::get('nom');
 				if(Input::get('lieu_id'))
@@ -94,9 +120,12 @@ class Rf_Base_Controller extends Base_Controller {
 					'nomtable' => 'role',
 					'idtable' => $role->id
 				));
-			}
-			else if (Input::get('utilisateur')) // On attribue un rôle
-			{
+			});
+		} else if(Input::get('utilisateur')) // On attribue un rôle
+		{
+			if(!Auth::can('peutattribuerrole')) return Redirect::to('rf/permission');
+			
+			DB::transaction(function(){
 				$utilisateur = Utilisateur::where_login(Input::get('utilisateur'))->first();
 				$role = Role::find(Input::get('role'));
 				$utilisateur->roles()->attach($role, array('echeance' => Input::get('echeance')));
@@ -105,8 +134,8 @@ class Rf_Base_Controller extends Base_Controller {
 					'nomtable' => 'role',
 					'idtable' => $role->id
 				));
-			}
-		});
+			});
+		}
 		return $this->get_roles();
 	}
 	
@@ -166,5 +195,10 @@ class Rf_Base_Controller extends Base_Controller {
 	public function get_logs()
 	{
 		return View::make('rf::logs');
+	}
+	
+	public function get_permission()
+	{
+		return View::make('rf::permission');
 	}
 }
