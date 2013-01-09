@@ -14,22 +14,20 @@
 					badge-success
 				@else badge-important @endif">{{Auth::user()->ardoise->montant}}</span></small></p>
 			<div class="nav-collapse collapse">
-			<div class="pull-right">
-			<ul class="nav">
-				<li@if(Request::route()->is('home'))
-						class="active"@endif><a href="{{URL::to('')}}"><i class="icon-home icon-white"></i> Accueil</a></li>
-				<li@if(Request::route()->is('prefs'))
-						class="active"@endif><a href="{{URL::to('prefs')}}"><i class="icon-cog icon-white"></i>Préférences</a></li>
-				<li><a href="{{URL::to('logout')}}"><i class="icon-off icon-white"></i>Déconnection</a></li>
-			</ul>
 @if(Auth::user()->roles())
 @if(Session::get('rf_session'))
-			<a class="btn btn-success active" href="{{URL::to('rf/')}}">Interface RF</a>
+				<a class="btn btn-success active pull-right" href="{{URL::to('rf/')}}">Interface RF</a>
 @else
-			<a class="btn btn-success" href="{{URL::to('rf/login')}}">Passer en mode RF</a>
+				<a class="btn btn-success" href="{{URL::to('rf/login')}}">Passer en mode RF</a>
 @endif
 @endif
-		</div>
+				<ul class="nav pull-right">
+					<li@if(Request::route()->is('home'))
+						class="active"@endif><a href="{{URL::to('')}}"><i class="icon-home icon-white"></i> Accueil</a></li>
+					<li@if(Request::route()->is('prefs'))
+						class="active"@endif><a href="{{URL::to('prefs')}}"><i class="icon-cog icon-white"></i>Préférences</a></li>
+					<li><a href="{{URL::to('logout')}}"><i class="icon-off icon-white"></i>Déconnection</a></li>
+				</ul>
 		</div>
 		</div>
 	</div>

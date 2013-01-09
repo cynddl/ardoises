@@ -26,6 +26,10 @@ html, body {
 	padding-bottom: 0;
 }
 
+.navbar.navbar-fixed-top {
+	margin-bottom: 0;
+}
+
 div.login-box
 {
 	width: 290px;
