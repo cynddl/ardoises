@@ -7,7 +7,7 @@ class Home_Controller extends Base_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->filter('before', 'auth')->except(array('login'));
+		$this->filter('before', 'auth')->except(array('login', 'anonyme'));
 	}
 
 	public function get_index()
@@ -51,6 +51,56 @@ class Home_Controller extends Base_Controller {
 		return $this->get_index();
 	}
 	
+	public function get_anonyme()
+	{		
+		$lieu = Lieu::first();
+		return View::make('home.anonyme', array(
+			'lieu' => $lieu,
+			'groupe' => array_map(function($s) use($lieu) { return array(
+				'id'=>$s->groupe->id,
+				'nom'=>$s->groupe->nom,
+				'prix' => money_format('%!n €', $s->groupe->prix($lieu->id))
+			); }, Stockgroupe::with('groupe')->where_lieu_id($lieu->id)->get())
+		));
+	}
+	
+	public function post_anonyme()
+	{
+		$rules = array(
+			'conso' => 'required|exists:groupe,nom',
+			'lieu_id' => 'required|exists:lieu,id'
+		);
+		
+		$validation = Validator::make(Input::all(), $rules);
+		if ($validation->fails())
+		{
+			Session::flash('message_status', 'error');
+			Session::flash('message', 'Impossible d\'enregister cette consommation !');
+			return Redirect::to('/anonyme')->with_errors($validation);
+		}
+		
+		try {
+			DB::transaction(function() {
+				$l_id = Input::get('lieu_id');
+				$groupe = Groupe::where_nom(Input::get('conso'))->first();
+				// Pas d'ardoise pour un anonyme
+				$conso = Consommation::create(array(
+					'groupeV_id' => $groupe->groupev($l_id)->first()->id,
+					'uniteachetee' => 1
+				));
+				$conso->save();
+				Stockgroupe::modifier($groupe->id, $l_id, -1);
+			});
+			Session::flash('message_status', 'success');
+			Session::flash('message', 'Consommation enregistrée !');
+			return Redirect::to('/login');
+		} catch (Exception $e) {
+			Session::flash('message_status', 'error');
+			Session::flash('message', 'Impossible d\'enregister cette consommation !');
+			return Redirect::to('/anonyme');
+		}
+	}
+	
 	
 	public function get_login()
 	{
@@ -66,7 +116,7 @@ class Home_Controller extends Base_Controller {
 		
 		$validation = Validator::make(Input::all(), $rules);
 		if ($validation->fails())
-		return Redirect::to('/login')->with_errors($validation)->with_input();
+			return Redirect::to('/login')->with_errors($validation)->with_input();
 		
 		return Auth::attempt(Input::all()) ? Redirect::to('/') : Redirect::to('/login')->with_input();
 	}

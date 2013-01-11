@@ -18,7 +18,7 @@
 @if(Session::get('rf_session'))
 				<a class="btn btn-success active pull-right" href="{{URL::to('rf/')}}">Interface RF</a>
 @else
-				<a class="btn btn-success" href="{{URL::to('rf/login')}}">Passer en mode RF</a>
+				<a class="btn btn-success pull-right" href="{{URL::to('rf/login')}}">Passer en mode RF</a>
 @endif
 @endif
 				<ul class="nav pull-right">
