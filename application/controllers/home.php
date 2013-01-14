@@ -151,4 +151,11 @@ class Home_Controller extends Base_Controller {
 
 		return Redirect::to('prefs');
 	}
+	
+	public function get_historique()
+	{
+		return View::make('home.historique', array(
+			'consos' => Consommation::where_ardoise_id(Auth::user()->ardoise_id)->order_by('date', 'DESC')->get()
+		));
+	}
 }
