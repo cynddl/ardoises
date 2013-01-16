@@ -82,6 +82,9 @@ Route::get('(:bundle)/roles/list', function(){
 
 Route::post('(:bundle)/roles/attrib', function()
 {
+	if(!Auth::can('peutattribuerrole'))
+		return "Désolé, vous n'avez pas les droits nécessaires.";
+	
 	try {
 		$u = Utilisateur::find(Input::get('pk'));
 		if(Input::get('value') == array())
