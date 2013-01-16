@@ -141,6 +141,7 @@ class Home_Controller extends Base_Controller {
 			'nom' => 'required'
 		);
 		$validation = Validator::make(Input::all(), $rules);
+		
 		if ($validation->fails())
 		    return Redirect::to('prefs')->with_errors($validation)->with_inputs();
 		

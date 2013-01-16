@@ -1,9 +1,21 @@
 <?php
 
 class Utilisateur extends CustomEloquent {
-	
-	public static $accessible = array('login', 'mail', 'mdp', 'prenom', 'nom', 'departement_id','promo', 'ardoise_id');
-	
+
+	// White-list of accessible columns by a mass-assignement !
+	public static $accessible = array('login', 'mail', 'prenom', 'nom', 'departement_id','promo', 'ardoise_id');
+		
+  public static $rules = array(
+         'login'							=> 'required|alpha_num|unique:utilisateur,login',
+         'mail'								=> 'required|email|unique:utilisateur,mail',
+				 'mdp'								=> 'required',
+         'prenom'							=> 'required',
+         'nom'								=> 'required',
+				 'departement_id'			=> 'required|exists:departement,id',
+				 'promo'							=> 'required|numeric',
+				 'ardoise_id'					=> 'exists:ardoise,id'
+  		 );
+		
 	public function ardoise()
 	{
 		return $this->belongs_to('Ardoise');

@@ -27,6 +27,9 @@ class Rf_Ardoises_Controller extends Base_Controller {
 		$inputs = Input::all();
 		
 		$user->fill($inputs);
+		if(!$user->is_valid())
+			return Redirect::to('rf/ardoises/edit/'.$user->login.'#edition')->with_input()->with_errors($user->validation);
+		
 		$user->save();
 		
 		$login = $user->login;
@@ -85,16 +88,8 @@ class Rf_Ardoises_Controller extends Base_Controller {
 	public function post_add()
 	{
 		if(!Auth::can('peutcreerardoise')) return Redirect::to('rf/permission');
-		$rules = array(
-			'mail' => 'required|email',
-			'prenom' => 'required',
-			'nom' => 'required',
-			'mdp' => 'required',
-			'login' => 'required|unique:utilisateur,login',
-			'promo' => 'required',
-			'departement_id' => 'required'
-		);
-		$validation = Validator::make(Input::all(), $rules);
+
+		$validation = Validator::make(Input::all(), Utilisateur::$rules);
 		if ($validation->fails())
 			return Redirect::to('rf/ardoises/add/')->with_errors($validation)->with_input();
 		
