@@ -9,7 +9,7 @@ module.exports = function(grunt) {
 				src: ['components/jquery/jquery.js',
 				'js/jquery.dataTables.min.js',
 				'components/bootstrap/docs/assets/js/bootstrap.js',
-				'js/bootstrap-editable-inline.js',
+				'js/bootstrap-editable.js',
 				'js/DT_bootstrap.js',
 				'js/patternizer.min.js',
 				'js/script.js'],
