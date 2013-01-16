@@ -70,3 +70,26 @@ Route::get('(:bundle)/frigos', array('as' => 'frigos', function()
 	));
 }));
 
+
+Route::get('(:bundle)/roles/list', function(){
+	$roles = Role::get(array('id', 'nom'));
+	$roles_json = array();
+	foreach ($roles as $r) {
+		$roles_json[] = array('value' => $r->id, 'text'=>$r->nom);
+	}
+	return Response::json($roles_json);
+});
+
+Route::post('(:bundle)/roles/attrib', function()
+{
+	try {
+		$u = Utilisateur::find(Input::get('pk'));
+		if(Input::get('value') == array())
+			$u->roles()->delete();
+		else
+			$u->roles()->sync(array_values(Input::get('value')));
+		return true;
+	} catch (Exception $e) {
+		return "Désolé, une erreur est survenue lors de l'enregistrement.";
+	}
+});

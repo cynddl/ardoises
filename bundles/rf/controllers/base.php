@@ -136,7 +136,7 @@ class Rf_Base_Controller extends Base_Controller {
 				));
 			});
 		}
-		return $this->get_roles();
+		return Redirect::to('rf/roles#utilisateurs-privilegies');
 	}
 	
 	public function post_add_groupe()

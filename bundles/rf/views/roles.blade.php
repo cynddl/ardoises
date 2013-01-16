@@ -11,7 +11,6 @@
 	<li class="active"><a href="#liste-role" data-toggle="tab">Liste des rôles</a></li>
 	<li><a href="#utilisateurs-privilegies" data-toggle="tab">Utilisateurs privilégiés</a></li>
   <li><a href="#ajouter-role" data-toggle="tab">Ajouter un rôle</a></li>
-  <li><a href="#attribuer-role" data-toggle="tab">Attribuer un rôle</a></li>
 </ul>
 
 <div class="tab-content">
@@ -52,13 +51,9 @@
 	<table class="table table-striped table-bordered">
 		<thead>
 			<tr>
-				<th rowspan="3">Utilisateur</th>
+				<th>Utilisateur</th>
 				<th>Roles</th>
 			</tr>
-			<tr>
-				@foreach($roles as $r)
-				<th>{{$r->nom}}</th>
-				@endforeach
 			</tr>
 		</thead>
 		<tbody>
@@ -66,18 +61,19 @@
 			@if(DB::table('utilisateur_role')->where_utilisateur_id($u->id)->count() > 0)
 			<tr>
 				<td>{{$u->login}}</td>
-				@foreach($roles as $r)
-				@if(DB::table('utilisateur_role')->where_role_id($r->id)->where_utilisateur_id($u->id)->count() > 0)
-				<td>&#x2713;</td>
-				@else
-				<td></td>
-				@endif
-				@endforeach
+				<td><a href="#" class="editable attrib-input" data-type="checklist" data-pk="{{$u->id}}" data-value="{{implode($u->roles_id(), ',')}}" data-original-title="Select options"></a></td>
 			</tr>
 			@endif
 			@endforeach
 		</tbody>
 	</table>
+	{{Former::open()}}
+	<legend>Attribuer un rôle</legend>
+	{{Former::medium_text('utilisateur')->class('typeahead')}}
+	{{Former::medium_date('echeance', 'Échéance')->value(Date::forge('now + 1 year')->format('date'))}}
+	{{Former::large_select('role', 'Rôle')->fromQuery(Role::all(), 'nom', 'id')}}
+	{{Former::actions( Bootstrapper\Buttons::submit('Attribuer', array('class'=>'btn btn-primary')) )}}
+	{{Former::close()}}
 </div>
 <div class="tab-pane" id="ajouter-role">
 	{{Former::open()}}
@@ -105,20 +101,39 @@
 	{{Former::actions( Bootstrapper\Buttons::submit('Envoyer', array('class'=>'btn btn-primary')) )}}
 	{{Former::close()}}
 </div>
-<div class="tab-pane" id="attribuer-role">
-	{{Former::open()}}
-	{{Former::medium_text('utilisateur')->class('typeahead')}}
-	{{Former::medium_date('echeance', 'Échéance')->value(Date::forge('now + 1 year')->format('date'))}}
-	{{Former::large_select('role', 'Rôle')->fromQuery(Role::all(), 'nom', 'id')}}
-	{{Former::actions( Bootstrapper\Buttons::submit('Attribuer', array('class'=>'btn btn-primary')) )}}
-	{{Former::close()}}
-</div>
 </div>
 @endsection
 
 @section('js')
 <script type="text/javascript" charset="utf-8">
-  var mySource = [@foreach(Utilisateur::all() as $u)'{{$u->login}}',@endforeach];
-  $('input.typeahead').typeahead({ 'source': mySource });
+	$(function(){
+		var mySource = [@foreach(Utilisateur::all() as $u)'{{$u->login}}',@endforeach];
+		$('input.typeahead').typeahead({ 'source': mySource });
+		
+	    $('a.editable.attrib-input').editable({
+	        source: "{{URL::to('rf/roles/list')}}",
+					//sourceCache: true,
+					url: "{{URL::to('rf/roles/attrib')}}",
+					
+					success: function(response, newValue) {
+						if(response != true)
+							return "Désolé, une erreur est survenue";
+					},
+					
+					//display checklist as comma-separated values
+					display: function(value, sourceData) {
+					   var html = [],
+					       checked = $.fn.editableutils.itemsByValue(value, sourceData);
+       
+					   if(checked.length) {
+					       $.each(checked, function(i, v) { html.push($.fn.editableutils.escape(v.text)); });
+					       $(this).html(html.join(', '));
+					   } else {
+					       $(this).empty(); 
+					   }
+					}
+					
+	    });
+	});
 </script>
 @endsection
