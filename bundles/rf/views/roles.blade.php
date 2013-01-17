@@ -60,8 +60,8 @@
 			@foreach($utilisateurs as $u)
 			@if(DB::table('utilisateur_role')->where_utilisateur_id($u->id)->count() > 0)
 			<tr>
-				<td>{{$u->login}}</td>
-				<td><a href="#" class="editable attrib-input" data-type="checklist" data-pk="{{$u->id}}" data-value="{{implode($u->roles_id(), ',')}}" data-original-title="Select options"></a></td>
+				<td>{{$u->login}} <a href="#" class="label label-important editable mdp-input" data-type="password" data-pk="{{$u->id}}">Mot de passe</a></td>
+				<td><a href="#" class="editable attrib-input" data-type="checklist" data-pk="{{$u->id}}" data-value="{{implode($u->roles_id(), ',')}}" data-original-title="Sélectionner les rôles"></a></td>
 			</tr>
 			@endif
 			@endforeach
@@ -110,9 +110,18 @@
 		var mySource = [@foreach(Utilisateur::all() as $u)'{{$u->login}}',@endforeach];
 		$('input.typeahead').typeahead({ 'source': mySource });
 		
+				$('a.editable.mdp-input').editable({
+		        url: "{{URL::to('rf/roles/mdp')}}",
+						title: "Modifier le mot de passe RF",
+						
+						success: function(response, newValue) {
+							if(response != true)
+								return message;
+						},
+		    });
+		
 	    $('a.editable.attrib-input').editable({
 	        source: "{{URL::to('rf/roles/list')}}",
-					//sourceCache: true,
 					url: "{{URL::to('rf/roles/attrib')}}",
 					
 					success: function(response, newValue) {

@@ -96,3 +96,23 @@ Route::post('(:bundle)/roles/attrib', function()
 		return "Désolé, une erreur est survenue lors de l'enregistrement.";
 	}
 });
+
+Route::post('(:bundle)/roles/mdp', function()
+{
+	if(!Auth::can('peutattribuerrole'))
+		return "Désolé, vous n'avez pas les droits nécessaires.";
+	
+	try {
+		$u = Utilisateur::find(Input::get('pk'));
+		if(Input::get('value') != '')
+		{
+			$u->mdp_super = md5(Input::get('value'));
+			$u->save();
+			return true;
+		}
+		else
+			return "Le mot ne passe ne doit pas être vide";
+	} catch (Exception $e) {
+		return "Désolé, une erreur est survenue lors de l'enregistrement.";
+	}
+});

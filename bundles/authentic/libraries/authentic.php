@@ -11,6 +11,12 @@ class Authentic extends \Laravel\Auth\Drivers\Driver
 		$this->user();
 	}
 	
+	public function logout()
+	{
+		parent::logout();
+		Session::flush();
+	}
+	
 	public function retrieve($id)
 	{
 		if (filter_var($id, FILTER_VALIDATE_INT) !== false)
