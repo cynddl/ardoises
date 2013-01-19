@@ -10,7 +10,6 @@
     <fieldset>
 			{{Former::large_text('nom', 'Nom de la soirée')}}
 			{{Former::large_text('description', 'Description')->blockHelp('Lieu/type de soirée…')}}
-			{{Former::large_number('debit_defaut', 'Montant par défault')->blockHelp('Est-ce vraiment utile ?')->min(1)->append('€')->value('1.00')}}
 			{{Former::large_date('date', 'Date')}}
     </fieldset>
     <div class="form-actions">
@@ -44,8 +43,8 @@
     }
   });
 
-  var mySource = [@foreach(Utilisateur::all() as $u)'{{$u->login}}',@endforeach];
-  $('input.typeahead').typeahead({ 'source': mySource });
+  var user_list = [@foreach(Utilisateur::all() as $u)'{{$u->login}}',@endforeach];
+  $('input.typeahead').typeahead({ 'source': user_list });
   
   $('#add_row').click(function(){
     var user_name = $('#user_name')[0].value;
@@ -56,7 +55,7 @@
     if(selector.length > 0) {
       selector[0].value = parseFloat(selector[0].value) + parseFloat(montant);
     }
-    else {
+    else if ($.inArray(user_name, user_list) != -1){
       $('#debit_table > tbody:last').append('<tr><td>'+user_name+'</td><td><input type="number" step="any" min="0" name="'+user_name+'" value="'+montant+'"></td></tr>');
     }
       

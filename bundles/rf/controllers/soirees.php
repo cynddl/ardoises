@@ -24,7 +24,6 @@ class Rf_Soirees_Controller extends Base_Controller {
 	public function post_add()
 	{
 		$rules = array(
-			'description' => 'required',
 			'nom' => 'required',
 			'date' => 'required'
 		);
@@ -38,7 +37,6 @@ class Rf_Soirees_Controller extends Base_Controller {
 			$soiree = Soiree::create(array(
 				'nom' => $args['nom'],
 				'description' => $args['description'],
-				'prix_defaut' => $args['debit_defaut'],
 				'date' => $args['date']
 			));
 			$soiree->save();
