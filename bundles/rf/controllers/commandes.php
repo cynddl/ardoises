@@ -26,7 +26,6 @@ class Rf_Commandes_Controller extends Base_Controller {
 	{
 		if(!Auth::can('peuteditercommande')) return Redirect::to('rf/permission');
 		$rules = array(
-			'description' => 'required',
 			'fournisseur_id' => 'required',
 			'lieu_id' => 'required'
 		);
@@ -55,7 +54,7 @@ class Rf_Commandes_Controller extends Base_Controller {
 			}
 						
 			LogDB::add_flash('success', array(
-				'description' => "La commande n°$commande->id « $commande->description » a été ajouté.",
+				'description' => "La commande n°$commande->id a été ajouté.",
 				'nomtable' => 'commande',
 				'idtable' => $commande->id
 			));
@@ -87,7 +86,7 @@ class Rf_Commandes_Controller extends Base_Controller {
 			$commande->receptionne = true;
 			$commande->save();
 			LogDB::add_flash('success', array(
-				'description' => "La commande n°$commande->id « $commande->description » a été réceptionnée.",
+				'description' => "La commande n°$commande->id a été réceptionnée.",
 				'nomtable' => 'commande',
 				'idtable' => $commande->id
 			));
@@ -105,7 +104,7 @@ class Rf_Commandes_Controller extends Base_Controller {
 			$commande_description = $commande->description; $commande_id = $commande->id;
 			$commande->delete();
 			LogDB::add_flash('success', array(
-				'description' => "La commande n°$commande_id « $commande_description » a été supprimée.",
+				'description' => "La commande n°$commande_id a été supprimée.",
 				'nomtable' => 'commande',
 				'idtable' => $commande_id
 			));	
