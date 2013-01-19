@@ -6,8 +6,8 @@ class Utilisateur extends CustomEloquent {
 	public static $accessible = array('login', 'mail', 'prenom', 'nom', 'departement_id','promo', 'ardoise_id');
 		
   public static $rules = array(
-         'login'							=> 'required|alpha_num|unique:utilisateur,login',
-         'mail'								=> 'required|email|unique:utilisateur,mail',
+         'login'							=> 'required|alpha_num|exists:utilisateur,login',
+         'mail'								=> 'required|email|exists:utilisateur,mail',
 				 'mdp'								=> 'required',
          'prenom'							=> 'required',
          'nom'								=> 'required',
