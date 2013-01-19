@@ -48,26 +48,33 @@
 		</table>
   </div>
 	<div class="tab-pane" id="stats">
+		<h4 class="lead">Consommations sur tous les sites</h4>
 		<div id="chart_container">
-			<div id="y_axis"></div>
-			<div id="chart"></div>
+			<div id="user_y_axis"></div>
+			<div id="user-chart"></div>
 		</div>
 	</div>
 </div>
 @endsection
 
 @section("js")
-<link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/rickshaw.min.css">
 <style>
+</style>
+
+<script src="http://code.shutterstock.com/rickshaw/vendor/d3.v2.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/vendor/d3.layout.min.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/rickshaw.min.js"></script>
+<link rel="stylesheet" href="http://code.shutterstock.com/rickshaw/rickshaw.min.css" type="text/css" charset="utf-8">
+<style type="text/css" media="screen">
 #chart_container {
 	position: relative;
-	font-family: Arial, Helvetica, sans-serif;
 }
-#chart {
+
+#user_chart {
 	position: relative;
 	left: 40px;
 }
-#y_axis {
+#user_y_axis {
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -75,13 +82,7 @@
 }
 </style>
 
-
-<!--<script src="{{URL::to('')}}assets/js/graphs.min.js"></script>-->
-<script src="http://code.shutterstock.com/rickshaw/vendor/d3.v2.js"></script>
-<script src="http://code.shutterstock.com/rickshaw/rickshaw.min.js"></script>
 <script type="text/javascript" charset="utf-8">
-
-
 d3.json('{{URL::to("rf/stats/user/".$user->login)}}', function(data){
 	var parseDate =  d3.time.format.utc("%Y-%m-%d %H:%M:%S").parse;
 	data.forEach(function(d) {
@@ -90,22 +91,26 @@ d3.json('{{URL::to("rf/stats/user/".$user->login)}}', function(data){
 	});
 	
 	var graph = new Rickshaw.Graph( {
-	        element: document.querySelector("#chart"),
-	        width: 600,
-	        height: 250,
-					renderer: 'line',
+	        element: document.querySelector("#user-chart"),
+	        width: 500,
+	        height: 100,
+					renderer: 'bar',
 	        series: [ {
 	                color: 'steelblue',
 	                data: data
 	        } ]
 	});
-	var x_axes = new Rickshaw.Graph.Axis.Time( { graph: graph } );
-	var y_axis	= new Rickshaw.Graph.Axis.Y( {
+	
+	var x_axis = new Rickshaw.Graph.Axis.Time( { graph: graph } );
+
+	var y_axis = new Rickshaw.Graph.Axis.Y( {
 	        graph: graph,
 	        orientation: 'left',
 	        tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-	        element: document.getElementById('y_axis'),
+	        element: document.getElementById('user_y_axis'),
 	} );
+	
+	console.log(y_axis);
 	graph.render();
 });
 
