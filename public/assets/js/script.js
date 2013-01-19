@@ -40,10 +40,6 @@ function onResize() {
     }
 }
 
-function renewHeight() {
-	$('.container.full').css('min-height',$('section').outerHeight()+80); // avec marges héhé :)	
-}
-
 function next_input() {
   var next_input = $(":input")[$(":input").index(this)+1];
   next_input.focus();
@@ -67,33 +63,23 @@ $(document).ready(function(){
     if (keyCode == 9 && !e.shiftKey) { 
       e.preventDefault(); 
       var row = $(this).parent();
-      var actual_select = row.find('select');
       var new_row = row.clone();
 			
-      
+      var actual_select = row.find('select');    
       var new_select = new_row.find('select');
       new_select.change(next_input);
-      
-      if(actual_select.val() == 'miam') {
-	      new_select.val('soft')
-      } else {
-	      new_select.val('miam')
-      }
       
       new_row.find('input[type="number"]').val("0");
 			
 			// Incrémentation des noms
-			var regex = new RegExp(/^(.+)(\d+)$/);
+			/*var regex = new RegExp(/^(.+)(\d+)$/);
 			$(new_row).find(':input').each(function() {
 			    var match = $(this).attr('name').match(regex);
 			    $(this).attr('name', match[1] + (++match[2]));
-			});
+			});*/
 
       row.after(new_row);
       new_select.focus();
-      
-      // redraw height
-      renewHeight()
     }
   });
 	

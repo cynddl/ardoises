@@ -74,8 +74,6 @@ html, body {
 	margin-top: 10px;
 }
 
-
-
 .login-box .form-horizontal .controls {
 	margin-left: 0;
 }
@@ -83,6 +81,17 @@ html, body {
 .login-box .help-inline {
 	display: none;
 }
+
+.key {
+	background-color: #eee;
+	padding: 5px;
+	border: 1px solid #ddd;
+  -webkit-border-radius: 3px;
+     -moz-border-radius: 3px;
+          border-radius: 3px;
+	
+}
+
 
 
 /* Subnav from Twitter Bootstrap */

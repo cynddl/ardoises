@@ -27,14 +27,12 @@ class Home_Controller extends Base_Controller {
 		$inputs = Input::get();
 		$l_id = Input::get('lieu_id');
 		$ardoise = Auth::user()->ardoise;
-		
-		for ($i=1; $i < count($inputs) / 2 + 1; $i++) {
-			if(!isset($inputs['conso'.$i]) || !isset($inputs['count'.$i]))
-				continue;			
-			
+						
+		for ($i=0; $i < count($inputs['conso']) ; $i++) {
+
 			DB::transaction(function() use($i, $inputs, $ardoise, $l_id) {
-				$groupe = Groupe::find($inputs['conso'.$i]);
-				$qte = $inputs['count'.$i];
+				$groupe = Groupe::find($inputs['conso'][$i]);
+				$qte = $inputs['count'][$i];
 				$conso = Consommation::create(array(
 					'groupeV_id' => $groupe->groupev($l_id)->first()->id,
 					'uniteachetee' => $qte,
