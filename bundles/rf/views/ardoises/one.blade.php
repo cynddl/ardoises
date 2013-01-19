@@ -11,6 +11,8 @@
   <li class="active"><a data-toggle="tab" href="#crediter">Créditer</a></li>
   <li><a data-toggle="tab" href="#edition">Edition du compte</a></li>
   <li><a data-toggle="tab" href="#consos">Consommations</a></li>
+  <li><a data-toggle="tab" href="#stats">Statistiques</a></li>
+	
 </ul>
 
 <div class="tab-content">
@@ -45,5 +47,67 @@
 			</tbody>
 		</table>
   </div>
+	<div class="tab-pane" id="stats">
+		<div id="chart_container">
+			<div id="y_axis"></div>
+			<div id="chart"></div>
+		</div>
+	</div>
 </div>
+@endsection
+
+@section("js")
+<link type="text/css" rel="stylesheet" href="http://code.shutterstock.com/rickshaw/rickshaw.min.css">
+<style>
+#chart_container {
+	position: relative;
+	font-family: Arial, Helvetica, sans-serif;
+}
+#chart {
+	position: relative;
+	left: 40px;
+}
+#y_axis {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 40px;
+}
+</style>
+
+
+<!--<script src="{{URL::to('')}}assets/js/graphs.min.js"></script>-->
+<script src="http://code.shutterstock.com/rickshaw/vendor/d3.v2.js"></script>
+<script src="http://code.shutterstock.com/rickshaw/rickshaw.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+
+
+d3.json('{{URL::to("rf/stats/user/".$user->login)}}', function(data){
+	var parseDate =  d3.time.format.utc("%Y-%m-%d %H:%M:%S").parse;
+	data.forEach(function(d) {
+	    d.x = d.date;
+	    d.y = d.uniteachetee;
+	});
+	
+	var graph = new Rickshaw.Graph( {
+	        element: document.querySelector("#chart"),
+	        width: 600,
+	        height: 250,
+					renderer: 'line',
+	        series: [ {
+	                color: 'steelblue',
+	                data: data
+	        } ]
+	});
+	var x_axes = new Rickshaw.Graph.Axis.Time( { graph: graph } );
+	var y_axis	= new Rickshaw.Graph.Axis.Y( {
+	        graph: graph,
+	        orientation: 'left',
+	        tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+	        element: document.getElementById('y_axis'),
+	} );
+	graph.render();
+});
+
+</script>
 @endsection

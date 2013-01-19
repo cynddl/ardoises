@@ -9,24 +9,9 @@
 <p>
 	{{Former::open_horizontal()}}
     <fieldset>
-	    <div class="control-group">
-				<label class="control-label">Ardoise émettrice</label>
-				<div class="controls">
-					<input type="text" name="debiteur" class="typeahead" data-provide="typeahead">          
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">Ardoise réceptrice</label>
-				<div class="controls">
-          <input type="text" name="crediteur" class="typeahead" data-provide="typeahead">
-				</div>
-			</div>
-	 		<div class="control-group">
-				<label class="control-label" for="credit">Montant à transférer</label>
-				<div class="controls">
-					<input type="number" class="input-small" name="montant" value="0.00" min="0">
-				</div>
-			</div>
+			{{Former::text('debiteur', 'Ardoise émettrice', null, array('class'=>'typeahead'))}}
+	    {{Former::text('crediteur', 'Ardoise réceptrice', null, array('class'=>'typeahead'))}}
+			{{Former::small_number('montant', 'Montant à transférer')->value('0.00')->min(0)}}
 	    <div class="form-actions">
         <button type="submit" class="btn btn-primary">Transférer</button>
       </div>

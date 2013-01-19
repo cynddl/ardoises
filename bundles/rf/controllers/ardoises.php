@@ -126,8 +126,23 @@ class Rf_Ardoises_Controller extends Base_Controller {
 	}
 	
 	public function post_transfert ()
-	{
+	{	
 		if(!Auth::can('peutcrediter')) return Redirect::to('rf/permission');
+		
+		$rules = array(
+			'debiteur' => 'required|exists:utilisateur,login',
+			'crediteur' => 'required|exists:utilisateur,login',
+			'montant' => 'required|numeric'
+		);
+		
+		$validation = Validator::make(Input::all(), $rules);
+		if ($validation->fails())
+		{
+			Session::flash('message_status', 'error');
+			Session::flash('message', 'Impossible d\'effectuer cette transaction !');
+			return Redirect::back()->with_errors($validation)->with_input();
+		}
+		
 		DB::transaction(function(){
 			$debiteur = Utilisateur::where_login(Input::get('debiteur'))->first();
 			$debiteur_a = $debiteur->ardoise;
