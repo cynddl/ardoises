@@ -13,12 +13,14 @@ class Home_Controller extends Base_Controller {
 	public function get_index()
 	{
 		$lieu = Lieu::first();
+
 		return View::make('home.index', array(
 			'lieu' => $lieu,
-			'groupe' => array_map(function($s) use($lieu) { return array(
+			'groupe' =>
+				array_map(function($s) use($lieu) { return array(
 				'id'=>$s->groupe->id,
 				'nom'=>$s->groupe->nom . ' ('. $s->groupe->prix($lieu->id) .')'
-			); }, Stockgroupe::with('groupe')->where_lieu_id($lieu->id)->get())
+			); }, GroupeV::with('groupe')->where_actif(true)->where_disponible(true)->where_lieu_id($lieu->id)->order_by('prix_adh')->get())
 		));
 	}
 	
@@ -54,11 +56,12 @@ class Home_Controller extends Base_Controller {
 		$lieu = Lieu::first();
 		return View::make('home.anonyme', array(
 			'lieu' => $lieu,
-			'groupe' => array_map(function($s) use($lieu) { return array(
+			'groupe' =>
+				array_map(function($s) use($lieu) { return array(
 				'id'=>$s->groupe->id,
 				'nom'=>$s->groupe->nom,
 				'prix' => money_format('%!n €', $s->groupe->prix($lieu->id))
-			); }, Stockgroupe::with('groupe')->where_lieu_id($lieu->id)->get())
+			); }, GroupeV::with('groupe')->where_actif(true)->where_disponible(true)->where_lieu_id($lieu->id)->order_by('prix_adh')->get())
 		));
 	}
 	
