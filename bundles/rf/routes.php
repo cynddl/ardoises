@@ -2,6 +2,7 @@
 
 Route::filter('pattern: rf', 'auth');
 Route::filter('pattern: rf/*', 'auth');
+Route::filter('pattern: rf/*', 'rf-auth');
 
 //Route::filter('pattern: rf/(?!login)*', 'rf-auth');
 

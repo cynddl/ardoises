@@ -14,7 +14,7 @@
 					badge-success
 				@else badge-important @endif">{{Auth::user()->ardoise->montant}}</span></small></p>
 			<div class="nav-collapse collapse">
-@if(Auth::user()->roles())
+@if(Auth::user()->roles()->count() > 0)
 @if(Session::get('rf_session'))
 				<a class="btn btn-success active pull-right" href="{{URL::to('rf/')}}">Interface RF</a>
 @else

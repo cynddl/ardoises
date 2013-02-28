@@ -53,6 +53,6 @@ Route::filter('auth', function()
 
 Route::filter('rf-auth', function()
 {
-	if(!(Session::get('rf_session')))
+	if(!(Session::get('rf_session')) && URL::to('rf/login') != URL::current())
 		return Redirect::to('rf/login');
 });

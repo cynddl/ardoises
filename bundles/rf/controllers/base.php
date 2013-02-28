@@ -22,11 +22,21 @@ class Rf_Base_Controller extends Base_Controller {
 	{
 		$mdp_super = md5(Input::get('rf_pass'));
 		$user = Auth::user();
-	
-		if($user->roles() && $user->mdp_super == $mdp_super)
+		
+		if($user->roles()->count() <= 0)
 		{
+			Session::flash('message_status', 'error');
+			Session::flash('message', 'Connection refusée. Vérifiez que vous avez accès à cette section du site.');
+		}
+		else if ($user->mdp_super != $mdp_super)
+		{
+			Session::flash('message_status', 'error');
+			Session::flash('message', 'Le mot de passe entré est incorrect.');
+		}
+		else {
 			Session::put('rf_session', 1);
 			return Redirect::to('rf/');
+			
 		}
 	
 		return Redirect::to('rf/login');
