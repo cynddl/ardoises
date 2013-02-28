@@ -6,7 +6,11 @@ class Rf_Ardoises_Controller extends Base_Controller {
 
 	public function get_index()
 	{
-		return View::make('rf::ardoises.home');
+		$utilisateurs = DB::table('utilisateur')->join('ardoise', 'utilisateur.ardoise_id', '=', 'ardoise.id')->get();
+		//print_r($utilisateurs);
+		return View::make('rf::ardoises.home', array(
+			'utilisateurs' => $utilisateurs
+		));
 	}
 
 	public function get_edit($login)

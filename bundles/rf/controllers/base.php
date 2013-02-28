@@ -101,11 +101,14 @@ class Rf_Base_Controller extends Base_Controller {
 	
 	public function get_roles()
 	{
+		$utilisateurs = DB::query('SELECT * from utilisateur where ' .
+			'EXISTS(SELECT * from utilisateur_role where utilisateur_id = utilisateur.id)');
+		
 		return View::make('rf::roles', array(
 			'roles' => Role::all(),
 			'lieux' => Lieu::all(),
 			'permissions' => Permission::get(array('id', 'nom')),
-			'utilisateurs' => Utilisateur::with('role')->get(array('id', 'login'))
+			'utilisateurs' => $utilisateurs
 		));
 	}
 	
