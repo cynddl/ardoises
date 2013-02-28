@@ -49,9 +49,9 @@
 				    </tr>
 				  </thead>
 				  <tbody>
-				    @foreach(Stockproduit::with('produit')->where_lieu_id($l->id)->get() as $sp)
+				    @foreach(Stockproduit::join('produit', 'produit.id', '=', 'produit_id')->where_lieu_id($l->id)->get() as $sp)
 				      <tr>
-								<td><a href="p/{{$sp->produit->id}}">{{$sp->produit->nom}}</a></td>
+								<td><a href="p/{{$sp->produit_id}}">{{$sp->nom}}</a></td>
 								<td>{{$sp->qte_reserve}}</td>
 				      </tr>
 				    @endforeach
@@ -125,13 +125,13 @@
 				    </tr>
 				  </thead>
 				  <tbody>
-				    @foreach(Stockgroupe::with('groupe')->where_lieu_id($l->id)->get() as $sg)
+				    @foreach(/*Stockgroupe::with('groupe')->where_lieu_id($l->id)->get()*/ $stockgroupe[$l->id] as $sg)
 				      <tr>
-								<td><a href="stocks/groupe/{{$sg->groupe->id}}">{{$sg->groupe->nom}}</a></td>
+								<td><a href="stocks/groupe/{{$sg->groupe_id}}">{{$sg->nom}}</a></td>
 								<td>{{$sg->qte_frigo}}</td>
-								@if($sg->groupe->groupev($l->id))
-								<td><a href="#" class="editable-input" data-name="{{$sg->groupe->groupev($l->id)->first()->id}}" data-type="select" data-pk="disponible">@if($sg->groupe->groupev($l->id)->first()->disponible)Oui@elseNon@endif</a></td>
-								<td><a href="#" class="editable-input" data-name="{{$sg->groupe->groupev($l->id)->first()->id}}" data-type="select" data-pk="actif">@if($sg->groupe->groupev($l->id)->first()->actif)Oui@elseNon@endif</a></td>
+								@if($sg->groupev_id)
+								<td><a href="#" class="editable-input" data-name="{{$sg->groupev_id}}" data-type="select" data-pk="disponible">@if($sg->disponible)Oui@elseNon@endif</a></td>
+								<td><a href="#" class="editable-input" data-name="{{$sg->groupev_id}}" data-type="select" data-pk="actif">@if($sg->actif)Oui@elseNon@endif</a></td>
 								@else
 								<td colspan="2"><span class="label label-important">Pas de groupe versionné</span></td>
 								@endif
