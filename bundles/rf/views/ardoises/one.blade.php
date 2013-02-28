@@ -37,7 +37,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				@foreach(Auth::user()->ardoise->consommations()->get() as $c)
+				@foreach($user->ardoise->consommations()->get() as $c)
 				<tr>
 					<td><a href="../../stocks/groupe/{{$c->groupe->id}}">{{$c->groupe->nom}}</a></td>
 					<td>{{$c->uniteachetee}}</td>
