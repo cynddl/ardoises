@@ -58,12 +58,10 @@
 		</thead>
 		<tbody>
 			@foreach($utilisateurs as $u)
-			@if(DB::table('utilisateur_role')->where_utilisateur_id($u->id)->count() > 0)
 			<tr>
 				<td>{{$u->login}} <a href="#" class="label label-important editable mdp-input" data-type="password" data-pk="{{$u->id}}">Mot de passe</a></td>
-				<td><a href="#" class="editable attrib-input" data-type="checklist" data-pk="{{$u->id}}" data-value="{{implode($u->roles_id(), ',')}}" data-original-title="Sélectionner les rôles"></a></td>
+				<td><a href="#" class="editable attrib-input" data-type="checklist" data-pk="{{$u->id}}" data-value="{{implode(Utilisateur::find($u->id)->roles_id(), ',')}}" data-original-title="Sélectionner les rôles"></a></td>
 			</tr>
-			@endif
 			@endforeach
 		</tbody>
 	</table>
