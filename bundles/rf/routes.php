@@ -50,6 +50,8 @@ Route::get('(:bundle)/frigos', array('as' => 'frigos', function()
 {
 	$date = Date::forge('now - 30 days')->format('datetime');
 	$lieux = Lieu::get();
+
+	$temps_ecoule = array();
 	
 	foreach ($lieux as $l) {
 		$consos_30d[$l->id] = Consommation::join('groupeV', 'consommation.groupeV_id', '=', 'groupeV.id')
@@ -61,13 +63,22 @@ Route::get('(:bundle)/frigos', array('as' => 'frigos', function()
 		
 		if($l->vols()->count() > 0)
 			$temps_ecoule[$l->id] = Date::forge($l->vols()->order_by('date', 'desc')->first()->date)->ago();
+
+
+		$stockgroupe[$l->id] =
+		DB::query('SELECT stockgroupe.*, groupe.*, "groupeV".*, "groupeV".id as groupev_id from stockgroupe ' .
+				  "INNER JOIN groupe on stockgroupe.groupe_id = groupe.id and lieu_id = $l->id " .
+				  'INNER JOIN "groupeV" on groupe.id = "groupeV".groupe_id ' .
+				  'ORDER BY "groupeV".date DESC'
+				 );
 	}
 	
 	return View::make('rf::frigos', array(
 		'lieux' => $lieux,
 		'vols_30d' => $vols_30d,
 		'consos_30d' => $consos_30d,
-		'temps_ecoule' => $temps_ecoule
+		'temps_ecoule' => $temps_ecoule,
+		'stockgroupe' => $stockgroupe
 	));
 }));
 
