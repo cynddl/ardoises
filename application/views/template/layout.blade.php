@@ -11,6 +11,8 @@
 	<meta name="description" content="">
 	<meta name="keywords" content="" />
 	<meta name="author" content="">
+	@section("header")
+	@yield_section
 
 <!--	<link href='http://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>-->

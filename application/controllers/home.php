@@ -48,7 +48,7 @@ class Home_Controller extends Base_Controller {
 				$ardoise->save();
 			});
 		}
-		return $this->get_index();
+		return Redirect::to('/debit');
 	}
 	
 	public function get_anonyme()
@@ -159,5 +159,10 @@ class Home_Controller extends Base_Controller {
 		return View::make('home.historique', array(
 			'consos' => Consommation::where_ardoise_id(Auth::user()->ardoise_id)->order_by('date', 'DESC')->get()
 		));
+	}
+	
+	public function get_debit()
+	{
+		return View::make('home.debit');
 	}
 }
