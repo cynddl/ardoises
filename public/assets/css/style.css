@@ -92,6 +92,18 @@ html, body {
 	
 }
 
+/* Display a box with ardoise balance */
+.ardoise-box {
+	padding: 1em;
+	background-color: #2ECC71;
+	display: inline-block;
+}
+
+
+.ardoise-box.positif {
+	background-color: #C0392B;
+	color: white;
+}
 
 
 /* Subnav from Twitter Bootstrap */
