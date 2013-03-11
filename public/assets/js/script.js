@@ -70,13 +70,6 @@ $(document).ready(function(){
       new_select.change(next_input);
       
       new_row.find('input[type="number"]').val("0");
-			
-			// Incrémentation des noms
-			/*var regex = new RegExp(/^(.+)(\d+)$/);
-			$(new_row).find(':input').each(function() {
-			    var match = $(this).attr('name').match(regex);
-			    $(this).attr('name', match[1] + (++match[2]));
-			});*/
 
       row.after(new_row);
       new_select.focus();
