@@ -16,8 +16,10 @@ module.exports = function(grunt) {
 		      files: {
 		        'js/main.min.js': [
 					'components/jquery/jquery.js',
-					'js/jquery.dataTables.min.js',
 					'components/bootstrap/docs/assets/js/bootstrap.js',
+					'components/datatables/media/js/jquery.dataTables.js',
+					'components/select2/select2.js',
+					
 					'js/bootstrap-editable.js',
 					'js/DT_bootstrap.js',
 					'js/patternizer.min.js',
@@ -34,6 +36,8 @@ module.exports = function(grunt) {
 		        "css/main.min.css": [
 					'components/bootstrap/docs/assets/css/bootstrap.css',
 					'components/bootstrap/docs/assets/css/bootstrap-responsive.css',
+					'components/select2/select2.css',
+					
 					'css/bootstrap-editable.css',
 					'css/nav-fix.css',
 					'css/style.css'
@@ -43,8 +47,8 @@ module.exports = function(grunt) {
 		}
 	});
 	
-	grunt.loadNpmTasks('grunt-css');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 
 	// Default task.
 	grunt.registerTask('default', ['uglify', 'cssmin']);
