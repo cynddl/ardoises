@@ -19,13 +19,13 @@ table p {
 <tr>
 	<td width="100%" valign="top">
 @foreach($ardoises as $key => $a)
-		<p>{{$a->prenom}} {{$a->nom}}</p>
-@if(($key + 1)% 30 == 0)
+		<p>{{$a->login}} <small>({{$a->prenom}} {{$a->nom}})</small></p>
+@if(($key + 1)% 58 == 0)
 	</td>
 </tr>
 <tr>
 	<td width="50%" valign="top">
-@elseif(($key + 1) % 15 == 0)
+@elseif(($key + 1) % 29 == 0)
 	</td>
 	<td width="50%" valign="top">
 @endif
