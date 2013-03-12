@@ -60,6 +60,7 @@ class Home_Controller extends Base_Controller {
 				array_map(function($s) use($lieu) { return array(
 				'id'=>$s->groupe->id,
 				'nom'=>$s->groupe->nom,
+				'nomreduit'=>$s->groupe->nomreduit,
 				'prix' => money_format('%!n €', $s->groupe->prix($lieu->id))
 			); }, GroupeV::with('groupe')->where_actif(true)->where_disponible(true)->where_lieu_id($lieu->id)->order_by('prix_adh')->get())
 		));
@@ -68,10 +69,10 @@ class Home_Controller extends Base_Controller {
 	public function post_anonyme()
 	{
 		$rules = array(
-			'conso' => 'required|exists:groupe,nom',
+			'conso' => 'required|exists:groupe,nomreduit',
 			'lieu_id' => 'required|exists:lieu,id'
 		);
-		
+				
 		$validation = Validator::make(Input::all(), $rules);
 		if ($validation->fails())
 		{
@@ -83,7 +84,7 @@ class Home_Controller extends Base_Controller {
 		try {
 			DB::transaction(function() {
 				$l_id = Input::get('lieu_id');
-				$groupe = Groupe::where_nom(Input::get('conso'))->first();
+				$groupe = Groupe::where_nomreduit(Input::get('conso'))->first();
 				// Pas d'ardoise pour un anonyme
 				$conso = Consommation::create(array(
 					'groupeV_id' => $groupe->groupev($l_id)->first()->id,
