@@ -41,7 +41,7 @@
     <div id="{{$l->id}}-stocks" class="accordion-body collapse in">
       <div class="accordion-inner">
 				<p><a href="commandes" class="btn btn-primary">Passer une commande</a></p>
-				<table class="table table-striped table-bordered">
+				<table class="table table-striped table-bordered dt-table">
 				  <thead>
 				    <tr>
 				      <th>Produit</th>
@@ -115,7 +115,7 @@
 						{{Former::close()}}
 				  </div>
 				</div>
-				<table class="table table-striped table-bordered">
+				<table class="table table-striped table-bordered dt-table">
 				  <thead>
 				    <tr>
 				      <th>Groupe</th>
