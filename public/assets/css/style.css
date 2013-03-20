@@ -250,3 +250,37 @@ table.dataTable th:active {
 .typeahead.dropdown-menu {
 	z-index: 1051;
 }
+
+
+/* Stats lists */
+
+ul.stats-tabs {
+	list-style: none;
+}
+
+ul.stats-tabs li {
+	float: left;
+	margin: 0 10px 0 0;
+	padding: 0 10px 0 0;
+	border-right: 1px solid #ccc;
+}
+ul.stats-tabs li:last-child {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+ul.stats-tabs li {	
+	display: block;
+	float: left;
+	font-size: 18px;
+}
+ul.stats-tabs li small {
+	display: block;
+	margin-top: 2px;
+}
+	
+ul.stats-tabs::after {
+		content: '';
+		display: block;
+		clear:both;
+}
