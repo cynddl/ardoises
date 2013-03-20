@@ -83,6 +83,41 @@ class Rf_Ardoises_Controller extends Base_Controller {
 		return Redirect::to_action('rf::ardoises@edit.'.$login);
 	}
 	
+	//
+	// Archiver un utilisateur et son ardoise
+	//
+	
+	public function get_archiver($login)
+	{
+		try {
+			
+			DB::transaction(function() use ($login) {
+				
+				$user = Utilisateur::where_login($login)->first();
+				$ardoise = $user->ardoise;
+				$ardoise->archive = true;
+				$ardoise->save();
+			
+				$user->delete();
+			
+				LogDB::add_flash('success', array(
+					'description' => "L'utilisateur « $login » a été supprimé et son ardoise anonymisée",
+					'nomtable' => 'ardoise',
+					'idtable' => $ardoise->id
+				));
+				
+			});
+			
+		} catch (Exception $e) {
+			Session::flash('message_status', 'error');
+			Session::flash('message', 'Impossible de supprimer cet utilisateur !');
+		}
+		
+		return Redirect::to_action('rf::ardoises@index');
+		
+		
+	}
+	
 	
 	//
 	// Création d'utilisateur et d'ardoise

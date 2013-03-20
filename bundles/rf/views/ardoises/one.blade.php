@@ -4,7 +4,7 @@
 {{\Bootstrapper\Breadcrumbs::create(array('RF' => URL::to('rf'), 'Ardoises' => URL::to('rf/ardoises'), "Gestion de l'utilisateur $user->login"))}}
 
 
-<h2>Gestion de l'utilisateur {{$user->login}}</h2>
+<h2>Gestion de l'utilisateur {{$user->login}} <a class="btn btn-danger btn-small" href="{{URL::to_action('rf@ardoises/archiver.'.$user->login)}}">Supprimer l'utilisateur &amp; archiver l'ardoise</a></h2>
 
 
 <ul class="nav nav-tabs" id="tab-nav">
