@@ -17,6 +17,14 @@
 		</a>
 	</div>
 </div>
+<div class="well">
+	<h3>Balance des ardoises</h3>
+	<ul class="stats-tabs">
+		<li>{{Ardoise::sum('montant')}} € <small>total</small></li>
+		<li>{{Ardoise::where('montant', '>', '0')->sum('montant')}} € <small>positives</small></li>
+		<li>{{Ardoise::where('montant', '<', '0')->sum('montant')}} € <small>négatives</small></li>
+	</ul>
+</div>
 <p>
 <table class="table table-bordered dt-table">
 	<thead>
