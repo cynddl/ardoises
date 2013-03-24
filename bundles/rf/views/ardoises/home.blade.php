@@ -33,7 +33,7 @@
 	<tbody>
 		@foreach($utilisateurs as $item)
 			<tr>
-				<td>{{HTML::link_to_action('rf::ardoises@edit', $item->login, array($item->login))}}</td>
+				<td>{{HTML::link_to_action('rf::ardoises@edit', $item->login, array($item->id))}}</td>
 				<td>{{$item->prenom}} {{$item->nom}}</td>
 				<td>{{$item->montant}}</td>
 				<td>{{$item->mail}}</td>

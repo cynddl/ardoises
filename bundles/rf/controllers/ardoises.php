@@ -6,28 +6,29 @@ class Rf_Ardoises_Controller extends Base_Controller {
 
 	public function get_index()
 	{
-		$utilisateurs = DB::table('utilisateur')->join('ardoise', 'utilisateur.ardoise_id', '=', 'ardoise.id')->get();
-		//print_r($utilisateurs);
+		// Pour avoir la bonne colonne d'identifiant utilisateur
+		$utilisateurs = DB::table('ardoise')->join('utilisateur', 'utilisateur.ardoise_id', '=', 'ardoise.id')->get();
+		
 		return View::make('rf::ardoises.home', array(
 			'utilisateurs' => $utilisateurs
 		));
 	}
 
-	public function get_edit($login)
+	public function get_edit($id)
 	{
 		return View::make('rf::ardoises.one', array(
-			'user' => Utilisateur::where('login', '=', $login)->first(),
+			'user' => Utilisateur::find($id)
 		));
 	}
 	
 	//
 	// Modification des préférences d'un utilisateur
 	//
-	public function post_edit($login)
+	public function post_edit($id)
 	{
 		if(!Auth::can('peutediterardoise')) return Redirect::to('rf/permission');
 			
-		$user = Utilisateur::where('login', '=', $login)->first();
+		$user = Utilisateur::find($id)->first();
 		$inputs = Input::all();
 		
 		$user->fill($inputs);
@@ -36,7 +37,7 @@ class Rf_Ardoises_Controller extends Base_Controller {
 			$user->mdp = md5(Input::get('mdp'));
 		
 		if(!$user->is_valid())
-			return Redirect::to('rf/ardoises/edit/'.$user->login.'#edition')->with_input()->with_errors($user->validation);
+			return Redirect::to('rf/ardoises/edit/'.$user->id.'#edition')->with_input()->with_errors($user->validation);
 		
 		$user->save();
 		
@@ -48,18 +49,18 @@ class Rf_Ardoises_Controller extends Base_Controller {
 		));
 		
 		return View::make('rf::ardoises.one', array(
-			'user' => Utilisateur::where('login', '=', $login)->first(),
+			'user' => $user
 		));
 	}
 	
 	//
 	// Crédit d'une ardoise
 	//
-	public function post_credit($login)
+	public function post_credit($id)
 	{
 		if(!Auth::can('peutcrediter')) return Redirect::to('rf/permission');
 		
-		$user = Utilisateur::where('login', '=', $login)->first();
+		$user = Utilisateur::find($id);
 		$ardoise = $user->ardoise;
 		
 		DB::transaction(function () use ($ardoise) {
@@ -74,26 +75,28 @@ class Rf_Ardoises_Controller extends Base_Controller {
 		});
 		
 		$qte = Input::get('credit');
+		$login = $user->login;
 		LogDB::add_flash('success', array(
 			'description' => "L'ardoise de « $login » a été créditée de $qte €.",
 			'nomtable' => 'ardoise',
 			'idtable' => $ardoise->id
 		));
 		
-		return Redirect::to_action('rf::ardoises@edit.'.$login);
+		return Redirect::to_action('rf::ardoises@edit', array($id));
 	}
 	
 	//
 	// Archiver un utilisateur et son ardoise
 	//
 	
-	public function get_archiver($login)
+	public function get_archiver($id)
 	{
 		try {
 			
-			DB::transaction(function() use ($login) {
+			DB::transaction(function() use ($id) {
 				
-				$user = Utilisateur::where_login($login)->first();
+				$user = Utilisateur::find($id);
+				$login = $user->login;
 				$ardoise = $user->ardoise;
 				$ardoise->archive = true;
 				$ardoise->save();
