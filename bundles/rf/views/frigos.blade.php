@@ -38,7 +38,7 @@
     <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-{{$l->id}}" href="#{{$l->id}}-stocks">Gestion des stocks</a>
     </div>
-    <div id="{{$l->id}}-stocks" class="accordion-body collapse in">
+    <div id="{{$l->id}}-stocks" class="accordion-body collapse">
       <div class="accordion-inner">
 				<p><a href="commandes" class="btn btn-primary">Passer une commande</a></p>
 				<table class="table table-striped table-bordered dt-table">
@@ -64,7 +64,7 @@
     <div class="accordion-heading">
       <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-{{$l->id}}" href="#{{$l->id}}-frigos">Frigos</a>
     </div>
-    <div id="{{$l->id}}-frigos" class="accordion-body collapse">
+    <div id="{{$l->id}}-frigos" class="accordion-body collapse in">
       <div class="accordion-inner">
 				<p>
 					<a href="#modal-ajout-{{$l->id}}" role="button" class="btn btn-primary" data-toggle="modal">Ajouter aux frigos</a>
