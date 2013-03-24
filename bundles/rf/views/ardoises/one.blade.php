@@ -4,7 +4,7 @@
 {{\Bootstrapper\Breadcrumbs::create(array('RF' => URL::to('rf'), 'Ardoises' => URL::to('rf/ardoises'), "Gestion de l'utilisateur $user->login"))}}
 
 
-<h2>Gestion de l'utilisateur {{$user->login}} <a class="btn btn-danger btn-small" href="{{URL::to_action('rf@ardoises/archiver.'.$user->login)}}">Supprimer l'utilisateur &amp; archiver l'ardoise</a></h2>
+<h2>Gestion de l'utilisateur {{$user->login}} <a class="btn btn-danger btn-small" href="{{URL::to_action('rf@ardoises/archiver.'.$user->id)}}">Supprimer l'utilisateur &amp; archiver l'ardoise</a></h2>
 
 
 <ul class="nav nav-tabs" id="tab-nav">
@@ -17,7 +17,7 @@
 
 <div class="tab-content">
   <div class="tab-pane active" id="crediter">
-		{{Former::open(URL::to_action('rf@ardoises/credit.'.$user->login))}}
+		{{Former::open(URL::to_action('rf@ardoises.credit', array($user->id)))}}
 		<legend>Cr&eacute;diter l'ardoise</legend>
 		{{Former::xlarge_uneditable('montant')->value($user->ardoise->montant)}}
 		{{Former::xlarge_number('credit', 'Montant &agrave; ajouter')->value(0)}}
