@@ -4,8 +4,25 @@
 
 {{\Bootstrapper\Breadcrumbs::create(array('RF' => URL::to('rf'), 'Produits' => URL::to('rf/produits'), $groupe->nom))}}
 
-<h2>{{$groupe->nom}} <small><a class="editable-input text-input" data-name="nomreduit" data-pk="{{$groupe->id}}">{{$groupe->nomreduit}}</a></small></h2>
-<p class="lead">Description : <a class="editable-input text-input" data-name="commentaire" data-pk="{{$groupe->id}}">{{$groupe->commentaire}}</a></p>
+<h2>{{$groupe->nom}}</h2>
+
+<p><span class="label label-info">Nom réduit</span> <a class="editable-input text-input" data-name="nomreduit" data-pk="{{$groupe->id}}">{{$groupe->nomreduit}}</a></p>
+<p><span class="label label-info">Description</span> <a class="editable-input text-input" data-name="commentaire" data-pk="{{$groupe->id}}">{{$groupe->commentaire}}</a></p>
+
+
+<div class="well">
+<p>Produits dans le groupe :</p>
+
+<ul>
+	@foreach($groupe->produits()->get() as $produit)
+	<li>
+		<span><a class="editable-input text-input" data-name="nom" data-pk="{{$produit->id}}">{{$produit->nom}}</a></span>@if($produit->commentaire && $produit->commentaire != "None")
+		<small>({{$produit->commentaire}})</small>
+		@endif</li>
+	@endforeach
+</ul>
+</div>
+
 
 <ul class="nav nav-tabs">
 	@foreach($lieux as $l)

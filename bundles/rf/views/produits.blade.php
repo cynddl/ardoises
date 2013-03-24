@@ -8,22 +8,26 @@
 
 <p>Un groupe est constitué d'un ensemble de produits. Par exemple, le groupe <em>soft</em> rassemble les Pampryl, les sodas… On peut consommer des groupes, mais pas des produits.</p>
 
-<ul class="nav nav-pills nav-stacked">
-@foreach(Groupe::get() as $groupe)
-  <li class="active">
-		<a href="stocks/groupe/{{$groupe->id}}"><span class="badge badge-important">{{$groupe->nomreduit}}</span> {{$groupe->nom}}@if($groupe->commentaire)
-			<small>({{$groupe->commentaire}})</small>@endif</a>
-			<ul class="nav nav-list">
-				@foreach($groupe->produits()->get() as $produit)
-				<li>
-					<span><a class="editable-input text-input" data-name="nom" data-pk="{{$produit->id}}">{{$produit->nom}}</a></span>@if($produit->commentaire)
-					<small>({{$produit->commentaire}})</small>
-					@endif</li>
-				@endforeach
-			</ul>
-  </li>
-@endforeach
-</ul>
+
+<table class="table table-striped table-bordered dt-table">
+	<thead>
+		<tr><th>Nom réduit</th><th>Nom du groupe</th><th>Nombre de produits</th></tr>
+	</thead>
+	<tbody>
+		@foreach(Groupe::get() as $groupe)
+		<tr>
+			<td><span class="badge badge-important">{{$groupe->nomreduit}}</span></td>
+			<td>
+				<a href="stocks/groupe/{{$groupe->id}}">{{$groupe->nom}}@if($groupe->commentaire && $groupe->commentaire != "None")
+<small>({{$groupe->commentaire}})</small>@endif</a>
+			</td>
+			<td>{{$groupe->produits()->count()}}</td>
+		</tr>
+		@endforeach
+	</tbody>
+</table>
+
+<hr />
 
 <ul class="nav nav-tabs">
   <li class="active"><a href="#ajouter-groupe" data-toggle="tab">Ajouter un groupe</a></li>
