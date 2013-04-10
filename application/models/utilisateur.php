@@ -7,7 +7,7 @@ class Utilisateur extends CustomEloquent {
 		
   public static $rules = array(
          'login'							=> 'required|alpha_num|exists:utilisateur,login',
-         'mail'								=> 'required|email|exists:utilisateur,mail',
+         'mail'								=> 'required|email',
 				 'mdp'								=> 'required',
          'prenom'							=> 'required',
          'nom'								=> 'required',
