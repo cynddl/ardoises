@@ -80,7 +80,7 @@
 				  </div>
 				  <div class="modal-body">
 						{{Former::inline_open()}}
-							{{Former::select('produit_nom')->fromQuery(Produit::all(), 'nom', 'nom')}}
+							{{Former::select('produit_nom')->fromQuery(Produit::order_by('nom')->get(), 'nom', 'nom')}}
 						  <input name="qte_volee" type="number" class="input-small" placeholder="Quantité">
 							<input type="hidden" name="lieu_id" value="{{$l->id}}">
 						  <button class="btn btn-primary">Ajouter</button>
