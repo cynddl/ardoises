@@ -27,23 +27,22 @@ class Rf_Ardoises_Controller extends Base_Controller {
 	public function post_edit($id)
 	{
 		if(!Auth::can('peutediterardoise')) return Redirect::to('rf/permission');
-			
-		$user = Utilisateur::find($id)->first();
+
+		$user = Utilisateur::find($id);
 		$inputs = Input::all();
-		
+
 		$user->fill($inputs);
-		
+
 		if(Input::get('mdp') != '')
 			$user->mdp = md5(Input::get('mdp'));
-		
+
 		if(!$user->is_valid())
 			return Redirect::to('rf/ardoises/edit/'.$user->id.'#edition')->with_input()->with_errors($user->validation);
-		
+
 		$user->save();
-		
-		$login = $user->login;
+
 		LogDB::add_flash('success', array(
-			'description' => "Les préférences de l'utilisateur « $login » ont été modifiées.",
+			'description' => "Les préférences de l'utilisateur « $user->login » ont été modifiées.",
 			'nomtable' => 'utilisateur',
 			'idtable' => $user->id
 		));
@@ -88,7 +87,6 @@ class Rf_Ardoises_Controller extends Base_Controller {
 	//
 	// Archiver un utilisateur et son ardoise
 	//
-	
 	public function get_archiver($id)
 	{
 		try {
@@ -117,8 +115,6 @@ class Rf_Ardoises_Controller extends Base_Controller {
 		}
 		
 		return Redirect::to_action('rf::ardoises@index');
-		
-		
 	}
 	
 	
