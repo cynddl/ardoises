@@ -158,7 +158,7 @@
     url: '{{URL::to("rf/stocks/groupev/edit")}}',
 		source: [	{value: 1, text: 'Oui'}, {value: 0, text: 'Non'},],
 		inputclass: '',
-    title: 'Enter username'
+    title: 'Modifier le champ'
 });
 </script>
 @endsection

@@ -38,7 +38,7 @@
   $('a.editable-input').editable({
     type: 'text',
     url: '{{URL::to("rf/commandes/edit")}}',
-    title: 'Enter username'
+    title: 'Modifier le champ'
 });
 </script>
 @endsection
