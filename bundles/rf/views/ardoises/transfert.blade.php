@@ -11,7 +11,7 @@
     <fieldset>
 			{{Former::text('debiteur', 'Ardoise émettrice', null, array('class'=>'typeahead'))}}
 	    {{Former::text('crediteur', 'Ardoise réceptrice', null, array('class'=>'typeahead'))}}
-			{{Former::small_number('montant', 'Montant à transférer')->value('0.00')->min(0)}}
+			{{Former::small_number('montant', 'Montant à transférer')->value('0.00')->min(0)->step('any')}}
 	    <div class="form-actions">
         <button type="submit" class="btn btn-primary">Transférer</button>
       </div>
