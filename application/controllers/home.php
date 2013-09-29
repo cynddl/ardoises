@@ -29,26 +29,37 @@ class Home_Controller extends Base_Controller {
 		$inputs = Input::get();
 		$l_id = Input::get('lieu_id');
 		$ardoise = Auth::user()->ardoise;
+		$error = false;
 						
 		for ($i=0; $i < count($inputs['conso']) ; $i++) {
 
-			DB::transaction(function() use($i, $inputs, $ardoise, $l_id) {
+			DB::transaction(function() use($i, $inputs, $ardoise, $l_id, &$error) {
 				$groupe = Groupe::find($inputs['conso'][$i]);
 				$qte = $inputs['count'][$i];
-				$conso = Consommation::create(array(
-					'groupeV_id' => $groupe->groupev($l_id)->first()->id,
-					'uniteachetee' => $qte,
-					'ardoise_id' => Auth::user()->ardoise->id
-				));
-				$conso->save();
-				
-				Stockgroupe::modifier($groupe->id, $l_id, -$qte);
-				
-				$ardoise->montant = $ardoise->montant + $groupe->prix($l_id) * $qte;
-				$ardoise->save();
+				if($qte > 0) {
+					$conso = Consommation::create(array(
+						'groupeV_id' => $groupe->groupev($l_id)->first()->id,
+						'uniteachetee' => $qte,
+						'ardoise_id' => Auth::user()->ardoise->id
+					));
+					$conso->save();
+					
+					Stockgroupe::modifier($groupe->id, $l_id, -$qte);
+					
+					$ardoise->montant = $ardoise->montant + $groupe->prix($l_id) * $qte;
+					$ardoise->save();
+				} else {
+					Session::flash('message_status', 'error');
+					Session::flash('message', 'Veuillez entrer une quantité positive.');
+					$error = true;
+				}
 			});
 		}
-		return Redirect::to('/debit');
+
+		if($error)
+			return Redirect::to('/');
+		else
+			return Redirect::to('/debit');
 	}
 	
 	public function get_anonyme()

@@ -3,6 +3,7 @@
 @section("content")
 <div class="row first">
 	<section class="span6 offset3">
+		{{HTML::flash()}}
 		<h2>Débiter des consommations <small>#{{$lieu->nom}}</small></h2>
 		<form class="form-inline" name="form_debit" action="{{URL::to('/')}}" method="POST">
 			<fieldset class="well">
