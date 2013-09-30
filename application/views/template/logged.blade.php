@@ -28,7 +28,7 @@
 						class="active"@endif><a href="{{URL::to('prefs')}}"><i class="icon-cog icon-white"></i> Préférences</a></li>
 					<li@if(Request::route()->is('historique'))
 						class="active"@endif><a href="{{URL::to('historique')}}"><i class="icon-signal icon-white"></i> Historique</a></li>
-					<li><a href="{{URL::to('logout')}}"><i class="icon-off icon-white"></i> Déconnection</a></li>
+					<li><a href="{{URL::to('logout')}}"><i class="icon-off icon-white"></i> Déconnexion</a></li>
 				</ul>
 		</div>
 		</div>
