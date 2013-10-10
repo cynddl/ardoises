@@ -91,31 +91,39 @@ $(document).ready(function(){
   		}
   	}
   } );
-  
+
   $.fn.dataTableExt.aTypes.unshift(
     function ( sData ) {
-      if (sData !== null && sData.match(/^(0[1-9]|[12][0-9]|3[01])[\/-](0[1-9]|1[012])[\/-](19|20|21)\d\d$/)) {
-        return 'fr_date';
+      if (sData !== null && sData.match(/^(0[1-9]|[12][0-9]|3[01])[\/-](0[1-9]|1[012])[\/-](19|20|21)\d\d ([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/)) {
+        return 'fr_datetime';
       }
       return null;
     }
   );
 
-  $.fn.dataTableExt.oSort['fr_date-asc']  = function(a,b) {
-    var Datea = a.split(/[\/-]/);
-    var Dateb = b.split(/[\/-]/);
-    var x = (Datea[2] + Datea[1] + Datea[0]) * 1;
-    var y = (Dateb[2] + Dateb[1] + Dateb[0]) * 1;
+  $.fn.dataTableExt.oSort['fr_datetime-asc']  = function(a,b) {
+    var DHa = a.split(" ");
+    var DHb = b.split(" ");
+    var Datea = a[0].split(/[\/-]/);
+    var Dateb = b[0].split(/[\/-]/);
+    var Heurea = a[1].split(':');
+    var Heureb = b[1].split(':');
+    var x = (Datea[2] + Datea[1] + Datea[0] + Heurea[0] + Heurea[1] + Heurea[2]) * 1;
+    var y = (Dateb[2] + Dateb[1] + Dateb[0] + Heureb[0] + Heureb[1] + Heureb[2]) * 1;
     if (isNaN(x)) { x = 0; }
     if (isNaN(y)) { y = 0; }
     return ((x < y) ? -1 : ((x > y) ?  1 : 0));
   };
 
-  $.fn.dataTableExt.oSort['fr_date-desc'] = function(a,b) {
-    var Datea = a.split(/[\/-]/);
-    var Dateb = b.split(/[\/-]/);
-    var x = (Datea[2] + Datea[1] + Datea[0]) * 1;
-    var y = (Dateb[2] + Dateb[1] + Dateb[0]) * 1;
+  $.fn.dataTableExt.oSort['fr_datetime-desc'] = function(a,b) {
+    var DHa = a.split(" ");
+    var DHb = b.split(" ");
+    var Datea = a[0].split(/[\/-]/);
+    var Dateb = b[0].split(/[\/-]/);
+    var Heurea = a[1].split(':');
+    var Heureb = b[1].split(':');
+    var x = (Datea[2] + Datea[1] + Datea[0] + Heurea[0] + Heurea[1] + Heurea[2]) * 1;
+    var y = (Dateb[2] + Dateb[1] + Dateb[0] + Heureb[0] + Heureb[1] + Heureb[2]) * 1;
     if (isNaN(x)) { x = 0; }
     if (isNaN(y)) { y = 0; }
     return ((x < y) ? 1 : ((x > y) ?  -1 : 0));

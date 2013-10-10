@@ -14,7 +14,7 @@
 		<tbody>
 		@foreach($consos as $c)
 		<tr>
-			<td>{{Date::forge($c->date)->format('date')}}</td>
+			<td>{{Date::forge($c->date)->format('datetime')}}</td>
 			<td>{{$c->groupe->nom}}</td>
 			<td>{{$c->uniteachetee}}</td>
 			<td>{{(float) $c->groupeV()->prix_adh * (float) $c->uniteachetee}}</td>
